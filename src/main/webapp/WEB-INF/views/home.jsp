@@ -1,3 +1,7 @@
+<%@ page language="java" contentType="text/html; charset=UTF-8"
+    pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ page session="true" %>
 <!DOCTYPE html>
 <html lang="en">
   <head>
@@ -4697,7 +4701,7 @@
         <h2 class="my-4">People are also looking for</h2>
         <a href="#" class="btn btn-warning me-2 mb-2">Blue diamon almonds</a>
         <a href="#" class="btn btn-warning me-2 mb-2"
-          >Angie’s Boomchickapop Corn</a
+          >Angieâs Boomchickapop Corn</a
         >
         <a href="#" class="btn btn-warning me-2 mb-2">Salty kettle Corn</a>
         <a href="#" class="btn btn-warning me-2 mb-2">Chobani Greek Yogurt</a>
@@ -4710,7 +4714,7 @@
         <a href="#" class="btn btn-warning me-2 mb-2">Chicken meatballs</a>
         <a href="#" class="btn btn-warning me-2 mb-2">Blue diamon almonds</a>
         <a href="#" class="btn btn-warning me-2 mb-2"
-          >Angie’s Boomchickapop Corn</a
+          >Angieâs Boomchickapop Corn</a
         >
         <a href="#" class="btn btn-warning me-2 mb-2">Salty kettle Corn</a>
         <a href="#" class="btn btn-warning me-2 mb-2">Chobani Greek Yogurt</a>
@@ -4959,7 +4963,7 @@
       <div class="container-lg">
         <div class="row">
           <div class="col-md-6 copyright">
-            <p>© 2024 Organic. All rights reserved.</p>
+            <p>Â© 2024 Organic. All rights reserved.</p>
           </div>
           <div class="col-md-6 credit-link text-start text-md-end">
             <p>

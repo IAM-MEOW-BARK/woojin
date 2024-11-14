@@ -14,7 +14,7 @@
 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
 		<property name="url" value="jdbc:mysql://localhost:3306/nscott?serverTimezone=UTC"></property>
 		<property name="username" value="root"></property>
-		<property name="password" value="mbc1234"></property>
+		<property name="password" value="132435"></property>
 	</bean>	
 		<!-- db Log추가 -->
  	<bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource"> 

@@ -33,7 +33,7 @@ public class HomeController {
 		
 		model.addAttribute("serverTime", formattedDate );
 		
-		return "catdog-login";
+		return "catdog-product-list-admin";
 	}
 	
 	@RequestMapping(value="/main")
