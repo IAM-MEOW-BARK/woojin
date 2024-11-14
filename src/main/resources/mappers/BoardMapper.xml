@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  <mapper namespace="kr.co.dong.boardMapper">
+  	<!-- 로그인 -->
+ 	<select id="login" parameterType="java.util.Map" resultType="java.util.Map">
+ 		select id,name from springuser
+ 		where id=#{id} and password=#{password}
+ 	</select>
+ 	
+ 	<!-- 글 전체 목록 -->
+ 	<select id="list" resultType="BoardDTO">
+ 		select * from board
+ 		where del = 0
+ 		order by bno desc	
+ 	</select>
+ 	
+ 	<!-- 글 하나 선택 -->
+ 	<select id="detail" parameterType="java.lang.Integer" resultType="BoardDTO">
+ 		select * from board
+ 		where bno=#{bno}
+ 	</select>
+ 	
+ 	<!-- 글 등록  -->
+ 	<insert id="register" parameterType="BoardDTO">
+ 		insert into board (bno, title, content, id, regdate, readcnt, etc, del)
+ 		values (#{bno}, #{title},#{content},#{id}, curdate(), 0, #{etc}, 0)
+ 	</insert>
+ 	
+ 	<!-- 글 수정  -->
+ 	<update id="update" parameterType="BoardDTO">
+ 		update board set title=#{title}, content=#{content}, regdate = curdate()
+ 		where bno=#{bno}
+ 	</update>
+ 	
+ 	<!-- 글 삭제 -->
+ 	<update id="delete" parameterType="java.lang.Integer">
+ 		update board set del = 1
+ 		where bno = #{bno}
+ 	</update>
+ 	
+ 	<!-- 조회수 증가 -->
+ 	<update id="readCnt" parameterType="java.lang.Integer">
+ 		update board set readcnt = readcnt + 1
+ 		where bno=#{bno}
+ 	</update>
+ 	
+ 	<!-- 댓글 등록  -->
+ 	<insert id="reply" parameterType="BoardReply">
+ 		insert into board_reply (rewriter, rememo, redate, bno)
+ 		values(#{rewriter}, #{rememo}, curdate(), #{bno})
+ 	</insert>
+ 	
+ 	<!-- 댓글 보기 -->
+ 	<select id="replylist" parameterType="java.lang.Integer" resultType="BoardReply">
+		 select * from board_reply
+		 where bno =#{bno}	
+ 	</select>
+ 	
+ 	<update id="replyupdate" parameterType="BoardReply">
+ 		update board_reply set rememo= #{rememo}, redate = curdate() where reno = #{reno}
+ 	</update>
+ 	
+ 	<delete id="deletereply" parameterType="java.lang.Integer">
+ 		delete from board_reply where reno=#{reno}
+ 	</delete> 	
+  	
+  	
+  	<!-- 페이징  --> 
+ 	<select id="totalRecord" resultType="java.lang.Integer">
+ 		select count(*) from board where del = 0
+ 	</select>
+ 	
+ 	<select id="findAll" parameterType="java.util.Map" resultType="BoardDTO">
+ 		select *
+ 		from board
+ 		where del = 0
+ 		order by bno desc
+ 		LIMIT #{start}, #{end}
+ 	</select>
+ 	
+ 	<!-- <select id="findAll" parameterType="java.util.Map" resultType="BoardDTO">
+ 		select *
+	from (select @ROWNUM:=@ROWNUM+1 rownum, bno, id, title, content, regdate 
+			from (select *,(@ROWNUM:=0) r from board where del = 0 order by bno desc)A)B
+	where rownum between #{start} and #{end}
+ 	</select> -->
+  </mapper>
