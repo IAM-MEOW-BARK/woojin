@@ -182,9 +182,9 @@ a.sidebar-link:hover {
 				</a>
 					<ul id="product" class="sidebar-dropdown list-unstyled collapse"
 						data-bs-parent="#sidebar">
-						<li class="sidebar-item"><a href="#" class="sidebar-link">전체
+						<li class="sidebar-item"><a href="catdog-product-list-admin" class="sidebar-link">전체
 								상품 리스트</a></li>
-						<li class="sidebar-item"><a href="#" class="sidebar-link">상품
+						<li class="sidebar-item"><a href="catdog-add-product-admin" class="sidebar-link">상품
 								등록</a></li>
 						<li class="sidebar-item"><a href="#" class="sidebar-link">상품
 								수정</a></li>
@@ -208,7 +208,6 @@ a.sidebar-link:hover {
 				</a>
 			</div>
 		</aside>
-		
 	</div>
 	<script type="text/javascript">
 		const hamBurger = document.querySelector(".toggle-btn");

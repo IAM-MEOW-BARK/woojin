@@ -36,6 +36,26 @@ public class BoardController {
 		return "catdog-term";
 	}
 	
+	@GetMapping(value="/catdog-add-product-admin")
+	public String catdogAddProductAdmin(){
+		return "catdog-add-product-admin";
+	}
+	
+	@GetMapping(value="/catdog-product-list-admin")
+	public String catdogProductListAdmin(){
+		return "catdog-product-list-admin";
+	}
+	
+	@GetMapping(value="/catdog-login")
+	public String catdogLogin(){
+		return "catdog-login";
+	}
+	
+	@GetMapping(value="/catdog-signup")
+	public String catdogSignup(){
+		return "catdog-signup";
+	}
+	
 	@RequestMapping(value="board/login", method = RequestMethod.GET)	
 	public String login() {
 		logger.info("로그인 성공");
