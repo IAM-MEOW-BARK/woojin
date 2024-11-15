@@ -48,9 +48,10 @@ body {
 
 .main {
 	min-height: 100vh;
-	width: 100%;
+	width: 80%;
 	overflow: hidden;
-	transition: all 0.35s ease-in-out;	
+	transition: all 0.35s ease-in-out;
+	margin: 0 auto;	
 }
 
 #sidebar {
