@@ -118,7 +118,7 @@ td {
 			<table class="table product-list-table">
 				<thead>
 					<tr>
-						<th class="table-light h-10">
+						<th class="table-light text-center">
 							<input type="checkbox">
 						</th>
 						<th class="table-light text-center" style="height:20px;">NO</th>
