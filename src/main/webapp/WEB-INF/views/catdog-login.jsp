@@ -112,7 +112,7 @@
     </div>
     </form>
     <div style="display: flex; justify-content: center; margin-top:15px;">
-   		<a href="/#" style="color: #7b7577">아이디 찾기&nbsp;</a> <span style="color: #7b7577">|</span> <a href="/#" style="color: #8b8b96">&nbsp;비밀번호 찾기</a>
+   		<a href="catdog-find-id" style="color: #7b7577">아이디 찾기&nbsp;</a> <span style="color: #7b7577">|</span> <a href="catdog-find-pw" style="color: #8b8b96">&nbsp;비밀번호 찾기</a>
     </div>
     <div class="social-container" style="text-align: center;">
     	<p class="easyway-text">간편하게 로그인/회원가입</p>

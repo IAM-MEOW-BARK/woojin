@@ -66,6 +66,16 @@ public class BoardController {
 		return "catdog-add-user-admin";
 	}
 	
+	@GetMapping(value="/catdog-find-id")
+	public String catdogFindId(){
+		return "catdog-find-id";
+	}
+	
+	@GetMapping(value="/catdog-find-pw")
+	public String catdogFindPw(){
+		return "catdog-find-pw";
+	}
+	
 	@RequestMapping(value="board/login", method = RequestMethod.GET)	
 	public String login() {
 		logger.info("로그인 성공");

@@ -100,7 +100,6 @@ td {
 						</select> 
 					</td>
 				</tr>
-				
 			</table>
 			<div style="text-align: center;">
 				<button type="submit" class="btn"
