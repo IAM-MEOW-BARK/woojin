@@ -61,6 +61,11 @@ public class BoardController {
 		return "catdog-user-list-admin";
 	}
 	
+	@GetMapping(value="/catdog-add-user-admin")
+	public String catdogAddUserAdmin(){
+		return "catdog-add-user-admin";
+	}
+	
 	@RequestMapping(value="board/login", method = RequestMethod.GET)	
 	public String login() {
 		logger.info("로그인 성공");

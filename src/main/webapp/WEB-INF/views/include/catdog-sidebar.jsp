@@ -199,7 +199,7 @@ a.sidebar-link:hover {
 						data-bs-parent="#sidebar">
 						<li class="sidebar-item"><a href="catdog-user-list-admin" class="sidebar-link">전체
 								회원 리스트</a></li>
-						<li class="sidebar-item"><a href="#" class="sidebar-link">회원
+						<li class="sidebar-item"><a href="catdog-add-user-admin" class="sidebar-link">회원
 								추가</a></li>
 					</ul></li>
 			</ul>
