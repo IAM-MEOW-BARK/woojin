@@ -16,7 +16,7 @@
         <div class="col-md-8 d-flex align-items-center">
           <img src="${pageContext.request.contextPath}/resources/bootstrap/images/CATDOGLogo.svg" alt="Logo" style="width: 200px; margin-right: 10px;" />
           <div>
-            <p class="mb-1">내가 바로 냥냥 명명</p>
+            <p class="mb-1">내가 바로 냥냥 멍멍</p>
             <p class="small text-muted">
               상호명: 내가 바로 냥냥 멍멍 | 대표: 김우진, 박나현, 최지혜 | 사업자등록번호: 108-18-12345<br />
               통신판매업 신고번호: 2024-수원인계-1234 | 대표번호: 031-123-5678<br />

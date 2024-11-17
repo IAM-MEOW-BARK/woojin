@@ -12,8 +12,13 @@
         margin-top: 30px;        
       }
       
+       footer {
+      	position: reliative;
+      	transform: translateY(18%);
+      }
+      
       .email-input, .password-input, .name-input, .phone-input {
-      	width: 467px; height: 20px; font-size: 1rem; border: 2px solid #f0f0f1; border-radius: 5px; padding: 15px;
+      	width: 467px; height: 20px; font-size: 1rem; border: 2px solid #f0f0f1; border-radius: 5px; padding: 15px; box-sizing: content-box;
       }
       
       .email-input:focus {
@@ -159,7 +164,7 @@
 <title>회원가입</title>
 </head>
 <body>
-
+<%@ include file="include/header.jsp"%>
 <div class="container-wrapper">
 	<div style="display: flex; justify-content: center;  width:500px; height:220px; overflow:hidden; margin:0 auto;">
         <img
@@ -169,7 +174,7 @@
         />
     </div>
     <h4>
-    	<b>아이디 찾기</b>
+    	<b>비밀번호 찾기</b>
 	</h4>
     <form name="findId-frm">
    		  <div style="margin-top: 10px;">	        
@@ -186,6 +191,7 @@
           </div>
     </form>
 </div>
+<%@ include file="include/footer.jsp"%>
 <script type="text/javascript">
 /* 핸드폰 번호 분류 */
 // 포커스가 벗어날 때 실행
