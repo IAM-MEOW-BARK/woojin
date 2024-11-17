@@ -4,6 +4,7 @@
 <%@ page session="true" %>
 <!DOCTYPE html>
 <html>
+
 <head>
 <style type="text/css">
 	 .container-wrapper {
@@ -12,8 +13,13 @@
         margin-top: 30px;        
       }
       
+      footer {
+      	position: reliative;
+      	transform: translateY(46%);
+      }
+      
       .email-input, .password-input, .name-input, .phone-input {
-      	width: 467px; height: 20px; font-size: 1rem; border: 2px solid #f0f0f1; border-radius: 5px; padding: 15px;
+      	width: 467px; height: 20px; font-size: 1rem; border: 2px solid #f0f0f1; border-radius: 5px; padding: 15px; box-sizing: content-box;
       }
       
       .email-input:focus {
@@ -159,7 +165,7 @@
 <title>회원가입</title>
 </head>
 <body>
-
+<%@ include file="include/header.jsp"%>
 <div class="container-wrapper">
 	<div style="display: flex; justify-content: center;  width:500px; height:220px; overflow:hidden; margin:0 auto;">
         <img
@@ -183,6 +189,7 @@
           </div>
     </form>
 </div>
+<%@ include file="include/footer.jsp"%>
 <script type="text/javascript">
 /* 핸드폰 번호 분류 */
 // 포커스가 벗어날 때 실행
