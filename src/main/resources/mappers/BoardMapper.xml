@@ -5,9 +5,15 @@
   <mapper namespace="kr.co.dong.boardMapper">
   	<!-- 로그인 -->
  	<select id="login" parameterType="java.util.Map" resultType="java.util.Map">
- 		select id,name from springuser
- 		where id=#{id} and password=#{password}
+ 		select user_id,name from member
+ 		where user_id=#{user_id} and password=#{password}
  	</select>
+ 	
+ 	<!-- 회원가입 -->
+ 	<insert id="sign-up" parameterType="MemberDTO">
+	 	insert into member (user_id, social_id, password, name, phone_num, user_created_at)
+	 	values (#{user_id}, #{social_id}, #{password}, #{name}, #{phone_num}, now())
+ 	</insert>
  	
  	<!-- 글 전체 목록 -->
  	<select id="list" resultType="BoardDTO">

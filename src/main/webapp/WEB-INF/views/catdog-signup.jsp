@@ -206,21 +206,21 @@ function closeModal() {
           style="width:100%; height:100%; object-fit:cover;"
         />
     </div>
-    <form name="signup-frm">
+    <form name="signup-frm" method="post">
 	      <div>        
-	        <input type="email" class="email-input" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;이메일">
+	        <input type="email" name="user_id" class="email-input" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;이메일">
 	      </div>
 	      <div style="margin-top: 10px;">	        
-	         <input type="password" class="password-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;비밀번호">
+	         <input type="password" name="password" class="password-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;비밀번호">
 	      </div>
 	      <div style="margin-top: 10px;">	        
-	         <input type="password" class="password-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;비밀번호 확인">
+	         <input type="password" name="password" class="password-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;비밀번호 확인">
 	      </div>
 	      <div style="margin-top: 10px;">	        
-	         <input type="text" class="name-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;이름">
+	         <input type="text" name="name" class="name-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;이름">
 	      </div>
 	      <div style="margin-top: 10px;">	        
-	         <input type="number" class="phone-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;전화번호">
+	         <input type="number" name="phone_num" class="phone-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;전화번호">	         	         
 	      </div>
 	      <!-- 옵션 -->
 	      <div class="option-group">

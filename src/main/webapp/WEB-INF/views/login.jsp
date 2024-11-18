@@ -59,7 +59,7 @@ desired effect
 		아이디:<input type="text" name="id" /> <br />
 		비밀번호:<input type="password" name="password" /> <br />
 		<input type="submit" value="로그인" />
-		<input type="button" value="메인으로"  id="main" />
+		<input type="button" value="메인으로" id="main" />
 	</form>
 	<hr>
 	root/root<br>

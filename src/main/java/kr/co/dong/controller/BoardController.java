@@ -13,6 +13,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -23,6 +24,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import kr.co.dong.board.BoardDTO;
 import kr.co.dong.board.BoardReply;
 import kr.co.dong.board.BoardService;
+import kr.co.dong.board.CatDogService;
+import kr.co.dong.board.MemberDTO;
 
 @Controller
 public class BoardController {
@@ -30,6 +33,8 @@ public class BoardController {
 	
 	@Inject
 	BoardService boardService;
+	@Inject
+	CatDogService catDogService;  
 	
 	@GetMapping(value="/catdog-term")
 	public String catdogTerm(){
@@ -51,10 +56,23 @@ public class BoardController {
 		return "catdog-login";
 	}
 	
-	@GetMapping(value="/catdog-signup")
-	public String catdogSignup(){
-		return "catdog-signup";
+	@RequestMapping(value="/catdog-login", method = RequestMethod.POST)
+	public String login(@RequestParam Map<String,Object> map, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
+		request.setCharacterEncoding("UTF-8");
+		
+		Map user = catDogService.login(map);
+		
+		if(user == null) {
+			logger.info("실패");
+			return "redirect:catdog-login"; //prefix suffix 이용해서 이동
+		} else {
+			logger.info("성공");
+			session.setAttribute("user", user);
+			return "redirect:/"; // kr.co.dong.HomeController return문(home)
+		}
 	}
+	
+	
 	
 	@GetMapping(value="/catdog-user-list-admin")
 	public String catdogUserListAdmin(){
@@ -76,27 +94,51 @@ public class BoardController {
 		return "catdog-find-pw";
 	}
 	
+	@GetMapping(value="/catdog-main")
+	public String catDogMain(){
+		return "catdog-main";
+	}
+	
+	@GetMapping(value="/catdog-payment")
+	public String catDogPayment(){
+		return "catdog-payment";
+	}
+	
 	@RequestMapping(value="board/login", method = RequestMethod.GET)	
 	public String login() {
 		logger.info("로그인 성공");
 		return "login"; // jsp
 	}
 	
-	@RequestMapping(value="board/login", method = RequestMethod.POST)
-	public String login(@RequestParam Map<String,Object> map, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
-		request.setCharacterEncoding("UTF-8");
-		
-		Map user = boardService.login(map);
-		
-		if(user == null) {
-			logger.info("실패");
-			return "redirect:login"; //prefix suffix 이용해서 이동
-		} else {
-			logger.info("성공");
-			session.setAttribute("user", user);
-			return "redirect:/"; // kr.co.dong.HomeController return문(home)
-		}
+	// 회원가입
+	@GetMapping(value="/catdog-signup")
+	public String catdogSignup(){
+		return "catdog-signup";
 	}
+	
+	// 회원가입
+	@PostMapping(value="/catdog-signup")
+	public String signup(MemberDTO member, HttpServletRequest request, RedirectAttributes rttr) throws Exception {
+		request.setCharacterEncoding("utf-8");
+		
+		int r = catDogService.create(member);
+		
+		return "redirect:/";
+	}
+	
+	/*
+	 * @RequestMapping(value="board/login", method = RequestMethod.POST) public
+	 * String login(@RequestParam Map<String,Object> map, HttpServletRequest
+	 * request, HttpServletResponse response, HttpSession session) throws Exception
+	 * { request.setCharacterEncoding("UTF-8");
+	 * 
+	 * Map user = boardService.login(map);
+	 * 
+	 * if(user == null) { logger.info("실패"); return "redirect:login"; //prefix
+	 * suffix 이용해서 이동 } else { logger.info("성공"); session.setAttribute("user",
+	 * user); return "redirect:/"; // kr.co.dong.HomeController return문(home) } }
+	 */
+	
 	@RequestMapping(value="board/logout", method = RequestMethod.GET)
 	public String logout(HttpSession session, RedirectAttributes rttr) {
 		session.invalidate(); // 세션에 저장되어 있는 정보 삭제

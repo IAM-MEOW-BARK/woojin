@@ -96,21 +96,21 @@
           style="width:100%; height:100%; object-fit:cover;"
         />
       </div>
-      <form name="login-frm">
+      <form method="post">
 	      <div>        
-	        <input type="email" class="email-input" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;아이디 또는 이메일을 입력해주세요">
+	        <input type="email" name="user_id"  class="email-input" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;아이디 또는 이메일을 입력해주세요">
 	      </div>
 	      <div style="margin-top: 10px;">	        
-	         <input type="password" class="password-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;비밀번호를 입력해주세요">
+	         <input type="password" name="password" class="password-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;비밀번호를 입력해주세요">
 	      </div>
 	      <div class="login-button" style="margin-top: 20px;">
 	        <button type="submit">로그인</button>
 	        </div>
 	      <div class="signup-button" style="margin-top: 20px;">
-	        <button type="button">회원가입</button>
+	        <button type="button" onclick="location.href=`catdog-signup`">회원가입</button>
 	      </div>
+      </form>
     </div>
-    </form>
     <div style="display: flex; justify-content: center; margin-top:15px;">
    		<a href="catdog-find-id" style="color: #7b7577">아이디 찾기&nbsp;</a> <span style="color: #7b7577">|</span> <a href="catdog-find-pw" style="color: #8b8b96">&nbsp;비밀번호 찾기</a>
     </div>
