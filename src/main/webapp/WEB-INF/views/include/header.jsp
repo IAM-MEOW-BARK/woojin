@@ -18,7 +18,7 @@
 				<div class="row py-3 border-bottom">
 					<div class="col-sm-4 col-lg-2 text-center text-sm-start d-flex gap-3 justify-content-center justify-content-md-start">
 						<div class="d-flex align-items-center my-3 my-sm-0">
-							<a href="home"> <img src="${pageContext.request.contextPath}/resources/bootstrap/images/CATDOGLogo2.png" alt="logo" class="img-fluid" />
+							<a href="catdog-main"> <img src="${pageContext.request.contextPath}/resources/bootstrap/images/CATDOGLogo2.png" alt="logo" class="img-fluid" />
 							</a>
 						</div>
 						<button class="navbar-toggler" type="button" data-bs-toggle="offcanvas" data-bs-target="#offcanvasNavbar" aria-controls="offcanvasNavbar">
@@ -39,7 +39,7 @@
 					</div>
 					<div class="col-sm-8 col-lg-2 d-flex gap-5 align-items-center justify-content-center justify-content-sm-end">
 						<ul class="d-flex justify-content-end list-unstyled m-0">
-							<li><a href="#" class="p-2 mx-1 text-end"> <svg width="24" height="24">
+							<li><a href="catdog-login" class="p-2 mx-1 text-end"> <svg width="24" height="24">
                 <use xlink:href="#user"></use>
               </svg><br> 로그인
 							</a></li>
