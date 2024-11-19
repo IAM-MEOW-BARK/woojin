@@ -185,7 +185,7 @@
                         </div>
                         <div id="addressDetail" class="mb-3">
                             <label for="addressDetail" class="form-label">상세 주소</label>
-                            <input type="text" class="form-control" id="addressDetailInput" name="addressDetail">
+                            <input type="text" class="form-control" id="detailAddress" name="detailAddress">
                         </div>
                     </form>
                 </div>
@@ -215,7 +215,7 @@
 	            const phoneElement = document.getElementById('phone');
 	            const zipCodeElement = document.getElementById('zipCode');
 	            const addressElement = document.getElementById('address');
-	            const addressDetailElement = document.getElementById('addressDetailInput');
+	            const addressDetailElement = document.getElementById('detailAddress');
 
 	            // 요소가 존재하지 않을 경우 에러 출력
 	            if (!recipientElement || !phoneElement || !zipCodeElement || !addressElement || !addressDetailElement) {
