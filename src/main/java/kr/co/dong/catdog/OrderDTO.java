@@ -2,7 +2,7 @@ package kr.co.dong.catdog;
 
 public class OrderDTO {
 	private String order_code;
-	private String user_id;
+	private String user_id_fk;
 	private String ordered_at;
 	private int product_cost;
 	private int payment_status;
@@ -13,11 +13,11 @@ public class OrderDTO {
 	public void setOrder_code(String order_code) {
 		this.order_code = order_code;
 	}
-	public String getUser_id() {
-		return user_id;
+	public String getUser_id_fk() {
+		return user_id_fk;
 	}
-	public void setUser_id(String user_id) {
-		this.user_id = user_id;
+	public void setUser_id_fk(String user_id_fk) {
+		this.user_id_fk = user_id_fk;
 	}
 	public String getOrdered_at() {
 		return ordered_at;
@@ -40,7 +40,7 @@ public class OrderDTO {
 	
 	@Override
 	public String toString() {
-		return "OrderDTO [order_code=" + order_code + ", user_id=" + user_id + ", ordered_at=" + ordered_at
+		return "OrderDTO [order_code=" + order_code + ", user_id_fk=" + user_id_fk + ", ordered_at=" + ordered_at
 				+ ", product_cost=" + product_cost + ", payment_status=" + payment_status + "]";
 	}
 }

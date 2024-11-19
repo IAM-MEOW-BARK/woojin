@@ -6,6 +6,9 @@ public class MemberDTO {
 	private String password;
 	private String name;
 	private int phone_num;
+	private int zipcode;
+	private String address;
+	private String detailaddress;
 	private String user_address;
 	private int user_auth;
 	private String user_created_at;
@@ -71,12 +74,32 @@ public class MemberDTO {
 	}
 	public void setConnected_at(String connected_at) {
 		this.connected_at = connected_at;
+	}	
+	
+	public int getZipcode() {
+		return zipcode;
+	}
+	public void setZipcode(int zipcode) {
+		this.zipcode = zipcode;
+	}
+	public String getAddress() {
+		return address;
+	}
+	public void setAddress(String address) {
+		this.address = address;
+	}
+	public String getDetailaddress() {
+		return detailaddress;
+	}
+	public void setDetailaddress(String detailaddress) {
+		this.detailaddress = detailaddress;
 	}
 	
 	@Override
 	public String toString() {
 		return "MemberDTO [user_id=" + user_id + ", social_id=" + social_id + ", password=" + password + ", name="
-				+ name + ", phone_num=" + phone_num + ", user_address=" + user_address + ", user_auth=" + user_auth
+				+ name + ", phone_num=" + phone_num + ", zipcode=" + zipcode + ", address=" + address
+				+ ", detailaddress=" + detailaddress + ", user_address=" + user_address + ", user_auth=" + user_auth
 				+ ", user_created_at=" + user_created_at + ", user_status=" + user_status + ", connected_at="
 				+ connected_at + "]";
 	}
