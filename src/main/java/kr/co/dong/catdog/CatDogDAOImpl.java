@@ -1,4 +1,4 @@
-package kr.co.dong.board;
+package kr.co.dong.catdog;
 
 import java.util.Map;
 

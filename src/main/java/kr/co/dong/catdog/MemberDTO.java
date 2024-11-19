@@ -1,4 +1,4 @@
-package kr.co.dong.board;
+package kr.co.dong.catdog;
 
 public class MemberDTO {
 	private String user_id;
@@ -80,6 +80,4 @@ public class MemberDTO {
 				+ ", user_created_at=" + user_created_at + ", user_status=" + user_status + ", connected_at="
 				+ connected_at + "]";
 	}
-	
-	
 }

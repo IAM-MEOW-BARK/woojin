@@ -214,7 +214,7 @@ function closeModal() {
 	         <input type="password" name="password" class="password-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;비밀번호">
 	      </div>
 	      <div style="margin-top: 10px;">	        
-	         <input type="password" name="password" class="password-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;비밀번호 확인">
+	         <input type="password" name="password-check" class="password-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;비밀번호 확인">
 	      </div>
 	      <div style="margin-top: 10px;">	        
 	         <input type="text" name="name" class="name-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;이름">

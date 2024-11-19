@@ -24,8 +24,8 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import kr.co.dong.board.BoardDTO;
 import kr.co.dong.board.BoardReply;
 import kr.co.dong.board.BoardService;
-import kr.co.dong.board.CatDogService;
-import kr.co.dong.board.MemberDTO;
+import kr.co.dong.catdog.CatDogService;
+import kr.co.dong.catdog.MemberDTO;
 
 @Controller
 public class BoardController {

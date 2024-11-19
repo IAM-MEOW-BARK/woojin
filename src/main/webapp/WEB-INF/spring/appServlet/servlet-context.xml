@@ -24,7 +24,7 @@
 	</beans:bean>
 	
 	<context:component-scan base-package="kr.co.dong" />
-	<context:component-scan base-package="kr.co.dong.board" />
+	<context:component-scan base-package="kr.co.dong.catdog" />	
 	
 	<!-- AOP 실행을 위해 컴포넌트 등록 -->
 	<aop:aspectj-autoproxy></aop:aspectj-autoproxy>

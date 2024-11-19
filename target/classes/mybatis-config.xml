@@ -5,7 +5,7 @@
  <configuration>
  	<typeAliases>
  		<typeAlias alias="BoardDTO" type="kr.co.dong.board.BoardDTO"/>
- 		<typeAlias alias="MemberDTO" type="kr.co.dong.board.MemberDTO"/>
+ 		<typeAlias alias="MemberDTO" type="kr.co.dong.catdog.MemberDTO"/>
  		<typeAlias alias="BoardReply" type="kr.co.dong.board.BoardReply"/>
  	</typeAliases>
  </configuration>
