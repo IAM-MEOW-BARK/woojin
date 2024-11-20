@@ -10,6 +10,9 @@ public interface CatDogService {
 	// 회원가입
 	public int create(MemberDTO meber) throws Exception;
 	
+	// 이메일 중복 체크
+	public int getMemberByEmail(String user_id) throws Exception;
+	
 	// 전체 회원 리스트
 	public List <MemberDTO> getTotalMember();
 	

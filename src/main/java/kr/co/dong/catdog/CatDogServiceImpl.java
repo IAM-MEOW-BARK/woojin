@@ -43,6 +43,12 @@ public class CatDogServiceImpl implements CatDogService {
 	    return catDogDAO.deleteUsers(userIds);
 	}
 
+	@Override
+	public int getMemberByEmail(String user_id) throws Exception {
+		// TODO Auto-generated method stub
+		return catDogDAO.getMemberByEmail(user_id);
+	}
+
 	/*
 	 * @Override public List<BoardReply> detail1(int bno) { // TODO Auto-generated
 	 * method stub return boardDAO.detail1(bno); }

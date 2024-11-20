@@ -55,6 +55,17 @@ public class CatDogController {
 		return "catdog-login";
 	}
 	
+	/*
+	 * @PostMapping(value="member/emailCheck") public int emailCheck(String user_id)
+	 * throws Exception { return catDogService.getMemberByEmail(user_id); }
+	 */
+	
+	@PostMapping(value="member/emailCheck")
+	@ResponseBody
+	public int emailCheck(@RequestParam("user_id") String user_id) throws Exception {
+	    return catDogService.getMemberByEmail(user_id);
+	}
+	
 	@RequestMapping(value="/catdog-login", method = RequestMethod.POST)
 	public String login(@RequestParam Map<String,Object> map, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
 		request.setCharacterEncoding("UTF-8");
@@ -113,7 +124,6 @@ public class CatDogController {
 	    return "redirect:/catdog-user-list-admin";
 	}
 	
-	
 	/*
 	 * @RequestMapping(value="/catdog-user-list-admin", method = RequestMethod.GET)
 	 * public ModelAndView list() { ModelAndView mAV = new ModelAndView();
@@ -123,6 +133,7 @@ public class CatDogController {
 	 * mAV.addObject("list-admin", list); mAV.setViewName("list-admin"); return mAV;
 	 * }
 	 */
+	
 	@GetMapping(value="/catdog-add-user-admin")
 	public String catdogAddUserAdmin(){
 		return "catdog-add-user-admin";

@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+<%@ include file="include/head.jsp" %>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -68,26 +69,29 @@ td {
 			<table class="table table-bordered">
 				<tr>
 					<th class="table-light">이메일</th>
-					<td><input type="text" id="product-code" name="product-code">
-						<button class="btn btn-secondary btn-sm">중복확인</button></td>
+					<td><input type="text" id="email" name="email">
+						<button type="button" class="btn btn-secondary btn-sm" onclick="emailCheck();">중복확인</button>
+						 <label id="email-check-label" style="margin-left: 10px;"></label>
+					</td>
 				</tr>
 				<tr>
 					<th class="table-light">비밀번호</th>
-					<td><input type="password" id="password" name="password">
+					<td><input type="password" id="password" name="password" oninput="checkPasswordMatch()">
 					</td>
 				</tr>
 				<tr>
 					<th class="table-light">비밀번호 확인</th>
-					<td><input type="password" id="password-check" name="password-check">
+					<td><input type="password" id="password-check" name="password-check" oninput="checkPasswordMatch()">
+					<label id="password-check-label" style="margin-left: 10px; color: red;"></label>
 					</td>
 				</tr>
 				<tr>
-					<th class="table-light">이름</th>
+					<th class="table-light" required>이름</th>
 					<td><input type="text" id="user-name" name="user-name">
 					</td>
 				</tr>
 				<tr>
-					<th class="table-light">휴대전화</th>
+					<th class="table-light" required>휴대전화</th>
 					<td><input type="text" id="user-phone" name="user-phone" maxlength="11">
 					</td>
 				</tr>
@@ -101,13 +105,13 @@ td {
 					</td>
 				</tr>
 			</table>
-			<div style="text-align: center;">
+		</form>
+		<div style="text-align: center;">
 				<button type="submit" class="btn"
 					style="width: 100px; border-radius: 8px; background-color: #FF6600; color:#fff;">회원 추가</button>
 				<button type="reset" class="btn btn-secondary"
 					style="width: 100px; border-radius: 8px;">취소</button>
 			</div>
-		</form>
 	</div>
 	<script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/classic/ckeditor.js"></script>
 	<script type="text/javascript">	
@@ -131,7 +135,46 @@ td {
         phoneInput.addEventListener("input", () => {
             phoneInput.value = phoneInput.value.replace(/\D/g, "");
         });
-		
+        
+        // 비밀번호 확인
+        function checkPasswordMatch() {
+            const password = document.getElementById("password").value;
+            const passwordCheck = document.getElementById("password-check").value;
+            const passwordCheckLabel = document.getElementById("password-check-label");
+
+            if (passwordCheck === "") {
+                passwordCheckLabel.textContent = ""; // 비밀번호 확인 필드가 비어 있으면 메시지 없음
+                return;
+            }
+
+            if (password === passwordCheck) {
+                passwordCheckLabel.textContent = "비밀번호가 일치합니다.";
+                passwordCheckLabel.style.color = "green";
+            } else {
+                passwordCheckLabel.textContent = "비밀번호가 일치하지 않습니다.";
+                passwordCheckLabel.style.color = "red";
+            }
+        } 
+        
+	     // ajax
+	     function emailCheck() {
+		    $.ajax({
+		        url: "${pageContext.request.contextPath}/member/emailCheck",
+		        type: "POST",
+		        dataType: "JSON",
+		        data: { "user_id": $("#email").val() },
+		        success: function (data) {
+		            if (data == 1) {
+		                alert("중복된 이메일입니다.");
+		            } else if (data == 0) {
+		                alert("사용 가능한 이메일입니다.");
+		            }
+		        },
+		        error: function () {
+		            alert("요청 처리 중 에러가 발생했습니다.");
+		        }
+		    });
+		}
 	</script>
 </body>
 </html>

@@ -12,7 +12,7 @@ public interface CatDogDAO {
 	public int create(MemberDTO meber) throws Exception;
 	
 	// 이메일 중복
-	public MemberDTO getMemberByEmail(String user_id) throws Exception;
+	public int getMemberByEmail(String user_id) throws Exception;
 	
 	// 회원 정보 찾기 (아이디)
 	public int findId(String name, int phone_num) throws Exception;

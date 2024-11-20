@@ -4,6 +4,7 @@
 <%@ page session="true"%>
 <!DOCTYPE html>
 <html>
+<%@ include file="include/head.jsp" %>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -124,7 +125,6 @@ td {
 						<th class="table-light text-center">최근 접속일</th>
 					</tr>
 				</thead>
-				
 				<tbody>
 					<tr>
 						<c:forEach var="member" items="${memberList}">
@@ -219,7 +219,10 @@ td {
 		
 		// 삭제 폼 제출
 	    function submitDeleteForm() {
-	    	confirm('삭제 하시겠습니까?');
+	    	 if (!confirm('삭제 하시겠습니까?')) {
+	    	        // 취소 버튼을 누르면 함수 종료
+	    	        return;
+    	    }
 			
 		    const selectedCheckboxes = document.querySelectorAll('input[name="selectedCheckbox"]:checked');
 		    const selectedIds = Array.from(selectedCheckboxes).map(cb => cb.value).join(',');
@@ -232,6 +235,8 @@ td {
 		    document.getElementById('hiddenSelectedIds').value = selectedIds;
 		    document.getElementById('deleteForm').submit();
 		}
+		
+	   
 	</script>
 </body>
 </html>

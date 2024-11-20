@@ -28,9 +28,9 @@ public class CatDogDAOImpl implements CatDogDAO{
 	}
 
 	@Override
-	public MemberDTO getMemberByEmail(String user_id) throws Exception {
+	public int getMemberByEmail(String user_id) throws Exception {
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectOne(namespace + ".email-check", user_id);
 	}
 
 	@Override
