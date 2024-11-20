@@ -65,59 +65,62 @@ td {
 		<h6>
 			<strong>회원 추가</strong>
 		</h6>
-		<form action="catdog-user-list-admin" method="post">
+		<form method="post" action="/catdog-add-user-admin">
 			<table class="table table-bordered">
 				<tr>
 					<th class="table-light">이메일</th>
-					<td><input type="text" id="email" name="email">
-						<button type="button" class="btn btn-secondary btn-sm" onclick="emailCheck();">중복확인</button>
-						 <label id="email-check-label" style="margin-left: 10px;"></label>
+					<td><input type="text" id="user_id" name="user_id" onblur="validateEmail()" required>
+					<button type="button" class="btn btn-secondary btn-sm" onclick="emailCheck();">중복확인</button>
+					<label id="email-check-label" style="margin-left: 10px;"></label>
+                <!-- <div id="email-validation-message" style="margin-top: 5px; font-size: 12px;"></div> -->						
+				
 					</td>
 				</tr>
 				<tr>
 					<th class="table-light">비밀번호</th>
-					<td><input type="password" id="password" name="password" oninput="checkPasswordMatch()">
+					<td><input type="password" id="password" name="password" oninput="checkPasswordMatch()" required>
 					</td>
 				</tr>
 				<tr>
 					<th class="table-light">비밀번호 확인</th>
-					<td><input type="password" id="password-check" name="password-check" oninput="checkPasswordMatch()">
+					<td><input type="password" id="password-check" oninput="checkPasswordMatch()" required>
 					<label id="password-check-label" style="margin-left: 10px; color: red;"></label>
 					</td>
 				</tr>
 				<tr>
-					<th class="table-light" required>이름</th>
-					<td><input type="text" id="user-name" name="user-name">
+					<th class="table-light" >이름</th>
+					<td><input type="text" id="name" name="name" required>
 					</td>
 				</tr>
 				<tr>
-					<th class="table-light" required>휴대전화</th>
-					<td><input type="text" id="user-phone" name="user-phone" maxlength="11">
+					<th class="table-light" >휴대전화</th>
+					<td><input type="text" id="phone_num" name="phone_num" maxlength="11" required>
 					</td>
 				</tr>
 				<tr>
 					<th class="table-light">회원권한</th>
 					<td>
-						<select name="authorityType">
-							<option value="normal-user">일반</option>
-							<option value="admin">관리자</option>							
+						<select name="user_auth">
+							<option value="0">일반</option>
+							<option value="1">관리자</option>							
 						</select> 
 					</td>
 				</tr>
 			</table>
-		</form>
-		<div style="text-align: center;">
+			<div style="text-align: center;">
 				<button type="submit" class="btn"
 					style="width: 100px; border-radius: 8px; background-color: #FF6600; color:#fff;">회원 추가</button>
 				<button type="reset" class="btn btn-secondary"
 					style="width: 100px; border-radius: 8px;">취소</button>
 			</div>
+		</form>
 	</div>
 	<script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/classic/ckeditor.js"></script>
 	<script type="text/javascript">	
+	
 		 /* 핸드폰 번호 분류 */
 		 // 포커스가 벗어날 때 실행
-		 const phoneInput = document.getElementById("user-phone");
+		 const phoneInput = document.getElementById("phone_num");
 		
         phoneInput.addEventListener("blur", () => {
             let value = phoneInput.value.replace(/\D/g, ""); // 숫자만 남기기
@@ -156,22 +159,59 @@ td {
             }
         } 
         
+    	// 폼 제출 시 중복 확인 여부 체크
+        document.querySelector("form").addEventListener("submit", function (e) {
+            if (!isEmailChecked) {
+                e.preventDefault(); // 폼 제출 방지
+                alert("이메일 중복 확인을 완료해주세요.");
+            }
+        });
+    	
+    	// 이메일 형식 검증 추가
+    	document.querySelector("form").addEventListener("submit", function (e) {
+		    if (!validateEmail()) {
+		        e.preventDefault(); // 폼 제출 방지
+		    }
+		});
+    	
+    	/* // 이메일 형식 검증
+    	function validateEmail() {
+		    const email = document.getElementById("user_id").value;
+		
+		    // 허용되는 이메일 도메인
+		    const emailRegex = /^[a-zA-Z0-9._%+-]+@(naver\.com|gmail\.com|daum\.net|kakao\.com|nate\.com|hotmail\.com|yahoo\.com|hanmail\.net|icloud\.com)$/;
+		
+		    const emailMessage = document.getElementById("email-validation-message");
+		    if (!emailRegex.test(email)) {
+		        emailMessage.textContent = "이메일 형식이 올바르지 않습니다. 허용되는 이메일: @naver.com, @gmail.com 등.";
+		        emailMessage.style.color = "red";
+		    } else {
+		        emailMessage.textContent = "올바른 이메일 형식입니다.";
+		        emailMessage.style.color = "green";
+		    }
+		} */
+        
 	     // ajax
+	     let isEmailChecked = false; // 중복 확인 상태 추적
+	     
 	     function emailCheck() {
 		    $.ajax({
 		        url: "${pageContext.request.contextPath}/member/emailCheck",
 		        type: "POST",
 		        dataType: "JSON",
-		        data: { "user_id": $("#email").val() },
+		        data: { "user_id": $("#user_id").val() },
 		        success: function (data) {
 		            if (data == 1) {
 		                alert("중복된 이메일입니다.");
+		                isEmailChecked = false;
 		            } else if (data == 0) {
 		                alert("사용 가능한 이메일입니다.");
+		                isEmailChecked = true;
 		            }
 		        },
 		        error: function () {
 		            alert("요청 처리 중 에러가 발생했습니다.");
+		            isEmailChecked = false;
 		        }
 		    });
 		}

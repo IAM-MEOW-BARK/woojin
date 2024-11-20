@@ -157,15 +157,9 @@ public class CatDogController {
 	@GetMapping(value="/catdog-payment")
 	public String catDogPayment(){
 		return "catdog-payment";
-	}	
-	
-	// 회원가입
-	@GetMapping(value="/catdog-signup")
-	public String catdogSignup(){
-		return "catdog-signup";
 	}
 	
-	// 회원가입
+	// 일반 유저 회원가입
 	@PostMapping(value="/catdog-signup")
 	public String signup(MemberDTO member, HttpServletRequest request, RedirectAttributes rttr) throws Exception {
 		request.setCharacterEncoding("utf-8");
@@ -173,6 +167,16 @@ public class CatDogController {
 		int r = catDogService.create(member);
 		
 		return "redirect:/";
+	}
+	
+	// 관리자 회원가입
+	@PostMapping(value="/catdog-add-user-admin")
+	public String adminSignup(MemberDTO member, HttpServletRequest request, RedirectAttributes rttr) throws Exception {
+		request.setCharacterEncoding("utf-8");
+		
+		int r = catDogService.create(member);
+		
+		return "redirect:/catdog-user-list-admin";
 	}
 	
 //	@RequestMapping(value="board/logout", method = RequestMethod.GET)

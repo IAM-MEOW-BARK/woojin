@@ -5,7 +5,7 @@ public class MemberDTO {
 	private int social_id;
 	private String password;
 	private String name;
-	private int phone_num;
+	private String phone_num;
 	private int zipcode;
 	private String address;
 	private String detailaddress;
@@ -39,10 +39,10 @@ public class MemberDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getPhone_num() {
+	public String getPhone_num() {
 		return phone_num;
 	}
-	public void setPhone_num(int phone_num) {
+	public void setPhone_num(String phone_num) {
 		this.phone_num = phone_num;
 	}
 	public String getUser_address() {
