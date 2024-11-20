@@ -161,7 +161,7 @@ td {
 							                </c:when>
 							            </c:choose>
 						            </td>
-								 	<td>0${member.phone_num}</td>
+								 	<td>${member.phone_num}</td>
 								 	<td>${member.user_created_at}</td>
 								 	<td>${member.connected_at}</td>
 						 	</tr>

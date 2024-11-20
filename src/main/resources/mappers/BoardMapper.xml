@@ -33,7 +33,8 @@
  	
  	<!-- 회원 관리 리스트 -->
  	<select id="getTotalMember" resultType="MemberDTO">
- 		select * from member 		
+ 		select * from member
+ 		order by user_created_at desc
  	</select>
  	
  	<!-- 회원 탈퇴 --> 	
