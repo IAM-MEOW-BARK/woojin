@@ -64,8 +64,20 @@ public class CatDogController {
 			return "redirect:catdog-login"; //prefix suffix 이용해서 이동
 		} else {
 			logger.info("성공");
-			session.setAttribute("user", user);
-			return "redirect:/"; // kr.co.dong.HomeController return문(home)
+			session.setAttribute("user", user);			
+
+	        Integer userAuth = (Integer) user.get("user_auth");
+
+	        if (userAuth == 1) {
+	            logger.info("관리자 계정으로 로그인");
+	            return "redirect:/catdog-user-list-admin";
+	        } else if (userAuth == 0) {
+	            logger.info("일반 사용자 계정으로 로그인");
+	            return "redirect:/catdog-main";
+	        } else {
+	            logger.warn("알 수 없는 USER_AUTH 값: " + userAuth);
+	            return "redirect:catdog-login";
+	        }
 		}
 	}
 	

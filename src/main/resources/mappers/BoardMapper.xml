@@ -5,7 +5,7 @@
   <mapper namespace="kr.co.dong.boardMapper">
   	<!-- 로그인 -->
  	<select id="login" parameterType="java.util.Map" resultType="java.util.Map">
- 		select user_id,name from member
+ 		select user_id,name,user_auth from member
  		where user_id=#{user_id} and password=#{password}
  	</select>
  	

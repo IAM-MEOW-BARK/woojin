@@ -6,6 +6,7 @@ public class BoardDTO {
 	private String board_content;
 	private String board_date;
 	private int board_readcnt;
+	
 	public int getBoard_no() {
 		return board_no;
 	}
@@ -36,6 +37,7 @@ public class BoardDTO {
 	public void setBoard_readcnt(int board_readcnt) {
 		this.board_readcnt = board_readcnt;
 	}
+	
 	@Override
 	public String toString() {
 		return "BoardDTO [board_no=" + board_no + ", board_title=" + board_title + ", board_content=" + board_content
