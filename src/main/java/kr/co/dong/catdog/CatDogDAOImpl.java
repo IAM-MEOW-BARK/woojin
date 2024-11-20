@@ -88,10 +88,13 @@ public class CatDogDAOImpl implements CatDogDAO{
 	}
 
 	@Override
-	public int deleteUser(String user_id) {
-		// TODO Auto-generated method stub
-		return 0;
+	public int deleteUsers(List<String> userIds) {
+	    return sqlSession.update(namespace + ".deleteUsers", userIds);
 	}
+	/*
+	 * public int deleteUser(String user_id) { // TODO Auto-generated method stub
+	 * return sqlSession.update(namespace + ".deleteUser", user_id); }
+	 */
 
 	@Override
 	public List<OrderDTO> getRecentOrders(String user_id) throws Exception {
@@ -138,10 +141,13 @@ public class CatDogDAOImpl implements CatDogDAO{
 	@Override
 	public List<MemberDTO> getTotalMember() {
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectList(namespace + ".getTotalMember");
 	}
 
-
-
+	@Override
+	public int deleteUser(String user_id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 }

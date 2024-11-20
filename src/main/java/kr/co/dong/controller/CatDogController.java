@@ -1,5 +1,7 @@
 package kr.co.dong.controller;
 
+import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
@@ -76,16 +78,51 @@ public class CatDogController {
 	            return "redirect:/catdog-main";
 	        } else {
 	            logger.warn("알 수 없는 USER_AUTH 값: " + userAuth);
-	            return "redirect:catdog-login";
+	            return "redirect:/catdog-login";
 	        }
 		}
-	}
+	}	
 	
 	@GetMapping(value="/catdog-user-list-admin")
-	public String catdogUserListAdmin(){
-		return "catdog-user-list-admin";
+	public ModelAndView list() {
+	    ModelAndView mAV = new ModelAndView();
+
+	    List<MemberDTO> list = catDogService.getTotalMember();
+
+	    mAV.addObject("memberList", list); 
+	    mAV.setViewName("catdog-user-list-admin"); 
+	    return mAV; 
 	}
 	
+	/*
+	 * @PostMapping(value="catdog/deleteUser") public String
+	 * deleteUser(@RequestParam("id") String user_id) { int r =
+	 * catDogService.deleteUser(user_id);
+	 * 
+	 * return "redirect:catdog-user-list-admin"; }
+	 */
+	
+	@PostMapping(value = "catdog/deleteUsers")
+	public String deleteUsers(@RequestParam("selectedIds") String selectedIds) {
+	    // 쉼표로 구분된 ID 문자열을 List로 변환
+	    List<String> userIds = Arrays.asList(selectedIds.split(","));
+	    
+	    // Service 호출
+	    catDogService.deleteUsers(userIds);
+
+	    return "redirect:/catdog-user-list-admin";
+	}
+	
+	
+	/*
+	 * @RequestMapping(value="/catdog-user-list-admin", method = RequestMethod.GET)
+	 * public ModelAndView list() { ModelAndView mAV = new ModelAndView();
+	 * 
+	 * List<MemberDTO> list = catDogService.getTotalMember();
+	 * 
+	 * mAV.addObject("list-admin", list); mAV.setViewName("list-admin"); return mAV;
+	 * }
+	 */
 	@GetMapping(value="/catdog-add-user-admin")
 	public String catdogAddUserAdmin(){
 		return "catdog-add-user-admin";
@@ -109,10 +146,7 @@ public class CatDogController {
 	@GetMapping(value="/catdog-payment")
 	public String catDogPayment(){
 		return "catdog-payment";
-	}
-	
-	
-	
+	}	
 	
 	// 회원가입
 	@GetMapping(value="/catdog-signup")

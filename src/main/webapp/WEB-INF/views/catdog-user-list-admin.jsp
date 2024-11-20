@@ -53,6 +53,10 @@ th {
 td {
 	vertical-align: middle;
 }
+
+.user-list td{
+	text-align:center;
+}
 </style>
 </head>
 <body>
@@ -95,23 +99,22 @@ td {
 		</form>
 		<hr style="color: black">
 		<div style="display: flex; justify-content: space-between;">
+			<form id="deleteForm" action="catdog/deleteUsers" method="post">
+	            <input type="hidden" name="selectedIds" id="hiddenSelectedIds">
+	            <button type="button" class="btn btn-danger btn-sm" style="border-radius: 8px;" onclick="submitDeleteForm()">회원 삭제</button>
+	        </form>
 			<div>
-				<button type="submit" class="btn btn-danger btn-sm"
-					style="border-radius: 8px;">회원 삭제</button>
-			</div>
-			<div>
-				<button type="submit" class="btn btn-sm"
-					style="border-radius: 8px; background-color: #FF6600; color: white;">회원 등록</button>
+				<button type="button" class="btn btn-sm"
+					style="border-radius: 8px; background-color: #FF6600; color: white;" onclick="location.href='catdog-add-user-admin'">회원 등록</button>
 			</div>
 		</div>
 		<div class="wrapper mt-5">
-			<table class="table product-list-table">
+			<table class="table user-list product-list-table">
 				<thead>
 					<tr>
 						<th class="table-light text-center">
-							<input type="checkbox">
-						</th>
-						<th class="table-light text-center" style="height:20px;">NO</th>
+                        	<input type="checkbox" id="selectAll">
+                    	</th>						
 						<th class="table-light text-center">이메일</th>
 						<th class="table-light text-center">소셜타입</th>
 						<th class="table-light text-center">이름</th>
@@ -121,153 +124,49 @@ td {
 						<th class="table-light text-center">최근 접속일</th>
 					</tr>
 				</thead>
+				
 				<tbody>
 					<tr>
-						<%-- <c:forEach var="board" items="${list}">
-			 	<tr>
-			 		<td>
-			 			<input type="checkbox">
-			 		</td>
-				 	<td>${user-list.no}</td>
-				 	<td>${user-list.email}</td>
-				 	<td>${user-list.socialType}</td>
-				 	<td>${user-list.name}</td>
-				 	<td>${user-list.authority}</td>
-				 	<td>${user-list.phoneNum}</td>
-				 	<td>${user-list.created_at}</td>
-				 	<td>${user-list.recently_visited_at}</td>
-			 	</tr>
-			</c:forEach> --%>
-					<tr>
-						<td class="text-center">
-							<input type="checkbox">
-						</td>
-						<td class="text-center">10</td>
-						<td class="text-center">test@naver.com</td>
-						<td class="text-center">-</td>
-						<td class="text-center">햄우진</td>
-						<td class="text-center">관리자</td>
-						<td class="text-center">010-1234-5678</td>
-						<td class="text-center">2021/01/06</td>
-						<td class="text-center">2024/11/16</td>
-					</tr>
-					<tr>
-						<td class="text-center">
-							<input type="checkbox">
-						</td>
-						<td class="text-center">9</td>
-						<td class="text-center">test@naver.com</td>
-						<td class="text-center">-</td>
-						<td class="text-center">박나현</td>
-						<td class="text-center">일반</td>
-						<td class="text-center">010-1234-5678</td>
-						<td class="text-center">2021/01/06</td>
-						<td class="text-center">2024/11/16</td>
-					</tr>
-					<tr>
-						<td class="text-center">
-							<input type="checkbox">
-						</td>
-						<td class="text-center">8</td>
-						<td class="text-center">GO_test@gmail.com</td>
-						<td class="text-center">구글</td>
-						<td class="text-center">최지혜</td>
-						<td class="text-center">일반</td>
-						<td class="text-center">010-1234-5678</td>
-						<td class="text-center">2021/01/06</td>
-						<td class="text-center">2024/11/16</td>
-					</tr>
-					<tr>
-						<td class="text-center">
-							<input type="checkbox">
-						</td>
-						<td class="text-center">7</td>
-						<td class="text-center">test@naver.com</td>
-						<td class="text-center">-</td>
-						<td class="text-center">허준혁</td>
-						<td class="text-center">일반</td>
-						<td class="text-center">010-1234-5678</td>
-						<td class="text-center">2021/01/06</td>
-						<td class="text-center">2024/11/16</td>
-					</tr>
-					<tr>
-						<td class="text-center">
-							<input type="checkbox">
-						</td>
-						<td class="text-center">6</td>
-						<td class="text-center">test@naver.com</td>
-						<td class="text-center">-</td>
-						<td class="text-center">김은혜</td>
-						<td class="text-center">일반</td>
-						<td class="text-center">010-1234-5678</td>
-						<td class="text-center">2021/01/06</td>
-						<td class="text-center">2024/11/16</td>
-					</tr>
-					<tr>
-						<td class="text-center">
-							<input type="checkbox">
-						</td>
-						<td class="text-center">5</td>
-						<td class="text-center">test@naver.com</td>
-						<td class="text-center">-</td>
-						<td class="text-center">김윤호</td>
-						<td class="text-center">일반</td>
-						<td class="text-center">010-1234-5678</td>
-						<td class="text-center">2021/01/06</td>
-						<td class="text-center">2024/11/16</td>
-					</tr>
-					<tr>
-						<td class="text-center">
-							<input type="checkbox">
-						</td>
-						<td class="text-center">4</td>
-						<td class="text-center">test@naver.com</td>
-						<td class="text-center">-</td>
-						<td class="text-center">이세라</td>
-						<td class="text-center">일반</td>
-						<td class="text-center">010-1234-5678</td>
-						<td class="text-center">2021/01/06</td>
-						<td class="text-center">2024/11/16</td>
-					</tr>
-					<tr>
-						<td class="text-center">
-							<input type="checkbox">
-						</td>
-						<td class="text-center">3</td>
-						<td class="text-center">test@naver.com</td>
-						<td class="text-center">-</td>
-						<td class="text-center">김현주</td>
-						<td class="text-center">일반</td>
-						<td class="text-center">010-1234-5678</td>
-						<td class="text-center">2021/01/06</td>
-						<td class="text-center">2024/11/16</td>
-					</tr>
-					<tr>
-						<td class="text-center">
-							<input type="checkbox">
-						</td>
-						<td class="text-center">2</td>
-						<td class="text-center">test@naver.com</td>
-						<td class="text-center">-</td>
-						<td class="text-center">김성덕</td>
-						<td class="text-center">관리자</td>
-						<td class="text-center">010-1234-5678</td>
-						<td class="text-center">2021/01/06</td>
-						<td class="text-center">2024/11/16</td>
-					</tr>
-					<tr>
-						<td class="text-center">
-							<input type="checkbox">
-						</td>
-						<td class="text-center">1</td>
-						<td class="text-center">test@naver.com</td>
-						<td class="text-center">-</td>
-						<td class="text-center">김민성</td>
-						<td class="text-center">일반</td>
-						<td class="text-center">010-1234-5678</td>
-						<td class="text-center">2021/01/06</td>
-						<td class="text-center">2024/11/16</td>
-					</tr>
+						<c:forEach var="member" items="${memberList}">
+							<c:if test="${member.user_status == 0}">
+							 	<tr>
+							 		 <td>
+				                            <input type="checkbox" name="selectedCheckbox" value="${member.user_id}">
+				                        </td>     			 	
+								 	<td style="text-align: left;">${member.user_id}</td>
+								 	<td>
+							            <c:choose>
+							                <c:when test="${member.social_id == 1}">
+							                    네이버
+							                </c:when>
+							                <c:when test="${member.social_id == 2}">
+							                    카카오
+							                </c:when>
+							                <c:when test="${member.social_id == 3}">
+							                    구글
+							                </c:when>
+							                <c:otherwise>
+							                    -
+							                </c:otherwise>
+							            </c:choose>
+							        </td>			
+								 	<td>${member.name}</td>				 	
+								 	<td>
+									 	<c:choose>
+							                <c:when test="${member.user_auth == 0}">
+							                    일반
+							                </c:when>
+							                <c:when test="${member.user_auth == 1}">
+							                    관리자
+							                </c:when>
+							            </c:choose>
+						            </td>
+								 	<td>0${member.phone_num}</td>
+								 	<td>${member.user_created_at}</td>
+								 	<td>${member.connected_at}</td>
+						 	</tr>
+						 	</c:if>
+						</c:forEach>	
 				</tbody>
 			</table>
 			<br>
@@ -310,6 +209,28 @@ td {
 			targetDate.setDate(today.getDate() + daysAgo);
 			document.getElementById("endDate").value = targetDate.toISOString()
 					.split('T')[0];
+		}
+		
+		// 전체 선택/ 해제
+		document.getElementById('selectAll').addEventListener('click', function () {
+		    const checkboxes = document.querySelectorAll('input[name="selectedCheckbox"]');
+		    checkboxes.forEach(cb => cb.checked = this.checked);
+		});
+		
+		// 삭제 폼 제출
+	    function submitDeleteForm() {
+	    	confirm('삭제 하시겠습니까?');
+			
+		    const selectedCheckboxes = document.querySelectorAll('input[name="selectedCheckbox"]:checked');
+		    const selectedIds = Array.from(selectedCheckboxes).map(cb => cb.value).join(',');
+		
+		    if (!selectedIds) {
+		        alert('삭제할 항목을 선택하세요.');
+		        return;
+		    }
+		
+		    document.getElementById('hiddenSelectedIds').value = selectedIds;
+		    document.getElementById('deleteForm').submit();
 		}
 	</script>
 </body>

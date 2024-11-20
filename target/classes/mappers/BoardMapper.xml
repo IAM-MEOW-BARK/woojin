@@ -15,6 +15,26 @@
 	 	values (#{user_id}, #{social_id}, #{password}, #{name}, #{phone_num}, now())
  	</insert>
  	
+ 	<!-- 회원 관리 리스트 -->
+ 	<select id="getTotalMember" resultType="MemberDTO">
+ 		select * from member 		
+ 	</select>
+ 	
+ 	<!-- 회원 탈퇴 --> 	
+ 	<!-- <update id="deleteUser" parameterType="java.lang.Integer">
+ 		update member set user_status = 1
+ 		where user_id = #{user_id}
+ 	</update> -->
+ 	<update id="deleteUsers" parameterType="java.util.List">
+	    UPDATE member
+	    SET user_status = 1
+	    WHERE user_id IN
+	    <foreach collection="list" item="user_id" open="(" separator="," close=")">
+	        #{user_id}
+	    </foreach>
+	</update>
+ 	
+ 	
  	<!-- 글 전체 목록 -->
  	<select id="list" resultType="BoardDTO">
  		select * from board
