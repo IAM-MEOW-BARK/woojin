@@ -19,4 +19,7 @@ public interface CatDogService {
 	// 회원 탈퇴
 	public int deleteUser(String user_id);
 	public int deleteUsers(List<String> userIds);
+	
+	// 회원 리스트 검색 필터
+	public List<Map<String, Object>> searchMember(String searchType, String searchKeyword, String startDate, String endDate);
 }

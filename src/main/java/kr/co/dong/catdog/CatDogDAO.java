@@ -71,6 +71,9 @@ public interface CatDogDAO {
     // 전체 회원 리스트
     public List <MemberDTO> getTotalMember();
     
+    // 회원 리스트 검색 필터
+    List<Map<String, Object>> searchWithFilters(String searchType, String searchKeyword, String startDate, String endDate);
+    
     // 회원 삭제 위에 deleteUser 참고
     
     // 결제 skip 2차

@@ -37,6 +37,35 @@
  		order by user_created_at desc
  	</select>
  	
+ 	<!-- 회원 리스트 검색 필터 -->
+ 	<select id="searchWithFilters" parameterType="java.util.Map" resultType="MemberDTO">
+         SELECT user_id, name, phone_num, user_created_at, connected_at
+	    FROM member
+	    WHERE 1=1
+        <!-- 검색 유형 조건 -->
+        <if test="searchKeyword != null and searchKeyword != ''">
+	        <if test="searchType == 'email'">
+	            AND user_id LIKE CONCAT('%', #{searchKeyword}, '%')
+	        </if>
+	        <if test="searchType == 'name'">
+	            AND name LIKE CONCAT('%', #{searchKeyword}, '%')
+	        </if>
+        </if>
+        <!-- 기간 조건 -->
+        <!-- <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
+		    AND user_created_at BETWEEN #{startDate} AND #{endDate}
+		</if> -->
+	     <if test="startDate != null and startDate != ''">
+	        AND user_created_at >= #{startDate}
+	    </if>
+		<if test="endDate != null and endDate != ''">
+            <![CDATA[
+            AND user_created_at <= #{endDate}
+            ]]>
+		</if>
+    </select>
+
+ 	
  	<!-- 회원 탈퇴 --> 	
  	<!-- <update id="deleteUser" parameterType="java.lang.Integer">
  		update member set user_status = 1

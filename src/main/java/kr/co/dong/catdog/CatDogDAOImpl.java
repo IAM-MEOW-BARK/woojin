@@ -1,5 +1,6 @@
 package kr.co.dong.catdog;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -148,6 +149,19 @@ public class CatDogDAOImpl implements CatDogDAO{
 	public int deleteUser(String user_id) {
 		// TODO Auto-generated method stub
 		return 0;
+	}
+
+	@Override
+	public List<Map<String, Object>> searchWithFilters(String searchType, String searchKeyword, String startDate,
+			String endDate) {
+		// TODO Auto-generated method stub
+			Map<String, Object> params = new HashMap<String, Object>();
+	        params.put("searchType", searchType);
+	        params.put("searchKeyword", searchKeyword);
+	        params.put("startDate", startDate);
+	        params.put("endDate", endDate);
+	
+	        return sqlSession.selectList(namespace + ".searchWithFilters", params);
 	}
 	
 }

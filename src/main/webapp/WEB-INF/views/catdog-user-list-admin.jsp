@@ -66,7 +66,7 @@ td {
 		<h6>
 			<strong>전체 회원 리스트</strong>
 		</h6>
-		<form action="searchProduct" method="post">
+		<form action="searchMember" method="post">
 			<table class="table table-bordered">
 				<tr>
 					<th>검색어</th>
@@ -79,10 +79,12 @@ td {
 				</tr>
 				<tr>
 					<th>기간</th>
-					<td><select name="dateType">
+					<td>
+					<select>
 							<option value="registerDate">생성일</option>							
-					</select> <input type="date" id="endDate" name="endDate"> - <input
-						type="date" id="startDate" name="startDate">
+					</select>
+					 <input type="date" id="endDate" name="endDate"> - 
+					 <input	type="date" id="startDate" name="startDate">
 						<div class="date-buttons" style="display: inline-block;">
 							<button type="button" onclick="setDate(-1)">1일</button>
 							<button type="button" onclick="setDate(-3)">3일</button>

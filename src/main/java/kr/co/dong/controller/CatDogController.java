@@ -66,6 +66,7 @@ public class CatDogController {
 	    return catDogService.getMemberByEmail(user_id);
 	}
 	
+	// 로그인
 	@RequestMapping(value="/catdog-login", method = RequestMethod.POST)
 	public String login(@RequestParam Map<String,Object> map, HttpServletRequest request, HttpServletResponse response, HttpSession session) throws Exception {
 		request.setCharacterEncoding("UTF-8");
@@ -94,6 +95,7 @@ public class CatDogController {
 		}
 	}	
 	
+	// 관리자 회원 목록
 	@GetMapping(value="/catdog-user-list-admin")
 	public ModelAndView list() {
 	    ModelAndView mAV = new ModelAndView();
@@ -113,6 +115,7 @@ public class CatDogController {
 	 * return "redirect:catdog-user-list-admin"; }
 	 */
 	
+	// 회원 탈퇴 관리자
 	@PostMapping(value = "catdog/deleteUsers")
 	public String deleteUsers(@RequestParam("selectedIds") String selectedIds) {
 	    // 쉼표로 구분된 ID 문자열을 List로 변환
@@ -192,4 +195,43 @@ public class CatDogController {
 //		logger.info("등록 성공");
 //		return "register";
 //	}
+	
+	// 회원 리스트 검색 필터
+	 @PostMapping("/searchMember")
+	    public String searchMember(@RequestParam("searchType") String searchType,
+	                               @RequestParam("searchKeyword") String searchKeyword,
+	                               @RequestParam(value = "startDate", required = false) String startDate,
+	                               @RequestParam(value = "endDate", required = false) String endDate,
+	                               Model model) {
+		 	if (startDate != null && endDate != null && startDate.compareTo(endDate) > 0) {
+			    // startDate가 endDate보다 클 경우 스왑
+			    String temp = startDate;
+			    startDate = endDate;
+			    endDate = temp;
+			}
+		 	
+		 	if (searchKeyword == null || searchKeyword.trim().isEmpty()) {
+		 	    searchKeyword = null; // Mapper에서 처리
+		 	}
+		 	if (startDate != null && !startDate.isEmpty()) {
+		 	    startDate += " 00:00:00";
+		 	}
+		 	if (endDate != null && !endDate.isEmpty()) {
+		 	    endDate += " 23:59:59";
+		 	}
+		 	if (startDate != null && endDate != null && startDate.compareTo(endDate) > 0) {
+		 	    String temp = startDate;
+		 	    startDate = endDate;
+		 	    endDate = temp;
+		 	}
+		    
+		    System.out.println("searchType: " + searchType);
+		    System.out.println("searchKeyword: " + searchKeyword);
+		    System.out.println("startDate: " + startDate);
+		    System.out.println("endDate: " + endDate);
+		    
+	        List<Map<String, Object>> members = catDogService.searchMember(searchType, searchKeyword, startDate, endDate);
+	        model.addAttribute("memberList", members);
+	        return "catdog-user-list-admin"; // JSP 경로
+	    }
 }

@@ -49,6 +49,13 @@ public class CatDogServiceImpl implements CatDogService {
 		return catDogDAO.getMemberByEmail(user_id);
 	}
 
+	@Override
+	public List<Map<String, Object>> searchMember(String searchType, String searchKeyword, String startDate,
+			String endDate) {
+		// TODO Auto-generated method stub
+		return catDogDAO.searchWithFilters(searchType, searchKeyword, startDate, endDate);
+	}	
+
 	/*
 	 * @Override public List<BoardReply> detail1(int bno) { // TODO Auto-generated
 	 * method stub return boardDAO.detail1(bno); }
