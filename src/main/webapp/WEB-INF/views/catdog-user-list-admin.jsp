@@ -111,8 +111,8 @@ td {
 					style="border-radius: 8px; background-color: #FF6600; color: white;" onclick="location.href='catdog-add-user-admin'">회원 등록</button>
 			</div>
 		</div>
-		<div class="wrapper mt-5">
-			<table class="table user-list product-list-table">
+		<div class="mt-5">
+			<table class="table table-borderd user-list product-list-table">
 				<thead>
 					<tr>
 						<th class="table-light text-center">

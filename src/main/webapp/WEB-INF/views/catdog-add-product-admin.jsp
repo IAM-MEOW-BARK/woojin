@@ -68,16 +68,16 @@ td {
 				<tr>
 					<th class="table-light">카테고리</th>
 					<td><select name="searchType">
-							<option value="snack" id="snack" name="snack">사료/간식</option>
-							<option value="toy" id="toy" name="toy">장난감/토이</option>
-							<option value="bath" id="bath" name="bath">목욕/케어</option>
-							<option value="outdoor" id="outdoor" name="outdoor">산책/훈련</option>
-							<option value="cloth" id="cloth" name="cloth">의류/잡화</option>
+							<option value="1" id="snack" name="snack">사료/간식</option>
+							<option value="2" id="toy" name="toy">장난감/토이</option>
+							<option value="3" id="bath" name="bath">목욕/케어</option>
+							<option value="4" id="outdoor" name="outdoor">산책/훈련</option>
+							<option value="5" id="cloth" name="cloth">의류/잡화</option>
 					</select></td>
 				</tr>
 				<tr>
 					<th class="table-light">상품 코드</th>
-					<td><input type="text" id="product-code" name="product-code">
+					<td><input type="text" id="product-code" name="product-id">
 						<button class="btn btn-secondary btn-sm">중복확인</button></td>
 				</tr>
 				<tr>
@@ -90,7 +90,7 @@ td {
 					<td><input type="text" id="product-price" name="product-price">
 					</td>
 				</tr>
-				<tr>
+				<!-- <tr>
 					<th class="table-light">상품 옵션</th>
 					<td>
 						<div style="display: flex">
@@ -120,7 +120,7 @@ td {
 							</div>
 						</div>
 					</td>
-				</tr>
+				</tr> -->
 				<tr>
 					<th class="table-light">상품 이미지 등록</th>
 					<td>
