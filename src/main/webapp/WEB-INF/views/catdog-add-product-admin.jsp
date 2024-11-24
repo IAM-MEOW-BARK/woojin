@@ -63,11 +63,11 @@ td {
 		<h6>
 			<strong>상품 등록</strong>
 		</h6>
-		<form action="searchProduct" method="post">
+		<form action="/catdog-add-product" method="post" enctype="multipart/form-data">
 			<table class="table table-bordered">
 				<tr>
 					<th class="table-light">카테고리</th>
-					<td><select name="searchType">
+					<td><select name="product_category">
 							<option value="1" id="snack" name="snack">사료/간식</option>
 							<option value="2" id="toy" name="toy">장난감/토이</option>
 							<option value="3" id="bath" name="bath">목욕/케어</option>
@@ -77,17 +77,17 @@ td {
 				</tr>
 				<tr>
 					<th class="table-light">상품 코드</th>
-					<td><input type="text" id="product-code" name="product-id">
+					<td><input type="text" id="product_code" name="product_code">
 						<button class="btn btn-secondary btn-sm">중복확인</button></td>
 				</tr>
 				<tr>
 					<th class="table-light">상품 명</th>
-					<td><input type="text" id="product-name" name="product-name">
+					<td><input type="text" id="product-name" name="product_name">
 					</td>
 				</tr>
 				<tr>
 					<th class="table-light">상품 가격</th>
-					<td><input type="text" id="product-price" name="product-price">
+					<td><input type="text" id="product-price" name="product_price">
 					</td>
 				</tr>
 				<!-- <tr>
@@ -143,7 +143,7 @@ td {
 								<button type="button" id="customUploadButton"
 									class="btn btn-secondary btn-sm">등록하기</button>
 								<!-- 실제 파일 선택 input (숨김 처리) -->
-								<input type="file" id="imageUpload" accept="image/*"
+								<input type="file" id="imageUpload"  name="thumbnail_img" accept="image/*"
 									style="display: none;">
 								
 							</div>
@@ -153,14 +153,14 @@ td {
 				<tr>
 					<th class="table-light">상품 상세 이미지</th>
 					<td>
-						<input type="text" id="product-detail-image" name="product-detail-image" placeholder="파일 경로가 여기에 표시됩니다">
+						<input type="text" id="product_img" name="product_img" placeholder="파일 경로가 여기에 표시됩니다">
 						<input type="file" id="imageDetailUpload" accept="image/*">
 					</td>
 				</tr>
 				<tr>
 					<th class="table-light">상품 상세 설명</th>
 					<td>
-						<textarea id="classic"></textarea>
+						<textarea id="classic" name="product_info"></textarea>
 					</td>
 				</tr>
 			</table>

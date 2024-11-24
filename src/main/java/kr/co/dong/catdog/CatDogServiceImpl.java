@@ -54,6 +54,12 @@ public class CatDogServiceImpl implements CatDogService {
 			String endDate) {
 		// TODO Auto-generated method stub
 		return catDogDAO.searchWithFilters(searchType, searchKeyword, startDate, endDate);
+	}
+
+	@Override
+	public int addProduct(ProductDTO productDTO) {
+		// TODO Auto-generated method stub
+		return catDogDAO.addProduct(productDTO);
 	}	
 
 	/*

@@ -22,4 +22,7 @@ public interface CatDogService {
 	
 	// 회원 리스트 검색 필터
 	public List<Map<String, Object>> searchMember(String searchType, String searchKeyword, String startDate, String endDate);
+	
+	// 상품 등록
+    public int addProduct(ProductDTO productDTO);
 }

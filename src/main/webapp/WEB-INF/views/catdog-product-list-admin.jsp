@@ -134,25 +134,45 @@ td {
 				</thead>
 				<tbody>
 					<tr>
-						<%-- <c:forEach var="board" items="${list}">
-			 	<tr>
-			 		<td>
-			 			<input type="checkbox">
-			 		</td>
-				 	<td>${product-list.no}</td>
-				 	<td>${product-list.img}</td>
-				 	<td>${product-list.code}</td>
-				 	<td>${product-list.categori}</td>
-				 	<td>${product-list.name}</td>
-				 	<td>${product-list.created_at}</td>
-				 	<td>${product-list.changed_at}</td>
-				 	<td>${product-list.price}</td>
-				 	<td>
-				 		<button class="btn btn-secondary btn-sm">수정</button>
-				 	</td>
-			 	</tr>
-			</c:forEach> --%>
-					<tr>
+					<c:forEach var="product" items="${productList}">
+							 	<tr>
+							 		 <td>
+				                            <input type="checkbox" name="selectedCheckbox" value="${product.product_code}">
+				                        </td>     			 	
+								 	<td style="text-align: left;">${product.product_code}</td>
+								 	<td class="text-center">
+										<img alt="thumbnail_image" src="${pageContext.request.contextPath}/resources/images/${product.thumbnail_img}" style="width: 30px; height: auto;">
+									</td>
+								 	<td>
+							            <c:choose>
+							                <c:when test="${product.product_category == 1}">
+							                    사료/간식
+							                </c:when>
+							                <c:when test="${product.product_category == 2}">
+							                    장난감/토이
+							                </c:when>
+							                <c:when test="${product.product_category == 3}">
+							                    목욕/케어
+							                </c:when>
+							                <c:when test="${product.product_category == 4}">
+							                    산책/훈련
+							                </c:when>
+							                <c:when test="${product.product_category == 5}">
+							                    의류/잡화
+							                </c:when>
+							            </c:choose>
+							        </td>			
+								 	<td>${product.name}</td>
+								 	<td>${product.product_regdate}</td>
+								 	<td>${product.product_update}</td>
+								 	<td>${product.product_price}</td>
+								 	<td>
+								 		<button type="button" class="btn btn-secondary btn-sm" style="border-radius: 8px; color: white;'">
+											수정</button>
+								 	</td>
+						 	</tr>
+						</c:forEach>	
+					<%-- <tr>
 						<td class="text-center">
 							<input type="checkbox">
 						</td>
@@ -331,7 +351,7 @@ td {
 						<td class="text-center">
 							<button class="btn btn-secondary btn-sm">수정</button>
 						</td>
-					</tr>
+					</tr> --%>
 					
 				</tbody>
 			</table>

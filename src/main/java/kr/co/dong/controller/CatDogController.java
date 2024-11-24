@@ -1,5 +1,6 @@
 package kr.co.dong.controller;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -14,19 +15,19 @@ import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import kr.co.dong.board.BoardDTO;
-import kr.co.dong.board.BoardReply;
-import kr.co.dong.board.BoardService;
 import kr.co.dong.catdog.CatDogService;
 import kr.co.dong.catdog.MemberDTO;
+import kr.co.dong.catdog.ProductDTO;
 
 @Controller
 public class CatDogController {
@@ -45,6 +46,43 @@ public class CatDogController {
 		return "catdog-add-product-admin";
 	}
 	
+	@PostMapping(value = "/catdog-add-product")
+	public String catDogAddProduct(@ModelAttribute ProductDTO productDTO,
+	                                @RequestParam("thumbnail_img") MultipartFile thumbnailImage,
+	                                @RequestParam("product_img") MultipartFile detailImage) {
+	    try {
+	        // 이미지 저장 경로
+	        String uploadDir = "resources/images/";
+	        
+	        // 썸네일 이미지 저장
+	        if (!thumbnailImage.isEmpty()) {
+	            String thumbnailFileName = thumbnailImage.getOriginalFilename();
+	            File thumbnailFile = new File(uploadDir + thumbnailFileName);
+	            thumbnailImage.transferTo(thumbnailFile);
+	            productDTO.setThumbnail_img("images/" + thumbnailFileName);
+	        }
+	        
+	        // 상세 이미지 저장
+	        if (!detailImage.isEmpty()) {
+	            String detailFileName = detailImage.getOriginalFilename();
+	            File detailFile = new File(uploadDir + detailFileName);
+	            detailImage.transferTo(detailFile);
+	            productDTO.setProduct_img("images/" + detailFileName);
+	        }
+
+	        // 서비스 호출
+	        int result = catDogService.addProduct(productDTO);
+	        if (result > 0) {
+	            return "redirect:/catdog-product-list-admin"; // 성공 시 상품 목록으로 리다이렉트
+	        } else {
+	            return "redirect:/catdog-add-product-admin?error=true"; // 실패 시 등록 페이지로 리다이렉트
+	        }
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        return "redirect:/catdog-add-product-admin?error=true";
+	    }
+	}
+	
 	@GetMapping(value="/catdog-product-list-admin")
 	public String catdogProductListAdmin(){
 		return "catdog-product-list-admin";
@@ -55,10 +93,6 @@ public class CatDogController {
 		return "catdog-login";
 	}
 	
-	/*
-	 * @PostMapping(value="member/emailCheck") public int emailCheck(String user_id)
-	 * throws Exception { return catDogService.getMemberByEmail(user_id); }
-	 */
 	
 	@PostMapping(value="member/emailCheck")
 	@ResponseBody
@@ -107,14 +141,6 @@ public class CatDogController {
 	    return mAV; 
 	}
 	
-	/*
-	 * @PostMapping(value="catdog/deleteUser") public String
-	 * deleteUser(@RequestParam("id") String user_id) { int r =
-	 * catDogService.deleteUser(user_id);
-	 * 
-	 * return "redirect:catdog-user-list-admin"; }
-	 */
-	
 	// 회원 탈퇴 관리자
 	@PostMapping(value = "catdog/deleteUsers")
 	public String deleteUsers(@RequestParam("selectedIds") String selectedIds) {
@@ -126,16 +152,6 @@ public class CatDogController {
 
 	    return "redirect:/catdog-user-list-admin";
 	}
-	
-	/*
-	 * @RequestMapping(value="/catdog-user-list-admin", method = RequestMethod.GET)
-	 * public ModelAndView list() { ModelAndView mAV = new ModelAndView();
-	 * 
-	 * List<MemberDTO> list = catDogService.getTotalMember();
-	 * 
-	 * mAV.addObject("list-admin", list); mAV.setViewName("list-admin"); return mAV;
-	 * }
-	 */
 	
 	@GetMapping(value="/catdog-add-user-admin")
 	public String catdogAddUserAdmin(){

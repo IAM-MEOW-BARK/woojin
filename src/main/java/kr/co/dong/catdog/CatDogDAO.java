@@ -6,7 +6,7 @@ import java.util.Map;
 
 public interface CatDogDAO {
 	// 로그인
-	public Map login(Map<String, Object> map);	
+	public Map login(Map<String, Object> map);
 	
 	// 회원가입
 	public int create(MemberDTO meber) throws Exception;

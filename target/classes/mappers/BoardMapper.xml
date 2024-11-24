@@ -10,11 +10,6 @@
  	</select>
  	
  	<!-- 회원가입 -->
- 	<!-- <insert id="sign-up" parameterType="MemberDTO">
-	 	insert into member (user_id, social_id, password, name, phone_num, user_created_at)
-	 	values (#{user_id}, #{social_id}, #{password}, #{name}, #{phone_num}, now())
- 	</insert> -->
- 	
  	<insert id="sign-up" parameterType="MemberDTO">
 	    insert into member (user_id, social_id, password, name, phone_num, user_auth, user_created_at)
 	    values (#{user_id}, #{social_id}, #{password}, #{name}, #{phone_num}, 
@@ -26,10 +21,12 @@
 	    select count(*) from member
 	    where user_id = #{user_id}
 	</select>
- 	<!-- <select id="email-check" parameterType="MemberDTO" resultType="int">
- 		select count(*) from member
- 		where user_id = #{user_id}
- 	</select> -->
+	
+	<!-- 상품 등록  -->
+	<insert id="add-product" parameterType="ProductDTO">
+		insert into product (product_code, product_name, product_category, product_price, thumnail_img, product_img, product_info, product_regdate)
+		values (#{product_code}, #{product_name}, #{product_category}, #{product_price}, #{thumbnail_img}, #{product_img}, #{product_info}, now())
+	</insert> 	
  	
  	<!-- 회원 관리 리스트 -->
  	<select id="getTotalMember" resultType="MemberDTO">
@@ -51,10 +48,8 @@
 	            AND name LIKE CONCAT('%', #{searchKeyword}, '%')
 	        </if>
         </if>
-        <!-- 기간 조건 -->
-        <!-- <if test="startDate != null and startDate != '' and endDate != null and endDate != ''">
-		    AND user_created_at BETWEEN #{startDate} AND #{endDate}
-		</if> -->
+        
+        <!-- 기간 조건 -->        
 	     <if test="startDate != null and startDate != ''">
 	        AND user_created_at >= #{startDate}
 	    </if>
@@ -66,11 +61,7 @@
     </select>
 
  	
- 	<!-- 회원 탈퇴 --> 	
- 	<!-- <update id="deleteUser" parameterType="java.lang.Integer">
- 		update member set user_status = 1
- 		where user_id = #{user_id}
- 	</update> -->
+ 	<!-- 회원 탈퇴 -->
  	<update id="deleteUsers" parameterType="java.util.List">
 	    UPDATE member
 	    SET user_status = 1
