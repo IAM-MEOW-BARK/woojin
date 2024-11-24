@@ -57,10 +57,16 @@ public class CatDogServiceImpl implements CatDogService {
 	}
 
 	@Override
-	public int addProduct(ProductDTO productDTO) {
+	public int addProduct(ProductDTO productDTO) throws Exception {
 		// TODO Auto-generated method stub
 		return catDogDAO.addProduct(productDTO);
-	}	
+	}
+
+	@Override
+	public List<ProductDTO> getTotalProduct() {
+		// TODO Auto-generated method stub
+		return catDogDAO.getTotalProduct();
+	}
 
 	/*
 	 * @Override public List<BoardReply> detail1(int bno) { // TODO Auto-generated

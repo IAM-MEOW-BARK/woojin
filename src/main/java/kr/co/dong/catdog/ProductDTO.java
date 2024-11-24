@@ -1,7 +1,7 @@
 package kr.co.dong.catdog;
 
 public class ProductDTO {
-   private int product_code;
+   private String product_code;
    private String product_name;
    private int product_category;
    private int product_price;
@@ -10,10 +10,11 @@ public class ProductDTO {
    private String product_info;
    private String product_regdate;
    private String product_update;
-   public int getProduct_code() {
+   
+   public String getProduct_code() {
       return product_code;
    }
-   public void setProduct_code(int product_code) {
+   public void setProduct_code(String product_code) {
       this.product_code = product_code;
    }
    public String getProduct_name() {

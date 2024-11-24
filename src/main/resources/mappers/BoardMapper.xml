@@ -22,10 +22,16 @@
 	    where user_id = #{user_id}
 	</select>
 	
+	<!-- 상품 관리 리스트 -->
+	<select id="getTotalProduct" resultType="ProductDTO">
+ 		select * from product
+ 		order by product_regdate desc
+ 	</select>
+	
 	<!-- 상품 등록  -->
 	<insert id="add-product" parameterType="ProductDTO">
-		insert into product (product_code, product_name, product_category, product_price, thumnail_img, product_img, product_info, product_regdate)
-		values (#{product_code}, #{product_name}, #{product_category}, #{product_price}, #{thumbnail_img}, #{product_img}, #{product_info}, now())
+		 INSERT INTO product (product_code, product_name, product_category, product_price, thumbnail_img, product_img, product_info, product_regdate)
+    	VALUES (#{product_code}, #{product_name}, #{product_category}, #{product_price}, #{thumbnail_img}, #{product_img}, #{product_info}, NOW());
 	</insert> 	
  	
  	<!-- 회원 관리 리스트 -->

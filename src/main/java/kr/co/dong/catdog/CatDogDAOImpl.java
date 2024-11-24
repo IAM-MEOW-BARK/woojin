@@ -118,13 +118,13 @@ public class CatDogDAOImpl implements CatDogDAO{
 	@Override
 	public List<ProductDTO> getTotalProduct() {
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectList(namespace + ".getTotalProduct");
 	}
 
 	@Override
 	public int addProduct(ProductDTO productDTO) {
 		// TODO Auto-generated method stub
-		return sqlSession.insert(namespace + ".catdogAddProduct", productDTO);
+		return sqlSession.insert(namespace + ".add-product", productDTO);
 	}
 
 	@Override

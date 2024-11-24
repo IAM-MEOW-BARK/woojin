@@ -60,7 +60,7 @@ public interface CatDogDAO {
     public List <ProductDTO> getTotalProduct();
     
     // 상품 등록
-    public int addProduct(ProductDTO productDTO);
+    public int addProduct(ProductDTO productDTO) throws Exception;
     
     // 상품 수정
     public int updateProduct(ProductDTO productDTO);

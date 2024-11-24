@@ -107,7 +107,7 @@ td {
 			</div>
 			<div>
 				<button type="submit" class="btn btn-sm"
-					style="border-radius: 8px; background-color: #9A106C; color: white;'">상품
+					style="border-radius: 8px; background-color: #9A106C; color: white;">상품
 					수정</button>
 				<button type="submit" class="btn btn-sm"
 					style="border-radius: 8px; background-color: #FF6600; color: white;">상품
@@ -121,9 +121,8 @@ td {
 						<th class="table-light text-center">
 							<input type="checkbox">
 						</th>
-						<th class="table-light text-center" style="height:20px;">NO</th>
+						<th class="table-light text-center">상품코드</th>						
 						<th class="table-light text-center">이미지</th>
-						<th class="table-light text-center">상품코드</th>
 						<th class="table-light text-center">카테고리</th>
 						<th class="table-light text-center">상품명</th>
 						<th class="table-light text-center">등록일</th>
@@ -162,7 +161,7 @@ td {
 							                </c:when>
 							            </c:choose>
 							        </td>			
-								 	<td>${product.name}</td>
+								 	<td>${product.product_name}</td>
 								 	<td>${product.product_regdate}</td>
 								 	<td>${product.product_update}</td>
 								 	<td>${product.product_price}</td>
@@ -172,186 +171,7 @@ td {
 								 	</td>
 						 	</tr>
 						</c:forEach>	
-					<%-- <tr>
-						<td class="text-center">
-							<input type="checkbox">
-						</td>
-						<td class="text-center">1</td>
-						<td class="text-center">
-								<img alt="product_image" src="${pageContext.request.contextPath}/resources/bootstrap/images/thumbnail_01.png" style="width: 30px; height: auto;">
-						</td>
-						<td class="text-center">AP-100001</td>
-						<td class="text-center">의류/잡화</td>
-						<td class="text-center">양면 초경량 후리스 네이비...</td>
-						<td class="text-center">2021/01/06</td>
-						<td class="text-center">2024/11/15</td>
-						<td class="text-center">35,000</td>
-						<td class="text-center">
-							<button class="btn btn-secondary btn-sm">수정</button>
-						</td>
-					</tr>
-					<tr>
-						<td class="text-center">
-							<input type="checkbox">
-						</td>
-						<td class="text-center">1</td>
-						<td class="text-center">
-								<img alt="product_image" src="${pageContext.request.contextPath}/resources/bootstrap/images/thumbnail_01.png" style="width: 30px; height: auto;">
-						</td>
-						<td class="text-center">AP-100001</td>
-						<td class="text-center">의류/잡화</td>
-						<td class="text-center">양면 초경량 후리스 네이비...</td>
-						<td class="text-center">2021/01/06</td>
-						<td class="text-center">2024/11/15</td>
-						<td class="text-center">35,000</td>
-						<td class="text-center">
-							<button class="btn btn-secondary btn-sm">수정</button>
-						</td>
-					</tr>
-					<tr>
-						<td class="text-center">
-							<input type="checkbox">
-						</td>
-						<td class="text-center">1</td>
-						<td class="text-center">
-								<img alt="product_image" src="${pageContext.request.contextPath}/resources/bootstrap/images/thumbnail_01.png" style="width: 30px; height: auto;">
-						</td>
-						<td class="text-center">AP-100001</td>
-						<td class="text-center">의류/잡화</td>
-						<td class="text-center">양면 초경량 후리스 네이비...</td>
-						<td class="text-center">2021/01/06</td>
-						<td class="text-center">2024/11/15</td>
-						<td class="text-center">35,000</td>
-						<td class="text-center">
-							<button class="btn btn-secondary btn-sm">수정</button>
-						</td>
-					</tr>
-					<tr>
-						<td class="text-center">
-							<input type="checkbox">
-						</td>
-						<td class="text-center">1</td>
-						<td class="text-center">
-								<img alt="product_image" src="${pageContext.request.contextPath}/resources/bootstrap/images/thumbnail_01.png" style="width: 30px; height: auto;">
-						</td>
-						<td class="text-center">AP-100001</td>
-						<td class="text-center">의류/잡화</td>
-						<td class="text-center">양면 초경량 후리스 네이비...</td>
-						<td class="text-center">2021/01/06</td>
-						<td class="text-center">2024/11/15</td>
-						<td class="text-center">35,000</td>
-						<td class="text-center">
-							<button class="btn btn-secondary btn-sm">수정</button>
-						</td>
-					</tr>
-					<tr>
-						<td class="text-center">
-							<input type="checkbox">
-						</td>
-						<td class="text-center">1</td>
-						<td class="text-center">
-								<img alt="product_image" src="${pageContext.request.contextPath}/resources/bootstrap/images/thumbnail_01.png" style="width: 30px; height: auto;">
-						</td>
-						<td class="text-center">AP-100001</td>
-						<td class="text-center">의류/잡화</td>
-						<td class="text-center">양면 초경량 후리스 네이비...</td>
-						<td class="text-center">2021/01/06</td>
-						<td class="text-center">2024/11/15</td>
-						<td class="text-center">35,000</td>
-						<td class="text-center">
-							<button class="btn btn-secondary btn-sm">수정</button>
-						</td>
-					</tr>
-					<tr>
-						<td class="text-center">
-							<input type="checkbox">
-						</td>
-						<td class="text-center">1</td>
-						<td class="text-center">
-								<img alt="product_image" src="${pageContext.request.contextPath}/resources/bootstrap/images/thumbnail_01.png" style="width: 30px; height: auto;">
-						</td>
-						<td class="text-center">AP-100001</td>
-						<td class="text-center">의류/잡화</td>
-						<td class="text-center">양면 초경량 후리스 네이비...</td>
-						<td class="text-center">2021/01/06</td>
-						<td class="text-center">2024/11/15</td>
-						<td class="text-center">35,000</td>
-						<td class="text-center">
-							<button class="btn btn-secondary btn-sm">수정</button>
-						</td>
-					</tr>
-					<tr>
-						<td class="text-center">
-							<input type="checkbox">
-						</td>
-						<td class="text-center">1</td>
-						<td class="text-center">
-								<img alt="product_image" src="${pageContext.request.contextPath}/resources/bootstrap/images/thumbnail_01.png" style="width: 30px; height: auto;">
-						</td>
-						<td class="text-center">AP-100001</td>
-						<td class="text-center">의류/잡화</td>
-						<td class="text-center">양면 초경량 후리스 네이비...</td>
-						<td class="text-center">2021/01/06</td>
-						<td class="text-center">2024/11/15</td>
-						<td class="text-center">35,000</td>
-						<td class="text-center">
-							<button class="btn btn-secondary btn-sm">수정</button>
-						</td>
-					</tr>
-					<tr>
-						<td class="text-center">
-							<input type="checkbox">
-						</td>
-						<td class="text-center">1</td>
-						<td class="text-center">
-								<img alt="product_image" src="${pageContext.request.contextPath}/resources/bootstrap/images/thumbnail_01.png" style="width: 30px; height: auto;">
-						</td>
-						<td class="text-center">AP-100001</td>
-						<td class="text-center">의류/잡화</td>
-						<td class="text-center">양면 초경량 후리스 네이비...</td>
-						<td class="text-center">2021/01/06</td>
-						<td class="text-center">2024/11/15</td>
-						<td class="text-center">35,000</td>
-						<td class="text-center">
-							<button class="btn btn-secondary btn-sm">수정</button>
-						</td>
-					</tr>
-					<tr>
-						<td class="text-center">
-							<input type="checkbox">
-						</td>
-						<td class="text-center">1</td>
-						<td class="text-center">
-								<img alt="product_image" src="${pageContext.request.contextPath}/resources/bootstrap/images/thumbnail_01.png" style="width: 30px; height: auto;">
-						</td>
-						<td class="text-center">AP-100001</td>
-						<td class="text-center">의류/잡화</td>
-						<td class="text-center">양면 초경량 후리스 네이비...</td>
-						<td class="text-center">2021/01/06</td>
-						<td class="text-center">2024/11/15</td>
-						<td class="text-center">35,000</td>
-						<td class="text-center">
-							<button class="btn btn-secondary btn-sm">수정</button>
-						</td>
-					</tr>
-					<tr>
-						<td class="text-center">
-							<input type="checkbox">
-						</td>
-						<td class="text-center">1</td>
-						<td class="text-center">
-								<img alt="product_image" src="${pageContext.request.contextPath}/resources/bootstrap/images/thumbnail_01.png" style="width: 30px; height: auto;">
-						</td>
-						<td class="text-center">AP-100001</td>
-						<td class="text-center">의류/잡화</td>
-						<td class="text-center">양면 초경량 후리스 네이비...</td>
-						<td class="text-center">2021/01/06</td>
-						<td class="text-center">2024/11/15</td>
-						<td class="text-center">35,000</td>
-						<td class="text-center">
-							<button class="btn btn-secondary btn-sm">수정</button>
-						</td>
-					</tr> --%>
+					
 					
 				</tbody>
 			</table>
@@ -364,22 +184,6 @@ td {
 			<a href="#">&nbsp; 1 &nbsp; 2 &nbsp;</a>					
 			<a href="#">></a>
 		</div>
-		<%-- <c:if test="${pageListNUM>1}">
-				<a
-					href="list?pageListNUM=${pageListNUM-1}&pageNUM=${pageListNUM*10-10}">
-					이전 </a>
-			</c:if>
-
-			<c:forEach var="i" begin="${startPage }" end="${endPage }">
-				<a href="list?pageListNUM=${pageListNUM }&pageNUM=${i }"> ${i }
-				</a>
-			</c:forEach>
-
-			<c:if test="${pageListNUM<(totalPage/10)}">
-				<a
-					href="list?pageListNUM=${pageListNUM+1}&pageNUM=${pageListNUM*10+1}">
-					다음 </a>
-			</c:if> --%>
 	</div>
 	<script type="text/javascript">
 		// 페이지 로드 시 시작 날짜를 오늘로 설정

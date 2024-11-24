@@ -63,31 +63,31 @@ td {
 		<h6>
 			<strong>상품 등록</strong>
 		</h6>
-		<form action="/catdog-add-product" method="post" enctype="multipart/form-data">
+		<form action="/catdog-add-product" method="post">
 			<table class="table table-bordered">
 				<tr>
 					<th class="table-light">카테고리</th>
 					<td><select name="product_category">
-							<option value="1" id="snack" name="snack">사료/간식</option>
-							<option value="2" id="toy" name="toy">장난감/토이</option>
-							<option value="3" id="bath" name="bath">목욕/케어</option>
-							<option value="4" id="outdoor" name="outdoor">산책/훈련</option>
-							<option value="5" id="cloth" name="cloth">의류/잡화</option>
+							<option value="1">사료/간식</option>
+							<option value="2">장난감/토이</option>
+							<option value="3">목욕/케어</option>
+							<option value="4">산책/훈련</option>
+							<option value="5">의류/잡화</option>
 					</select></td>
 				</tr>
 				<tr>
 					<th class="table-light">상품 코드</th>
-					<td><input type="text" id="product_code" name="product_code">
+					<td><input type="text" id="product_code" name="product_code" required>
 						<button class="btn btn-secondary btn-sm">중복확인</button></td>
 				</tr>
 				<tr>
 					<th class="table-light">상품 명</th>
-					<td><input type="text" id="product-name" name="product_name">
+					<td><input type="text" id="product_name" name="product_name">
 					</td>
 				</tr>
 				<tr>
 					<th class="table-light">상품 가격</th>
-					<td><input type="text" id="product-price" name="product_price">
+					<td><input type="number" id="product_price" name="product_price">
 					</td>
 				</tr>
 				<!-- <tr>
@@ -124,37 +124,34 @@ td {
 				<tr>
 					<th class="table-light">상품 이미지 등록</th>
 					<td>
-						<form>
-							<div style="display: flex;">
-								<div id="previewContainer"
-									style="margin-top: 10px; width: 150px; height: 149px; border: 1px solid #9D9D9D; display: flex; justify-content: center; align-items: center;">
-									<img id="cameraIcon" alt=""
-										src="${pageContext.request.contextPath}/resources/bootstrap/images/camera.png">
-									<img id="imagePreview" src="" alt="Preview"
-										style="width: 148px; display: none;">
-								</div>
-								<div style="margin-top: 30px; margin-left: 20px;">
-									<p style="color: #0F5BE9;">＊ 쇼핑몰에 기본으로 보여지는 상품이미지를 등록합니다.</p>
-									<p style="color: #0F5BE9;">＊ 권장이미지 : 150px * 150px / 2MB 이하
-										/ gif, png, jpg(jpeg)</p>
-								</div>
+						<%-- <div style="display: flex;">
+							<div id="previewContainer"
+								style="margin-top: 10px; width: 150px; height: 149px; border: 1px solid #9D9D9D; display: flex; justify-content: center; align-items: center;">
+								<img id="cameraIcon" alt=""
+									src="${pageContext.request.contextPath}/resources/bootstrap/images/camera.png">
+								<img id="imagePreview" src="" alt="Preview"
+									style="width: 148px; display: none;">
 							</div>
-							<div style="margin-top: 10px; margin-left: 40px;">
-								<button type="button" id="customUploadButton"
-									class="btn btn-secondary btn-sm">등록하기</button>
-								<!-- 실제 파일 선택 input (숨김 처리) -->
-								<input type="file" id="imageUpload"  name="thumbnail_img" accept="image/*"
-									style="display: none;">
-								
+							<div style="margin-top: 30px; margin-left: 20px;">
+								<p style="color: #0F5BE9;">＊ 쇼핑몰에 기본으로 보여지는 상품이미지를 등록합니다.</p>
+								<p style="color: #0F5BE9;">＊ 권장이미지 : 150px * 150px / 2MB 이하
+									/ gif, png, jpg(jpeg)</p>
 							</div>
-						</form>
+						</div>
+						<div style="margin-top: 10px; margin-left: 40px;">
+							<button type="button" id="customUploadButton"
+								class="btn btn-secondary btn-sm">등록하기</button>
+							<!-- 실제 파일 선택 input (숨김 처리) -->
+							<!-- <input type="file" id="imageUpload"  name="thumbnail_img" accept="image/*"
+								style="display: none;"> -->
+						</div> --%>
 					</td>
 				</tr>
 				<tr>
 					<th class="table-light">상품 상세 이미지</th>
 					<td>
-						<input type="text" id="product_img" name="product_img" placeholder="파일 경로가 여기에 표시됩니다">
-						<input type="file" id="imageDetailUpload" accept="image/*">
+						<!-- <input type="text" id="product_img" name="product_img" placeholder="파일 경로가 여기에 표시됩니다"> -->
+						<!-- <input type="file" id="imageDetailUpload" accept="image/*"> -->
 					</td>
 				</tr>
 				<tr>
@@ -212,6 +209,15 @@ td {
         if (file) {
             // 파일 이름을 첫 번째 입력 필드에 표시
             document.getElementById('product-detail-image').value = file.name;
+        }
+    });
+		
+	// 폼 유효성 검사
+    document.querySelector('form').addEventListener('submit', function(event) {
+        const productName = document.getElementById('product_name').value.trim();
+        if (!productName) {
+            alert('상품 명은 필수 입력 항목입니다.');
+            event.preventDefault(); // 폼 제출 중단
         }
     });
 	</script>

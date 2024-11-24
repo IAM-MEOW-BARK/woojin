@@ -24,5 +24,8 @@ public interface CatDogService {
 	public List<Map<String, Object>> searchMember(String searchType, String searchKeyword, String startDate, String endDate);
 	
 	// 상품 등록
-    public int addProduct(ProductDTO productDTO);
+    public int addProduct(ProductDTO productDTO) throws Exception;
+    
+    // 전체 상품 관리 리스트
+    public List <ProductDTO> getTotalProduct();
 }
