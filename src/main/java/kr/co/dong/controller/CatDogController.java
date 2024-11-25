@@ -1,7 +1,8 @@
 package kr.co.dong.controller;
 
+
 import java.io.File;
-import java.io.UnsupportedEncodingException;
+import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -46,34 +47,94 @@ public class CatDogController {
 	public String catdogAddProductAdmin() {
 		return "catdog-add-product-admin";
 	}
+	
+	
+	// 상품 삭제
+	@PostMapping(value="catdog-deleteProduct")
+	public String deleteProduct(@RequestParam("selectedCode") String selectedCode) {
+		// 쉼표로 구분된 ID 문자열을 List로 변환
+		List<String> productCode = Arrays.asList(selectedCode.split(","));
 
-	@PostMapping(value = "/catdog-add-product")
+		// Service 호출
+		catDogService.deleteProduct(productCode);
+
+		return "redirect:/catdog-product-list-admin";			
+	}
+		
+		
+	
+	@PostMapping("/catdog-add-product")
 	public String catDogAddProduct(@ModelAttribute ProductDTO productDTO, HttpServletRequest request) throws Exception {
-		request.setCharacterEncoding("utf-8");
-		
-		System.out.println(productDTO);
-		
-		 // 디버깅: productDTO 확인
-	    System.out.println("ProductDTO: " + productDTO);
+	    request.setCharacterEncoding("UTF-8");
 
-	    // product_code 값 확인
-	    System.out.println("Product Code: " + productDTO.getProduct_code());
+	    // 파일 업로드 경로
+	    String loc = "C:\\WEB_WORKSPACE\\status200\\src\\main\\webapp\\resources\\upload";
+	    File dir = new File(loc);
+	    if (!dir.exists()) {
+	        dir.mkdirs(); // 디렉터리가 없으면 생성
+	    }
 
-		
-		int r = catDogService.addProduct(productDTO);
-		
-		return "redirect:/catdog-product-list-admin";
+	 // 파일 저장
+	    MultipartFile file = productDTO.getThumbnail_imgFile();
+	    if (file != null && !file.isEmpty()) {
+	        String safeFileName = file.getOriginalFilename().replaceAll("[^a-zA-Z0-9._-]", "_");
+	        File uploadedFile = new File(loc, safeFileName);
+	        file.transferTo(uploadedFile); // 파일 저장
+
+	        // 파일 저장 완료 확인
+	        while (!uploadedFile.exists()) {
+	            Thread.sleep(100); // 디스크 반영 대기
+	        }
+
+	        productDTO.setThumbnail_img(safeFileName); // 저장된 파일 이름 설정
+	    } else {
+	        System.out.println("파일이 업로드되지 않았습니다.");
+	    }
+
+	    // 서비스 호출
+	    int result = catDogService.addProduct(productDTO);
+	    System.out.println(productDTO);
+
+	    return "redirect:/catdog-product-list-admin";
 	}
 
-	@GetMapping(value = "/catdog-product-list-admin")
-	public ModelAndView productList() {
-		ModelAndView mAV = new ModelAndView();
-		
-		List<ProductDTO> productList = catDogService.getTotalProduct();
-		
-		mAV.addObject("productList", productList);
-		mAV.setViewName("catdog-product-list-admin");
-		return mAV;
+	@GetMapping("/catdog-product-list-admin")
+	public ModelAndView productList(HttpServletResponse response,
+			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+            @RequestParam(value = "pageListNum", defaultValue = "1") int pageListNum) {
+	    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+	    response.setHeader("Pragma", "no-cache");
+	    response.setDateHeader("Expires", 0);
+	    
+	    int pageSize = 10; // 한 페이지당 게시글 수
+	    int pageListSize = 10; // 한 번에 표시할 페이지 수
+	    
+	    // 전체 게시글 수
+	    int totalList = catDogService.productPaging();
+	    int totalPage = (int) Math.ceil((double) totalList / pageSize);
+	    
+	    // 현재 페이지에서 가져올 데이터의 시작 인덱스 계산
+	    int start = (pageNum - 1) * pageSize;
+	    
+	    // 현재 페이지 번호 목록의 시작과 끝
+	    int startPage = (pageListNum - 1) * pageListSize + 1;
+	    int endPage = Math.min(startPage + pageListSize - 1, totalPage);
+
+	    ModelAndView mAV = new ModelAndView();	    
+	    List<ProductDTO> productList = catDogService.getTotalProduct(start, pageSize);	    
+	    mAV.addObject("totalPage", totalPage); // 전체 페이지 수
+	    mAV.addObject("currentPage", pageNum); // 현재 페이지 번호
+		mAV.addObject("productList", productList); 
+	    mAV.addObject("pageListNum", pageListNum);
+	    mAV.addObject("startPage", startPage); // 페이지 네비게이션 시작
+	    mAV.addObject("endPage", endPage); // 페이지 네비게이션 끝
+	    mAV.setViewName("catdog-product-list-admin");
+		/*
+		 * List<ProductDTO> productList = catDogService.getTotalProduct();
+		 * mAV.addObject("productList", productList);
+		 * mAV.setViewName("catdog-product-list-admin");
+		 */
+	    return mAV;
 	}
 
 	@GetMapping(value = "/catdog-login")

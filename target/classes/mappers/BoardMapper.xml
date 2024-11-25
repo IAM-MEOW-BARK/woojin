@@ -24,15 +24,33 @@
 	
 	<!-- 상품 관리 리스트 -->
 	<select id="getTotalProduct" resultType="ProductDTO">
- 		select * from product
- 		order by product_regdate desc
+ 		<!-- select * from product
+ 		order by product_regdate desc -->
+ 		select *
+		from product
+		order by product_regdate desc
+       	limit #{start}, #{pageSize}
  	</select>
+ 	
+ 	<!-- 상품 관리 리스트 페이징 -->
+ 	<select id="productPaging" resultType="java.lang.Integer">
+		select count(*) from product;
+	</select>
 	
 	<!-- 상품 등록  -->
 	<insert id="add-product" parameterType="ProductDTO">
 		 INSERT INTO product (product_code, product_name, product_category, product_price, thumbnail_img, product_img, product_info, product_regdate)
     	VALUES (#{product_code}, #{product_name}, #{product_category}, #{product_price}, #{thumbnail_img}, #{product_img}, #{product_info}, NOW());
-	</insert> 	
+	</insert>
+	
+	<!-- 상품 삭제 -->
+	<delete id="delete-product" parameterType="java.util.List">
+		DELETE FROM product
+	    WHERE product_code IN
+	    <foreach item="product_code" collection="list" open="(" separator="," close=")">
+	        #{product_code}
+	    </foreach>;
+	</delete>
  	
  	<!-- 회원 관리 리스트 -->
  	<select id="getTotalMember" resultType="MemberDTO">

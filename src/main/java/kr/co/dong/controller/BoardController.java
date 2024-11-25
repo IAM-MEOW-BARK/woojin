@@ -38,6 +38,7 @@ public class BoardController {
 		return "login"; // jsp
 	}	
 
+	
 	/*
 	 * @RequestMapping(value="board/login", method = RequestMethod.POST) public
 	 * String login(@RequestParam Map<String,Object> map, HttpServletRequest
@@ -49,7 +50,7 @@ public class BoardController {
 	 * if(user == null) { logger.info("실패"); return "redirect:login"; //prefix
 	 * suffix 이용해서 이동 } else { logger.info("성공"); session.setAttribute("user",
 	 * user); return "redirect:/"; // kr.co.dong.HomeController return문(home) } }
-	 */
+	 */	 
 	
 	@RequestMapping(value="board/logout", method = RequestMethod.GET)
 	public String logout(HttpSession session, RedirectAttributes rttr) {

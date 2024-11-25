@@ -1,20 +1,30 @@
 package kr.co.dong.catdog;
 
+import org.springframework.web.multipart.MultipartFile;
+
 public class ProductDTO {
-   private String product_code;
+   private int product_code;
    private String product_name;
    private int product_category;
    private int product_price;
    private String thumbnail_img;
+   private MultipartFile thumbnail_imgFile;
    private String product_img;
    private String product_info;
    private String product_regdate;
    private String product_update;
    
-   public String getProduct_code() {
-      return product_code;
-   }
-   public void setProduct_code(String product_code) {
+   
+   public MultipartFile getThumbnail_imgFile() {
+	return thumbnail_imgFile;
+}
+	public void setThumbnail_imgFile(MultipartFile thumbnail_imgFile) {
+		this.thumbnail_imgFile = thumbnail_imgFile;
+	}
+	public int getProduct_code() {
+	      return product_code;
+	   }
+   public void setProduct_code(int product_code) {
       this.product_code = product_code;
    }
    public String getProduct_name() {

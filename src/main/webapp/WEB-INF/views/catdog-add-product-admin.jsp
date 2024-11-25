@@ -2,6 +2,7 @@
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
 <html>
+<%@ include file="include/head.jsp" %>
 <head>
 <meta charset="UTF-8">
 <title>Insert title here</title>
@@ -63,7 +64,7 @@ td {
 		<h6>
 			<strong>상품 등록</strong>
 		</h6>
-		<form action="/catdog-add-product" method="post">
+		<form id="productForm" method="post" action="/catdog-add-product" enctype="multipart/form-data">
 			<table class="table table-bordered">
 				<tr>
 					<th class="table-light">카테고리</th>
@@ -77,7 +78,7 @@ td {
 				</tr>
 				<tr>
 					<th class="table-light">상품 코드</th>
-					<td><input type="text" id="product_code" name="product_code" required>
+					<td><input type="number" id="product_code" name="product_code" required>
 						<button class="btn btn-secondary btn-sm">중복확인</button></td>
 				</tr>
 				<tr>
@@ -124,7 +125,7 @@ td {
 				<tr>
 					<th class="table-light">상품 이미지 등록</th>
 					<td>
-						<%-- <div style="display: flex;">
+						<div style="display: flex;">
 							<div id="previewContainer"
 								style="margin-top: 10px; width: 150px; height: 149px; border: 1px solid #9D9D9D; display: flex; justify-content: center; align-items: center;">
 								<img id="cameraIcon" alt=""
@@ -142,9 +143,9 @@ td {
 							<button type="button" id="customUploadButton"
 								class="btn btn-secondary btn-sm">등록하기</button>
 							<!-- 실제 파일 선택 input (숨김 처리) -->
-							<!-- <input type="file" id="imageUpload"  name="thumbnail_img" accept="image/*"
-								style="display: none;"> -->
-						</div> --%>
+							<input type="file" id="imageUpload"  name="thumbnail_imgFile" accept="image/*"
+								style="display: none;">
+						</div>
 					</td>
 				</tr>
 				<tr>
@@ -220,6 +221,50 @@ td {
             event.preventDefault(); // 폼 제출 중단
         }
     });
+	
+   /*  document.querySelector('#productForm').addEventListener('submit', function (event) {
+        event.preventDefault(); // 기본 제출 중단
+
+        const formData = new FormData(this);
+
+        // URL 수정
+        const requestUrl = '/catdog-add-product'; // 정확한 URL로 변경
+        console.log('AJAX 요청 URL:', requestUrl);
+
+        // 상품 등록 요청
+        $.ajax({
+            url: requestUrl, // 수정된 URL 사용
+            method: 'POST',
+            data: formData,
+            processData: false,
+            contentType: false,
+            success: function () {
+                alert('상품이 등록되었습니다.');
+                refreshProductList(); // 상품 목록 갱신 호출
+            },
+            error: function (error) {
+                alert('상품 등록 중 오류가 발생했습니다.');
+                console.error('AJAX 요청 오류:', error);
+            }
+        });
+    });
+
+    // 상품 목록 갱신 함수
+    function refreshProductList() {
+        $.ajax({
+            url: '/catdog-product-list-admin', // 상품 목록 API
+            method: 'GET',
+            success: function (html) {
+                $('#productListContainer').html(
+                    $(html).find('#productListContainer').html()
+                ); // 목록 컨테이너 내용만 갱신
+            },
+            error: function (error) {
+                alert('상품 목록 갱신 중 오류가 발생했습니다.');
+                console.error(error);
+            }
+        });
+    } */
 	</script>
 </body>
 </html>

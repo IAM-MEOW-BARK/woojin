@@ -57,7 +57,7 @@ public interface CatDogDAO {
     
     /*관리자*/
     // 전체 상품 관리 리스트
-    public List <ProductDTO> getTotalProduct();
+    public List <ProductDTO> getTotalProduct(int start, int pageSize);
     
     // 상품 등록
     public int addProduct(ProductDTO productDTO) throws Exception;
@@ -66,7 +66,7 @@ public interface CatDogDAO {
     public int updateProduct(ProductDTO productDTO);
     
     // 상품 삭제
-    public int deleteProduct(int product_id);
+    public int deleteProduct(List<String> productCode);
     
     // 전체 회원 리스트
     public List <MemberDTO> getTotalMember();
@@ -77,4 +77,7 @@ public interface CatDogDAO {
     // 회원 삭제 위에 deleteUser 참고
     
     // 결제 skip 2차
+    
+    // 상품 리스트 페이징
+    public int productPaging();
 }

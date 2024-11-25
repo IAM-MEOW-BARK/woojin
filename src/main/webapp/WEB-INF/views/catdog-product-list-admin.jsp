@@ -6,6 +6,9 @@
 <html>
 <head>
 <meta charset="UTF-8">
+<meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate" />
+<meta http-equiv="Pragma" content="no-cache" />
+<meta http-equiv="Expires" content="0" />
 <title>Insert title here</title>
 <style type="text/css">
 body {
@@ -51,6 +54,27 @@ th {
 
 td {
 	vertical-align: middle;
+}
+
+.pagination-container {
+            display: flex;
+            justify-content: space-between; /* 양쪽 정렬 */
+            align-items: center; /* 세로 정렬 */
+            margin: 20px 0;
+        }
+.pagination {
+    display: flex;
+    gap: 15px; 
+    margin: 0 auto;
+}
+.pagination a {
+    text-decoration: none;
+    color: #333;
+    font-size: 12px;
+}
+.pagination a.active {
+    color: #ff6600; 
+    font-weight: bold; 
 }
 </style>
 </head>
@@ -100,10 +124,14 @@ td {
 			</div>
 		</form>
 		<hr style="color: black">
+		
+		
 		<div style="display: flex; justify-content: space-between;">
 			<div>
-				<button type="submit" class="btn btn-danger btn-sm"
-					style="border-radius: 8px;">상품 삭제</button>
+				<form id="deleteForm" action="catdog/deleteProduct" method="post">
+	            <input type="hidden" name="selectedCode" id="hiddenSelectedIds">
+	            <button type="button" class="btn btn-danger btn-sm" style="border-radius: 8px;">상품 삭제</button>
+        </form>
 			</div>
 			<div>
 				<button type="submit" class="btn btn-sm"
@@ -114,7 +142,7 @@ td {
 					등록</button>
 			</div>
 		</div>
-		<div class="wrapper mt-5">
+		<div class="wrapper mt-5" id="productListContainer">
 			<table class="table product-list-table">
 				<thead>
 					<tr>
@@ -138,11 +166,11 @@ td {
 							 		 <td>
 				                            <input type="checkbox" name="selectedCheckbox" value="${product.product_code}">
 				                        </td>     			 	
-								 	<td style="text-align: left;">${product.product_code}</td>
+								 	<td style="text-align: center;">${product.product_code}</td>
 								 	<td class="text-center">
-										<img alt="thumbnail_image" src="${pageContext.request.contextPath}/resources/images/${product.thumbnail_img}" style="width: 30px; height: auto;">
+										<img alt="thumbnail_image" src="${pageContext.request.contextPath}/resources/upload/${product.thumbnail_img}"  style="width: 30px; height: auto;">
 									</td>
-								 	<td>
+								 	<td style="text-align: center;">
 							            <c:choose>
 							                <c:when test="${product.product_category == 1}">
 							                    사료/간식
@@ -162,10 +190,10 @@ td {
 							            </c:choose>
 							        </td>			
 								 	<td>${product.product_name}</td>
-								 	<td>${product.product_regdate}</td>
-								 	<td>${product.product_update}</td>
-								 	<td>${product.product_price}</td>
-								 	<td>
+								 	<td style="text-align: center;">${product.product_regdate}</td>
+								 	<td style="text-align: center;">${product.product_update}</td>
+								 	<td style="text-align: right;">${product.product_price}</td>
+								 	<td style="text-align: center;">
 								 		<button type="button" class="btn btn-secondary btn-sm" style="border-radius: 8px; color: white;'">
 											수정</button>
 								 	</td>
@@ -179,13 +207,36 @@ td {
 			<div></div>
 			<br>
 		</div>
-		<div style="text-align: center;">
+		
+		 <div class="pagination-container">
+            <div class="pagination">
+                <c:if test="${startPage > 1}">
+                    <a href="catdog-product-list-admin?pageNum=${startPage - 1}&pageListNum=${pageListNum - 1}">&lt;</a>
+                </c:if>
+                <c:forEach begin="${startPage}" end="${endPage}" var="page">
+                    <a href="catdog-product-list-admin?pageNum=${page}&pageListNum=${pageListNum}"
+                       class="${currentPage == page ? 'active' : ''}">${page}</a>
+                </c:forEach>
+                <c:if test="${endPage < totalPage}">
+                    <a href="catdog-product-list-admin?pageNum=${endPage + 1}&pageListNum=${pageListNum + 1}">&gt;</a>
+                </c:if>
+            </div>
+        </div>
+		<!-- <div style="text-align: center;">
 			<a href="#"><</a>
 			<a href="#">&nbsp; 1 &nbsp; 2 &nbsp;</a>					
 			<a href="#">></a>
-		</div>
+		</div> -->
 	</div>
 	<script type="text/javascript">
+		window.onload = function () {
+	        if (!window.location.href.includes('refreshed')) {
+	            // 페이지 URL에 'refreshed'가 없으면 추가하고 새로고침
+	            console.log("갱신 되었습니다~");
+	            window.location.href = window.location.href + (window.location.href.includes('?') ? '&' : '?') + 'refreshed=true';
+	        }
+	    };
+	
 		// 페이지 로드 시 시작 날짜를 오늘로 설정
 		window.onload = function() {
 			const today = new Date().toISOString().split('T')[0];

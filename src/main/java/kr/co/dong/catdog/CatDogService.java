@@ -26,6 +26,12 @@ public interface CatDogService {
 	// 상품 등록
     public int addProduct(ProductDTO productDTO) throws Exception;
     
+    // 상품 삭제
+    public int deleteProduct(List<String> productCode);
+    
     // 전체 상품 관리 리스트
-    public List <ProductDTO> getTotalProduct();
+    public List <ProductDTO> getTotalProduct(int start, int pageSize);
+    
+    // 상품 목록 페이징
+    public int productPaging();
 }

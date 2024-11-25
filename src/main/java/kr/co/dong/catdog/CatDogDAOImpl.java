@@ -116,9 +116,13 @@ public class CatDogDAOImpl implements CatDogDAO{
 	}
 
 	@Override
-	public List<ProductDTO> getTotalProduct() {
+	public List<ProductDTO> getTotalProduct(int start, int pageSize) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("start", start);
+	    map.put("pageSize", pageSize);
+	    
 		// TODO Auto-generated method stub
-		return sqlSession.selectList(namespace + ".getTotalProduct");
+		return sqlSession.selectList(namespace + ".getTotalProduct", map);
 	}
 
 	@Override
@@ -134,9 +138,9 @@ public class CatDogDAOImpl implements CatDogDAO{
 	}
 
 	@Override
-	public int deleteProduct(int product_id) {
+	public int deleteProduct(List<String> productCode) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.delete(namespace + ".delete-product", namespace);
 	}
 
 	@Override
@@ -163,5 +167,11 @@ public class CatDogDAOImpl implements CatDogDAO{
 	
 	        return sqlSession.selectList(namespace + ".searchWithFilters", params);
 	}
+
+	@Override
+	public int productPaging() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace+".productPaging");
+	}	
 	
 }

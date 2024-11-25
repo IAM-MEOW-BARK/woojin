@@ -32,12 +32,11 @@ public class CatDogServiceImpl implements CatDogService {
 		return catDogDAO.getTotalMember();
 	}
 
-	@Override
-	public int deleteUser(String user_id) {
-		// TODO Auto-generated method stub
-		return catDogDAO.deleteUser(user_id);
-	}
-
+	/*
+	 * @Override public int deleteUser(String user_id) { // TODO Auto-generated
+	 * method stub return catDogDAO.deleteUser(user_id); }
+	 */
+	
 	@Override
 	public int deleteUsers(List<String> userIds) {
 	    return catDogDAO.deleteUsers(userIds);
@@ -63,13 +62,31 @@ public class CatDogServiceImpl implements CatDogService {
 	}
 
 	@Override
-	public List<ProductDTO> getTotalProduct() {
+	public List<ProductDTO> getTotalProduct(int start, int pageSize) {
 		// TODO Auto-generated method stub
-		return catDogDAO.getTotalProduct();
+		return catDogDAO.getTotalProduct(start, pageSize);
 	}
+
+	@Override
+	public int productPaging() {
+		// TODO Auto-generated method stub
+		return catDogDAO.productPaging();
+	}	
 
 	/*
 	 * @Override public List<BoardReply> detail1(int bno) { // TODO Auto-generated
 	 * method stub return boardDAO.detail1(bno); }
 	 */
-}
+
+
+	@Override
+	public int deleteProduct(List<String> productCode) {
+		// TODO Auto-generated method stub
+		return catDogDAO.deleteProduct(productCode);
+	}
+
+	@Override
+	public int deleteUser(String user_id) {
+		// TODO Auto-generated method stub
+		return 0;
+	}}
