@@ -50,7 +50,7 @@ public class CatDogController {
 	
 	
 	// 상품 삭제
-	@PostMapping(value="catdog-deleteProduct")
+	@PostMapping(value="catdog/deleteProduct")
 	public String deleteProduct(@RequestParam("selectedCode") String selectedCode) {
 		// 쉼표로 구분된 ID 문자열을 List로 변환
 		List<String> productCode = Arrays.asList(selectedCode.split(","));

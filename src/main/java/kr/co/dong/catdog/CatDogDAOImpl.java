@@ -140,19 +140,13 @@ public class CatDogDAOImpl implements CatDogDAO{
 	@Override
 	public int deleteProduct(List<String> productCode) {
 		// TODO Auto-generated method stub
-		return sqlSession.delete(namespace + ".delete-product", namespace);
+		return sqlSession.delete(namespace + ".deleteProduct", productCode);
 	}
 
 	@Override
 	public List<MemberDTO> getTotalMember() {
 		// TODO Auto-generated method stub
 		return sqlSession.selectList(namespace + ".getTotalMember");
-	}
-
-	@Override
-	public int deleteUser(String user_id) {
-		// TODO Auto-generated method stub
-		return 0;
 	}
 
 	@Override

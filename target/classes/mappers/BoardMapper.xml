@@ -39,12 +39,12 @@
 	
 	<!-- 상품 등록  -->
 	<insert id="add-product" parameterType="ProductDTO">
-		 INSERT INTO product (product_code, product_name, product_category, product_price, thumbnail_img, product_img, product_info, product_regdate)
+		INSERT INTO product (product_code, product_name, product_category, product_price, thumbnail_img, product_img, product_info, product_regdate)
     	VALUES (#{product_code}, #{product_name}, #{product_category}, #{product_price}, #{thumbnail_img}, #{product_img}, #{product_info}, NOW());
 	</insert>
 	
 	<!-- 상품 삭제 -->
-	<delete id="delete-product" parameterType="java.util.List">
+	<delete id="deleteProduct" parameterType="java.util.List">
 		DELETE FROM product
 	    WHERE product_code IN
 	    <foreach item="product_code" collection="list" open="(" separator="," close=")">

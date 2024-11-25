@@ -130,7 +130,7 @@ td {
 			<div>
 				<form id="deleteForm" action="catdog/deleteProduct" method="post">
 	            <input type="hidden" name="selectedCode" id="hiddenSelectedIds">
-	            <button type="button" class="btn btn-danger btn-sm" style="border-radius: 8px;">상품 삭제</button>
+	            <button type="button" class="btn btn-danger btn-sm" style="border-radius: 8px;" onclick="submitDeleteForm()">상품 삭제</button>
         </form>
 			</div>
 			<div>
@@ -147,7 +147,7 @@ td {
 				<thead>
 					<tr>
 						<th class="table-light text-center">
-							<input type="checkbox">
+							<input type="checkbox" id="selectAll">
 						</th>
 						<th class="table-light text-center">상품코드</th>						
 						<th class="table-light text-center">이미지</th>
@@ -222,11 +222,6 @@ td {
                 </c:if>
             </div>
         </div>
-		<!-- <div style="text-align: center;">
-			<a href="#"><</a>
-			<a href="#">&nbsp; 1 &nbsp; 2 &nbsp;</a>					
-			<a href="#">></a>
-		</div> -->
 	</div>
 	<script type="text/javascript">
 		window.onload = function () {
@@ -250,6 +245,31 @@ td {
 			targetDate.setDate(today.getDate() + daysAgo);
 			document.getElementById("endDate").value = targetDate.toISOString()
 					.split('T')[0];
+		}
+		
+		// 전체 선택/ 해제
+		document.getElementById('selectAll').addEventListener('click', function () {
+		    const checkboxes = document.querySelectorAll('input[name="selectedCheckbox"]');
+		    checkboxes.forEach(cb => cb.checked = this.checked);
+		});
+		
+		// 삭제 폼 제출
+	    function submitDeleteForm() {
+	    	 if (!confirm('삭제 하시겠습니까?')) {
+	    	        // 취소 버튼을 누르면 함수 종료
+	    	        return;
+    	    }
+			
+		    const selectedCheckboxes = document.querySelectorAll('input[name="selectedCheckbox"]:checked');
+		    const selectedIds = Array.from(selectedCheckboxes).map(cb => cb.value).join(',');
+		
+		    if (!selectedIds) {
+		        alert('삭제할 항목을 선택하세요.');
+		        return;
+		    }
+		
+		    document.getElementById('hiddenSelectedIds').value = selectedIds;
+		    document.getElementById('deleteForm').submit();
 		}
 	</script>
 </body>
