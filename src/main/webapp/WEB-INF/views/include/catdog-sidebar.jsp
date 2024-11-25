@@ -204,7 +204,7 @@ a.sidebar-link:hover {
 					</ul></li>
 			</ul>
 			<div class="sidebar-footer">
-				<a href="#" class="sidebar-link"> <i class="lni lni-exit"></i> <span>Logout</span>
+				<a href="catdog-logout" class="sidebar-link"> <i class="lni lni-exit"></i> <span>Logout</span>
 				</a>
 			</div>
 		</aside>

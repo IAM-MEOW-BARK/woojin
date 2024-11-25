@@ -11,6 +11,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.servlet.http.Cookie;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -179,11 +180,28 @@ public class CatDogController {
 	}
 	
 	// 로그아웃
-	@GetMapping(value="/catdog-logout")
-	public String logout(HttpSession session, RedirectAttributes rttr) {
-		session.invalidate(); // 세션에 저장되어 있는 정보 삭제
-		rttr.addFlashAttribute("msg", "로그아웃 성공"); // 1회성 저장
-		return "redirect:/";
+	@GetMapping(value = "/catdog-logout")
+	public String logout(HttpServletRequest request, HttpServletResponse response, HttpSession session, RedirectAttributes rttr) {
+	    // 1. 세션 무효화
+	    if (session != null) {
+	        session.invalidate(); // 서버 세션 삭제
+	    }
+
+	    // 2. 클라이언트 JSESSIONID 쿠키 삭제
+	    // 직접 Set-Cookie 헤더를 통해 HttpOnly 포함
+	    Cookie cookie = new Cookie("JSESSIONID", null); // 쿠키 값 null
+	    cookie.setPath("/"); // 경로 설정
+	    cookie.setMaxAge(0); // 즉시 만료
+	    response.addCookie(cookie); // 기본 쿠키 설정 추가
+	    
+	    // HttpOnly 속성을 명시적으로 추가
+	    response.addHeader("Set-Cookie", "JSESSIONID=; Path=/; HttpOnly; Max-Age=0");
+
+	    // 3. 로그아웃 메시지 추가
+	    rttr.addFlashAttribute("msg", "로그아웃 성공"); // 사용자 알림 메시지 추가
+
+	    // 4. 홈으로 리다이렉트
+	    return "redirect:/";
 	}
 
 	// 관리자 회원 목록
@@ -233,6 +251,11 @@ public class CatDogController {
 	@GetMapping(value = "/catdog-payment")
 	public String catDogPayment() {
 		return "catdog-payment";
+	}
+	
+	@GetMapping(value="/catdog-signup")
+	public String catDogSignUp() {
+		return "catdog-signup";
 	}
 
 	// 일반 유저 회원가입

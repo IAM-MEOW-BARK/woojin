@@ -89,9 +89,9 @@ td {
 				<tr>
 					<th>검색어</th>
 					<td><select name="searchType">
-							<option value="productName">상품명</option>
-							<option value="productCode">상품코드</option>
-							<option value="categoriName">카테고리명</option>
+							<option value="product_name">상품명</option>
+							<option value="product_code">상품코드</option>
+							<option value="product_category">카테고리명</option>
 					</select> <input type="text" name="searchKeyword" placeholder="검색어 입력">
 					</td>
 				</tr>
@@ -103,11 +103,12 @@ td {
 				</tr>
 				<tr>
 					<th>기간</th>
-					<td><select name="dateType">
-							<option value="registerDate">등록일</option>
-							<option value="updateDate">수정일</option>
-					</select> <input type="date" id="endDate" name="endDate"> - <input
-						type="date" id="startDate" name="startDate">
+					<td>
+					<select>
+							<option value="registerDate">생성일</option>							
+					</select>
+					 <input type="date" id="endDate" name="endDate"> - 
+					 <input	type="date" id="startDate" name="startDate">
 						<div class="date-buttons" style="display: inline-block;">
 							<button type="button" onclick="setDate(-1)">1일</button>
 							<button type="button" onclick="setDate(-3)">3일</button>
