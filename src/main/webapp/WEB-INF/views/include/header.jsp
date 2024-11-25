@@ -53,8 +53,9 @@
                         </a>
                         </c:if>
                         <c:if test="${user!=null}">
-                          <a href="logout" class="p-2 mx-1 d-flex flex-column align-items-center text-center">
+                          <a href="catdog-logout" class="p-2 mx-1 d-flex flex-column align-items-center text-center">
                             <i class="bi bi-box-arrow-right"></i>
+                            <span>로그아웃</span>
                             </a>
                         </c:if>
                     </li>

@@ -116,6 +116,14 @@ public class CatDogController {
 			}
 		}
 	}
+	
+	// 로그아웃
+	@GetMapping(value="/catdog-logout")
+	public String logout(HttpSession session, RedirectAttributes rttr) {
+		session.invalidate(); // 세션에 저장되어 있는 정보 삭제
+		rttr.addFlashAttribute("msg", "로그아웃 성공"); // 1회성 저장
+		return "redirect:/";
+	}
 
 	// 관리자 회원 목록
 	@GetMapping(value = "/catdog-user-list-admin")
