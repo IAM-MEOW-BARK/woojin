@@ -144,9 +144,13 @@ public class CatDogDAOImpl implements CatDogDAO{
 	}
 
 	@Override
-	public List<MemberDTO> getTotalMember() {
+	public List<MemberDTO> getTotalMember(int start, int pageSize) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("start", start);
+	    map.put("pageSize", pageSize);
+	    
 		// TODO Auto-generated method stub
-		return sqlSession.selectList(namespace + ".getTotalMember");
+		return sqlSession.selectList(namespace + ".getTotalMember", map);
 	}
 
 	//
@@ -180,6 +184,12 @@ public class CatDogDAOImpl implements CatDogDAO{
         params.put("endDate", endDate);
 
         return sqlSession.selectList(namespace + ".productListFilter", params);
+	}
+
+	@Override
+	public int memberPaging() {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace+".memberPaging");
 	}	
 	
 }

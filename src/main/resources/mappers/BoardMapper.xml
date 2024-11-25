@@ -80,12 +80,18 @@
 	        #{product_code}
 	    </foreach>;
 	</delete>
- 	
+       	
  	<!-- 회원 관리 리스트 -->
  	<select id="getTotalMember" resultType="MemberDTO">
  		select * from member
  		order by user_created_at desc
+ 		limit #{start}, #{pageSize}
  	</select>
+ 	
+ 	<!-- 회원 관리 리스트 페이징 -->
+ 	<select id="memberPaging" resultType="java.lang.Integer">
+		select count(*) from member;
+	</select>
  	
  	<!-- 회원 리스트 검색 필터 -->
  	<select id="searchWithFilters" parameterType="java.util.Map" resultType="MemberDTO">

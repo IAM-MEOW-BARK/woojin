@@ -208,7 +208,6 @@ td {
 			<div></div>
 			<br>
 		</div>
-		
 		 <div class="pagination-container">
             <div class="pagination">
                 <c:if test="${startPage > 1}">

@@ -58,6 +58,27 @@ td {
 .user-list td{
 	text-align:center;
 }
+
+.pagination-container {
+            display: flex;
+            justify-content: space-between; /* 양쪽 정렬 */
+            align-items: center; /* 세로 정렬 */
+            margin: 20px 0;
+        }
+.pagination {
+    display: flex;
+    gap: 15px; 
+    margin: 0 auto;
+}
+.pagination a {
+    text-decoration: none;
+    color: #333;
+    font-size: 12px;
+}
+.pagination a.active {
+    color: #ff6600; 
+    font-weight: bold; 
+}
 </style>
 </head>
 <body>
@@ -67,6 +88,8 @@ td {
 			<strong>전체 회원 리스트</strong>
 		</h6>
 		<form action="searchMember" method="post">
+			<input type="hidden" name="pageNum" value="${currentPage}">
+    		<input type="hidden" name="pageSize" value="${pageSize}">
 			<table class="table table-bordered">
 				<tr>
 					<th>검색어</th>
@@ -125,12 +148,12 @@ td {
 						<th class="table-light text-center">휴대전화</th>
 						<th class="table-light text-center">생성일</th>
 						<th class="table-light text-center">최근 접속일</th>
+						<th class="table-light text-center">상태</th>
 					</tr>
 				</thead>
 				<tbody>
 					<tr>
 						<c:forEach var="member" items="${memberList}">
-							<c:if test="${member.user_status == 0}">
 							 	<tr>
 							 		 <td>
 				                            <input type="checkbox" name="selectedCheckbox" value="${member.user_id}">
@@ -166,8 +189,17 @@ td {
 								 	<td>${member.phone_num}</td>
 								 	<td>${member.user_created_at}</td>
 								 	<td>${member.connected_at}</td>
+								 	<td>
+									 	<c:choose>
+							                <c:when test="${member.user_status == 0}">
+							                    정상
+							                </c:when>
+							                <c:when test="${member.user_status == 1}">
+							                    탈퇴
+							                </c:when>
+							            </c:choose>
+						            </td>
 						 	</tr>
-						 	</c:if>
 						</c:forEach>	
 				</tbody>
 			</table>
@@ -175,27 +207,20 @@ td {
 			<div></div>
 			<br>
 		</div>
-		<div style="text-align: center;">
-			<a href="#"><</a>
-			<a href="#">&nbsp; 1 &nbsp; 2 &nbsp;</a>					
-			<a href="#">></a>
-		</div>
-		<%-- <c:if test="${pageListNUM>1}">
-				<a
-					href="list?pageListNUM=${pageListNUM-1}&pageNUM=${pageListNUM*10-10}">
-					이전 </a>
-			</c:if>
-
-			<c:forEach var="i" begin="${startPage }" end="${endPage }">
-				<a href="list?pageListNUM=${pageListNUM }&pageNUM=${i }"> ${i }
-				</a>
-			</c:forEach>
-
-			<c:if test="${pageListNUM<(totalPage/10)}">
-				<a
-					href="list?pageListNUM=${pageListNUM+1}&pageNUM=${pageListNUM*10+1}">
-					다음 </a>
-			</c:if> --%>
+		<div class="pagination-container">
+            <div class="pagination">
+                <c:if test="${startPage > 1}">
+                    <a href="catdog-user-list-admin?pageNum=${startPage - 1}&pageListNum=${pageListNum - 1}">&lt;</a>
+                </c:if>
+                <c:forEach begin="${startPage}" end="${endPage}" var="page">
+                    <a href="catdog-user-list-admin?pageNum=${page}&pageListNum=${pageListNum}"
+                       class="${currentPage == page ? 'active' : ''}">${page}</a>
+                </c:forEach>
+                <c:if test="${endPage < totalPage}">
+                    <a href="catdog-user-list-admin?pageNum=${endPage + 1}&pageListNum=${pageListNum + 1}">&gt;</a>
+                </c:if>
+            </div>
+        </div>
 	</div>
 	<script type="text/javascript">
 		// 페이지 로드 시 시작 날짜를 오늘로 설정

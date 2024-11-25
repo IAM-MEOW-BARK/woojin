@@ -25,9 +25,9 @@ public class CatDogServiceImpl implements CatDogService {
 	}
 
 	@Override
-	public List<MemberDTO> getTotalMember() {
+	public List<MemberDTO> getTotalMember(int start, int pageSize) {
 		// TODO Auto-generated method stub
-		return catDogDAO.getTotalMember();
+		return catDogDAO.getTotalMember(start, pageSize);
 	}
 
 	/*
@@ -83,6 +83,10 @@ public class CatDogServiceImpl implements CatDogService {
 		// TODO Auto-generated method stub
 		return catDogDAO.productListFilter(searchType, searchKeyword, startDate, endDate);
 	}
-	
-	
+
+	@Override
+	public int memberPaging() {
+		// TODO Auto-generated method stub
+		return catDogDAO.memberPaging();
+	}
 }

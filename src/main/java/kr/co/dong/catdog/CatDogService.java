@@ -14,7 +14,7 @@ public interface CatDogService {
 	public int getMemberByEmail(String user_id) throws Exception;
 	
 	// 전체 회원 리스트
-	public List <MemberDTO> getTotalMember();
+	public List <MemberDTO> getTotalMember(int start, int pageSize);
 	
 	// 회원 탈퇴	
 	public int deleteUsers(List<String> userIds);
@@ -36,4 +36,7 @@ public interface CatDogService {
     
     // 상품 목록 페이징
     public int productPaging();
+    
+    // 상품 리스트 페이징
+    public int memberPaging();
 }

@@ -72,7 +72,7 @@ public interface CatDogDAO {
     public int deleteProduct(List<String> productCode);
     
     // 전체 회원 리스트
-    public List <MemberDTO> getTotalMember();
+    public List <MemberDTO> getTotalMember(int start, int pageSize);
     
     // 회원 리스트 검색 필터
     List<Map<String, Object>> searchWithFilters(String searchType, String searchKeyword, String startDate, String endDate);
@@ -83,4 +83,7 @@ public interface CatDogDAO {
     
     // 상품 리스트 페이징
     public int productPaging();
+    
+    // 상품 리스트 페이징
+    public int memberPaging();
 }
