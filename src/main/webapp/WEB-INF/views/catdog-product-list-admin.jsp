@@ -91,7 +91,7 @@ td {
 					<td><select name="searchType">
 							<option value="product_name">상품명</option>
 							<option value="product_code">상품코드</option>
-							<option value="product_category">카테고리명</option>
+							<option value="product_category">카테고리 번호</option>
 					</select> <input type="text" name="searchKeyword" placeholder="검색어 입력">
 					</td>
 				</tr>
@@ -138,8 +138,8 @@ td {
 				<button type="submit" class="btn btn-sm"
 					style="border-radius: 8px; background-color: #9A106C; color: white;">상품
 					수정</button>
-				<button type="submit" class="btn btn-sm"
-					style="border-radius: 8px; background-color: #FF6600; color: white;">상품
+				<button type="button" class="btn btn-sm"
+					style="border-radius: 8px; background-color: #FF6600; color: white;" onclick="location.href='catdog-add-product-admin'">상품
 					등록</button>
 			</div>
 		</div>

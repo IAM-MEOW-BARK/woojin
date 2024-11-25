@@ -7,8 +7,6 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
 
-
-
 @Service
 public class CatDogServiceImpl implements CatDogService {
 	@Inject
@@ -71,13 +69,7 @@ public class CatDogServiceImpl implements CatDogService {
 	public int productPaging() {
 		// TODO Auto-generated method stub
 		return catDogDAO.productPaging();
-	}	
-
-	/*
-	 * @Override public List<BoardReply> detail1(int bno) { // TODO Auto-generated
-	 * method stub return boardDAO.detail1(bno); }
-	 */
-
+	}
 
 	@Override
 	public int deleteProduct(List<String> productCode) {
@@ -86,7 +78,11 @@ public class CatDogServiceImpl implements CatDogService {
 	}
 
 	@Override
-	public int deleteUser(String user_id) {
+	public List<Map<String, Object>> searchProduct(String searchType, String searchKeyword, String startDate,
+			String endDate) {
 		// TODO Auto-generated method stub
-		return 0;
-	}}
+		return catDogDAO.productListFilter(searchType, searchKeyword, startDate, endDate);
+	}
+	
+	
+}

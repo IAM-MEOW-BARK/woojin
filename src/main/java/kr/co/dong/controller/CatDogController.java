@@ -329,4 +329,42 @@ public class CatDogController {
 		model.addAttribute("memberList", members);
 		return "catdog-user-list-admin"; // JSP 경로
 	}
+	
+	// 상품 리스트 검색 필터
+		@PostMapping("/searchProduct")
+		public String searchProduct(@RequestParam("searchType") String searchType,
+				@RequestParam("searchKeyword") String searchKeyword,
+				@RequestParam(value = "startDate", required = false) String startDate,
+				@RequestParam(value = "endDate", required = false) String endDate, Model model) {
+			if (startDate != null && endDate != null && startDate.compareTo(endDate) > 0) {
+				// startDate가 endDate보다 클 경우 스왑
+				String temp = startDate;
+				startDate = endDate;
+				endDate = temp;
+			}
+
+			if (searchKeyword == null || searchKeyword.trim().isEmpty()) {
+				searchKeyword = null; // Mapper에서 처리
+			}
+			if (startDate != null && !startDate.isEmpty()) {
+				startDate += " 00:00:00";
+			}
+			if (endDate != null && !endDate.isEmpty()) {
+				endDate += " 23:59:59";
+			}
+			if (startDate != null && endDate != null && startDate.compareTo(endDate) > 0) {
+				String temp = startDate;
+				startDate = endDate;
+				endDate = temp;
+			}
+
+			System.out.println("searchType: " + searchType);
+			System.out.println("searchKeyword: " + searchKeyword);
+			System.out.println("startDate: " + startDate);
+			System.out.println("endDate: " + endDate);
+
+			List<Map<String, Object>> products = catDogService.searchProduct(searchType, searchKeyword, startDate, endDate);
+			model.addAttribute("productList", products);
+			return "catdog-product-list-admin"; // JSP 경로
+		}
 }

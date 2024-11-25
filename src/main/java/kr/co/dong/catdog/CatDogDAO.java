@@ -59,6 +59,9 @@ public interface CatDogDAO {
     // 전체 상품 관리 리스트
     public List <ProductDTO> getTotalProduct(int start, int pageSize);
     
+ // 회원 리스트 검색 필터
+    List<Map<String, Object>> productListFilter(String searchType, String searchKeyword, String startDate, String endDate);
+    
     // 상품 등록
     public int addProduct(ProductDTO productDTO) throws Exception;
     

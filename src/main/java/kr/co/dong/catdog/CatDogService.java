@@ -16,13 +16,12 @@ public interface CatDogService {
 	// 전체 회원 리스트
 	public List <MemberDTO> getTotalMember();
 	
-	// 회원 탈퇴
-	public int deleteUser(String user_id);
+	// 회원 탈퇴	
 	public int deleteUsers(List<String> userIds);
 	
 	// 회원 리스트 검색 필터
 	public List<Map<String, Object>> searchMember(String searchType, String searchKeyword, String startDate, String endDate);
-	
+		
 	// 상품 등록
     public int addProduct(ProductDTO productDTO) throws Exception;
     
@@ -31,6 +30,9 @@ public interface CatDogService {
     
     // 전체 상품 관리 리스트
     public List <ProductDTO> getTotalProduct(int start, int pageSize);
+    
+    // 상품 리스트 검색 필터
+    public List<Map<String, Object>> searchProduct(String searchType, String searchKeyword, String startDate, String endDate);
     
     // 상품 목록 페이징
     public int productPaging();

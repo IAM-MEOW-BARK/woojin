@@ -149,6 +149,7 @@ public class CatDogDAOImpl implements CatDogDAO{
 		return sqlSession.selectList(namespace + ".getTotalMember");
 	}
 
+	//
 	@Override
 	public List<Map<String, Object>> searchWithFilters(String searchType, String searchKeyword, String startDate,
 			String endDate) {
@@ -166,6 +167,19 @@ public class CatDogDAOImpl implements CatDogDAO{
 	public int productPaging() {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(namespace+".productPaging");
+	}
+
+	@Override
+	public List<Map<String, Object>> productListFilter(String searchType, String searchKeyword, String startDate,
+			String endDate) {
+		// TODO Auto-generated method stub
+		Map<String, Object> params = new HashMap<String, Object>();
+        params.put("searchType", searchType);
+        params.put("searchKeyword", searchKeyword);
+        params.put("startDate", startDate);
+        params.put("endDate", endDate);
+
+        return sqlSession.selectList(namespace + ".productListFilter", params);
 	}	
 	
 }
