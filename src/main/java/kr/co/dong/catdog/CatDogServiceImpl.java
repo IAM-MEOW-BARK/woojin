@@ -89,4 +89,17 @@ public class CatDogServiceImpl implements CatDogService {
 		// TODO Auto-generated method stub
 		return catDogDAO.memberPaging();
 	}
+
+	@Override
+	public int updateProduct(ProductDTO productDTO) {
+		// TODO Auto-generated method stub
+		return catDogDAO.updateProduct(productDTO);
+	}
+
+	@Override
+	public ProductDTO getProductByCode(int product_code) {
+	    ProductDTO product = catDogDAO.getProductByCode(product_code);
+	    System.out.println("Service에서 전달된 상품: " + product); // 디버깅 로그
+	    return product;
+	}
 }

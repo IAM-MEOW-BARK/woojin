@@ -134,7 +134,7 @@ public class CatDogDAOImpl implements CatDogDAO{
 	@Override
 	public int updateProduct(ProductDTO productDTO) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.update(namespace + ".updateProduct", productDTO);
 	}
 
 	@Override
@@ -182,7 +182,11 @@ public class CatDogDAOImpl implements CatDogDAO{
         params.put("searchKeyword", searchKeyword);
         params.put("startDate", startDate);
         params.put("endDate", endDate);
-
+        
+		/*
+		 * // 페이징 계산 int offset = (pageNum - 1) * pageSize; params.put("offset",
+		 * offset); // 시작 인덱스 params.put("pageSize", pageSize); // 페이지 크기
+		 */
         return sqlSession.selectList(namespace + ".productListFilter", params);
 	}
 
@@ -190,6 +194,13 @@ public class CatDogDAOImpl implements CatDogDAO{
 	public int memberPaging() {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(namespace+".memberPaging");
-	}	
+	}
+
+	@Override
+	public ProductDTO getProductByCode(int product_code) {
+	    ProductDTO product = sqlSession.selectOne(namespace + ".getProductByCode", product_code);
+	    System.out.println("DAO에서 조회된 상품: " + product); // 디버깅 로그
+	    return product;
+	}
 	
 }

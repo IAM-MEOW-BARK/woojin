@@ -56,10 +56,13 @@ public interface CatDogDAO {
     public OrderDTO getOrderDetail(int order_code) throws Exception;
     
     /*관리자*/
-    // 전체 상품 관리 리스트
+    // 전체 상품 관리 리스트 + 페이징
     public List <ProductDTO> getTotalProduct(int start, int pageSize);
     
- // 회원 리스트 검색 필터
+    // 상품 단일 조회
+    public ProductDTO getProductByCode(int product_code);
+    
+    // 상품 리스트 검색 필터
     List<Map<String, Object>> productListFilter(String searchType, String searchKeyword, String startDate, String endDate);
     
     // 상품 등록

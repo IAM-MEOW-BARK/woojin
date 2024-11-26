@@ -22,6 +22,7 @@
 	    where user_id = #{user_id}
 	</select>
 	
+		
 	<!-- 상품 관리 리스트 -->
 	<select id="getTotalProduct" resultType="ProductDTO">
  		<!-- select * from product
@@ -59,6 +60,7 @@
             AND product_regdate <= #{endDate}
             ]]>
 		</if>
+		 LIMIT #{offset}, #{pageSize}
     </select>
  	
  	<!-- 상품 관리 리스트 페이징 -->
@@ -66,11 +68,29 @@
 		select count(*) from product;
 	</select>
 	
+	<!-- 상품 단일 조회  -->
+	<select id="getProductByCode" parameterType="java.util.Map" resultType="ProductDTO">
+	    SELECT *
+	    FROM product
+	    WHERE product_code = #{product_code}
+	</select>
+	
 	<!-- 상품 등록  -->
 	<insert id="add-product" parameterType="ProductDTO">
 		INSERT INTO product (product_code, product_name, product_category, product_price, thumbnail_img, product_img, product_info, product_regdate)
     	VALUES (#{product_code}, #{product_name}, #{product_category}, #{product_price}, #{thumbnail_img}, #{product_img}, #{product_info}, NOW());
-	</insert>
+	</insert>	
+	
+	<update id="updateProduct" parameterType="ProductDTO">
+	    UPDATE product
+	    SET product_name = #{product_name},
+	        product_price = #{product_price},
+	        product_category = #{product_category},
+	        thumbnail_img = #{thumbnail_img},
+	        product_info = #{product_info},
+	        product_update = NOW()
+	    WHERE product_code = #{product_code}
+	</update>
 	
 	<!-- 상품 삭제 -->
 	<delete id="deleteProduct" parameterType="java.util.List">
@@ -127,8 +147,7 @@
 	    <foreach collection="list" item="user_id" open="(" separator="," close=")">
 	        #{user_id}
 	    </foreach>
-	</update>
- 	
+	</update> 	
  	
  	<!-- 글 전체 목록 -->
  	<select id="list" resultType="BoardDTO">

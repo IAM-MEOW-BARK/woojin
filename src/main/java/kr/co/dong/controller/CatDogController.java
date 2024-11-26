@@ -28,6 +28,8 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.co.dong.board.BoardDTO;
+import kr.co.dong.board.BoardService;
 import kr.co.dong.catdog.CatDogService;
 import kr.co.dong.catdog.MemberDTO;
 import kr.co.dong.catdog.ProductDTO;
@@ -49,6 +51,53 @@ public class CatDogController {
 		return "catdog-add-product-admin";
 	}
 	
+	// 상품 단일 선택 수정 페이지
+	@GetMapping(value="catdog-product-modify")
+	public String getProductByCode(@RequestParam("product_code") int product_code, Model model) {
+		ProductDTO productDTO = catDogService.getProductByCode(product_code);
+		model.addAttribute("product", productDTO);
+		
+		return "catdog-product-modify";
+	}
+	
+	// 상품 수정
+	@PostMapping(value = "catdog-product-modified")
+	public String update(ProductDTO productDTO, @RequestParam("thumbnail_imgFile") MultipartFile file, HttpServletRequest request) throws Exception {
+	    request.setCharacterEncoding("UTF-8");
+
+	    if (!file.isEmpty()) {
+	    	// 파일 업로드 경로
+		    String loc = "C:\\WEB_WORKSPACE\\status200\\src\\main\\webapp\\resources\\upload";
+		    File dir = new File(loc);
+		    if (!dir.exists()) {
+		        dir.mkdirs(); // 디렉터리가 없으면 생성
+		    }
+
+		 // 파일 저장		    
+		    if (file != null && !file.isEmpty()) {
+		        String safeFileName = file.getOriginalFilename().replaceAll("[^a-zA-Z0-9._-]", "_");
+		        File uploadedFile = new File(loc, safeFileName);
+		        file.transferTo(uploadedFile); // 파일 저장
+
+		        // 파일 저장 완료 확인
+		        while (!uploadedFile.exists()) {
+		            Thread.sleep(100); // 디스크 반영 대기
+		        }
+
+		        productDTO.setThumbnail_img(safeFileName); // 저장된 파일 이름 설정
+		    } else {
+		        System.out.println("파일이 업로드되지 않았습니다.");
+		    }
+	    } else {
+	        // 이미지 파일이 없으면 기존 이미지 유지
+	        ProductDTO existingProduct = catDogService.getProductByCode(productDTO.getProduct_code());
+	        productDTO.setThumbnail_img(existingProduct.getThumbnail_img());
+	    }
+
+	    int r = catDogService.updateProduct(productDTO);
+
+	    return "redirect:catdog-product-list-admin";
+	}
 	
 	// 상품 삭제
 	@PostMapping(value="catdog/deleteProduct")
@@ -101,8 +150,8 @@ public class CatDogController {
 	// 상품 목록 + 페이징
 	@GetMapping("/catdog-product-list-admin")
 	public ModelAndView productList(HttpServletResponse response,
-			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-            @RequestParam(value = "pageListNum", defaultValue = "1") int pageListNum) {
+		@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+        @RequestParam(value = "pageListNum", defaultValue = "1") int pageListNum) {
 	    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
 	    response.setHeader("Pragma", "no-cache");
 	    response.setDateHeader("Expires", 0);
@@ -295,20 +344,6 @@ public class CatDogController {
 		return "redirect:/catdog-user-list-admin";
 	}
 
-//	@RequestMapping(value="board/logout", method = RequestMethod.GET)
-//	public String logout(HttpSession session, RedirectAttributes rttr) {
-//		session.invalidate(); // 세션에 저장되어 있는 정보 삭제
-//		rttr.addFlashAttribute("msg", "로그아웃 성공"); // 1회성 저장
-//		return "redirect:/";
-//	}
-//	
-//	
-//	@RequestMapping(value="board/register", method = RequestMethod.GET)
-//	public String register() {
-//		logger.info("등록 성공");
-//		return "register";
-//	}
-
 	// 회원 리스트 검색 필터
 	@PostMapping("/searchMember")
 	public String searchMember(
@@ -349,40 +384,41 @@ public class CatDogController {
 	}
 	
 	// 상품 리스트 검색 필터
-		@PostMapping("/searchProduct")
-		public String searchProduct(@RequestParam("searchType") String searchType,
-				@RequestParam("searchKeyword") String searchKeyword,
-				@RequestParam(value = "startDate", required = false) String startDate,
-				@RequestParam(value = "endDate", required = false) String endDate, Model model) {
-			if (startDate != null && endDate != null && startDate.compareTo(endDate) > 0) {
-				// startDate가 endDate보다 클 경우 스왑
-				String temp = startDate;
-				startDate = endDate;
-				endDate = temp;
-			}
-
-			if (searchKeyword == null || searchKeyword.trim().isEmpty()) {
-				searchKeyword = null; // Mapper에서 처리
-			}
-			if (startDate != null && !startDate.isEmpty()) {
-				startDate += " 00:00:00";
-			}
-			if (endDate != null && !endDate.isEmpty()) {
-				endDate += " 23:59:59";
-			}
-			if (startDate != null && endDate != null && startDate.compareTo(endDate) > 0) {
-				String temp = startDate;
-				startDate = endDate;
-				endDate = temp;
-			}
-
-			System.out.println("searchType: " + searchType);
-			System.out.println("searchKeyword: " + searchKeyword);
-			System.out.println("startDate: " + startDate);
-			System.out.println("endDate: " + endDate);
-
-			List<Map<String, Object>> products = catDogService.searchProduct(searchType, searchKeyword, startDate, endDate);
-			model.addAttribute("productList", products);
-			return "catdog-product-list-admin"; // JSP 경로
+	@PostMapping("/searchProduct")
+	public String searchProduct(
+			@RequestParam("searchType") String searchType,
+			@RequestParam("searchKeyword") String searchKeyword,
+			@RequestParam(value = "startDate", required = false) String startDate,
+			@RequestParam(value = "endDate", required = false) String endDate, Model model) {
+		if (startDate != null && endDate != null && startDate.compareTo(endDate) > 0) {
+			// startDate가 endDate보다 클 경우 스왑
+			String temp = startDate;
+			startDate = endDate;
+			endDate = temp;
 		}
+
+		if (searchKeyword == null || searchKeyword.trim().isEmpty()) {
+			searchKeyword = null; // Mapper에서 처리
+		}
+		if (startDate != null && !startDate.isEmpty()) {
+			startDate += " 00:00:00";
+		}
+		if (endDate != null && !endDate.isEmpty()) {
+			endDate += " 23:59:59";
+		}
+		if (startDate != null && endDate != null && startDate.compareTo(endDate) > 0) {
+			String temp = startDate;
+			startDate = endDate;
+			endDate = temp;
+		}
+
+		System.out.println("searchType: " + searchType);
+		System.out.println("searchKeyword: " + searchKeyword);
+		System.out.println("startDate: " + startDate);
+		System.out.println("endDate: " + endDate);
+
+		List<Map<String, Object>> products = catDogService.searchProduct(searchType, searchKeyword, startDate, endDate);
+		model.addAttribute("productList", products);
+		return "catdog-product-list-admin"; // JSP 경로
+	}
 }

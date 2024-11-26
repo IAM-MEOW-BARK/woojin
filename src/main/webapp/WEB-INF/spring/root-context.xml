@@ -13,13 +13,13 @@
 	<bean id="dataSourceSpied" class="org.springframework.jdbc.datasource.DriverManagerDataSource">
 		<property name="driverClassName" value="com.mysql.cj.jdbc.Driver"></property>
 		<!--학원 -->
-		<!-- <property name="url" value="jdbc:mysql://192.168.0.63:3306/cat_dog?serverTimezone=UTC"></property>
+		<property name="url" value="jdbc:mysql://192.168.0.63:3306/cat_dog?serverTimezone=UTC"></property>
 		<property name="username" value="woojin"></property>
-		<property name="password" value="rlaeowkd1@"></property> -->
+		<property name="password" value="rlaeowkd1@"></property>
 		<!-- 집 -->
-		<property name="url" value="jdbc:mysql://localhost:3306/cat_dog?serverTimezone=UTC"></property>
+		<!-- <property name="url" value="jdbc:mysql://localhost:3306/cat_dog?serverTimezone=UTC"></property>
 		<property name="username" value="root"></property>
-		<property name="password" value="132435"></property>
+		<property name="password" value="132435"></property> -->
 	</bean>	
 		<!-- db Log추가 -->
  	<bean id="dataSource" class="net.sf.log4jdbc.Log4jdbcProxyDataSource"> 

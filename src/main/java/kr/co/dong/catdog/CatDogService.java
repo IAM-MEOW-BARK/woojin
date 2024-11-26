@@ -25,6 +25,9 @@ public interface CatDogService {
 	// 상품 등록
     public int addProduct(ProductDTO productDTO) throws Exception;
     
+    // 상품 수정
+    public int updateProduct(ProductDTO productDTO);
+    
     // 상품 삭제
     public int deleteProduct(List<String> productCode);
     
@@ -33,6 +36,9 @@ public interface CatDogService {
     
     // 상품 리스트 검색 필터
     public List<Map<String, Object>> searchProduct(String searchType, String searchKeyword, String startDate, String endDate);
+    
+    // 상품 단일 조회
+    public ProductDTO getProductByCode(int product_code);
     
     // 상품 목록 페이징
     public int productPaging();

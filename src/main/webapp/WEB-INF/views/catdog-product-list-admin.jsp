@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <%@ page session="true"%>
 <!DOCTYPE html>
 <html>
@@ -85,6 +86,8 @@ td {
 			<strong>전체 상품 리스트</strong>
 		</h6>
 		<form action="searchProduct" method="post">
+			<input type="hidden" name="pageNum" value="${currentPage}">
+    		<input type="hidden" name="pageSize" value="${pageSize}">
 			<table class="table table-bordered">
 				<tr>
 					<th>검색어</th>
@@ -135,9 +138,9 @@ td {
         </form>
 			</div>
 			<div>
-				<button type="submit" class="btn btn-sm"
+				<!-- <button type="submit" class="btn btn-sm"
 					style="border-radius: 8px; background-color: #9A106C; color: white;">상품
-					수정</button>
+					수정</button> -->
 				<button type="button" class="btn btn-sm"
 					style="border-radius: 8px; background-color: #FF6600; color: white;" onclick="location.href='catdog-add-product-admin'">상품
 					등록</button>
@@ -150,7 +153,7 @@ td {
 						<th class="table-light text-center">
 							<input type="checkbox" id="selectAll">
 						</th>
-						<th class="table-light text-center">상품코드</th>						
+						<th class="table-light text-center">상품코드</th>
 						<th class="table-light text-center">이미지</th>
 						<th class="table-light text-center">카테고리</th>
 						<th class="table-light text-center">상품명</th>
@@ -193,9 +196,10 @@ td {
 								 	<td>${product.product_name}</td>
 								 	<td style="text-align: center;">${product.product_regdate}</td>
 								 	<td style="text-align: center;">${product.product_update}</td>
-								 	<td style="text-align: right;">${product.product_price}</td>
+								 	<td style="text-align: right;">
+								 		<fmt:formatNumber value="${product.product_price}" type="number" groupingUsed="true" /><span> 원</span></td>
 								 	<td style="text-align: center;">
-								 		<button type="button" class="btn btn-secondary btn-sm" style="border-radius: 8px; color: white;'">
+								 		<button type="button" class="btn btn-secondary btn-sm" style="border-radius: 8px; color: white;" onclick="window.location.href = `catdog-product-modify?product_code=${product.product_code}`">
 											수정</button>
 								 	</td>
 						 	</tr>
@@ -270,6 +274,28 @@ td {
 		
 		    document.getElementById('hiddenSelectedIds').value = selectedIds;
 		    document.getElementById('deleteForm').submit();
+		}
+		
+		// 수정 페이지 이동
+		function goToModifyPage() {
+		    const selectedCheckboxes = document.querySelectorAll('input[name="selectedCheckbox"]:checked');
+		    
+		    
+		
+		    if (selectedCheckboxes.length !== 1) {
+		        alert(selectedCheckboxes.length === 0 ? "수정할 상품을 선택하세요!" : "수정할 상품은 한 번에 하나만 선택할 수 있습니다!");
+		        return;
+		    }
+		
+		    const productCode = selectedCheckboxes[0].value;
+		    
+		    console.log("프로덕트코드:::::", productCode)
+		
+		    if (productCode) {
+		        window.location.href = `catdog-product-modify?product_code=${product.productCode}`;
+		    } else {
+		        alert("상품 코드가 유효하지 않습니다.");
+		    }
 		}
 	</script>
 </body>
