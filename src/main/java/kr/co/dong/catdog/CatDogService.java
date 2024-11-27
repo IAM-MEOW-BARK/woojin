@@ -7,6 +7,12 @@ public interface CatDogService {
 	// 로그인
 	public Map login(Map<String, Object> map);
 	
+	// 아이디 찾기
+	public Map findId(Map<String, Object> map);
+	
+	// 비밀번호 찾기
+	public Map findPw(Map<String, Object> map);
+	
 	// 회원가입
 	public int create(MemberDTO meber) throws Exception;
 	

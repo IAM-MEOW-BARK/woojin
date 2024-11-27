@@ -41,8 +41,9 @@ body {
 input[type="text, password"] {
 	height: 30px; /* 원하는 높이로 설정 */
 	width: 250px; /* 원하는 너비로 설정 */
-	box-sizing: border-box; /* 패딩과 보더를 포함하여 크기 조정 */
+	box-sizing: border-box; /* 패딩과 보더를 포함하여 크기 조정 */	
 }
+input:focus {outline: none;} /* outline 테두리 없애기 */
 
 th {
 	text-align: center;
@@ -153,7 +154,7 @@ td {
             if (password === passwordCheck) {
                 passwordCheckLabel.textContent = "비밀번호가 일치합니다.";
                 passwordCheckLabel.style.color = "green";
-            } else {
+            } else { 
                 passwordCheckLabel.textContent = "비밀번호가 일치하지 않습니다.";
                 passwordCheckLabel.style.color = "red";
             }
@@ -168,11 +169,11 @@ td {
         });
     	
     	// 이메일 형식 검증 추가
-    	document.querySelector("form").addEventListener("submit", function (e) {
+    /* 	document.querySelector("form").addEventListener("submit", function (e) {
 		    if (!validateEmail()) {
 		        e.preventDefault(); // 폼 제출 방지
 		    }
-		});
+		}); */
     	
     	/* // 이메일 형식 검증
     	function validateEmail() {

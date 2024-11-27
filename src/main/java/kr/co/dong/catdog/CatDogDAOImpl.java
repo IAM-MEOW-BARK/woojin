@@ -21,6 +21,11 @@ public class CatDogDAOImpl implements CatDogDAO{
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(namespace + ".login", map);
 	}
+	
+	 @Override
+	    public void updateConnectedAt(Map<String, Object> map) {
+	        sqlSession.update(namespace + ".updateConnectedAt", map); // connected_at 업데이트 실행
+ }
 
 	@Override
 	public int create(MemberDTO meber) throws Exception {
@@ -35,15 +40,15 @@ public class CatDogDAOImpl implements CatDogDAO{
 	}
 
 	@Override
-	public int findId(String name, int phone_num) throws Exception {
+	public Map findId(Map<String, Object> map) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.selectOne(namespace + ".find-id", map);
 	}
 
 	@Override
-	public int findPw(String user_id, String name, int phone_num) throws Exception {
+	public Map findPw(Map<String, Object> map) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.selectOne(namespace + ".find-pw", map);
 	}
 
 	@Override
@@ -202,5 +207,9 @@ public class CatDogDAOImpl implements CatDogDAO{
 	    System.out.println("DAO에서 조회된 상품: " + product); // 디버깅 로그
 	    return product;
 	}
+
+	
+
+	
 	
 }

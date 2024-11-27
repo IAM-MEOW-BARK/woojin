@@ -193,6 +193,48 @@ public class CatDogController {
 	public int emailCheck(@RequestParam("user_id") String user_id) throws Exception {
 		return catDogService.getMemberByEmail(user_id);
 	}
+	
+	// 아이디 찾기
+	@PostMapping(value = "/catdog-findId")
+	public String findId(@RequestParam Map<String, Object> map, Model model, HttpServletRequest request) throws Exception {
+	    request.setCharacterEncoding("UTF-8");
+
+	    // 이름과 전화번호로 DB 조회
+	    Map info = catDogService.findId(map);
+
+	    if (info == null || !info.containsKey("user_id")) {
+	        // 검색 결과 없음
+	        logger.info("아이디 없음");
+	        model.addAttribute("error", "아이디가 존재하지 않습니다."); // 에러 메시지 추가
+	    } else {
+	        // 검색 결과 있음
+	        logger.info("아이디 찾기 성공");
+	        model.addAttribute("user_id", info.get("user_id")); // user_id만 전달
+	    }
+
+	    return "catdog-find-id"; // JSP 페이지 이름
+	}
+	
+	// 비밀번호 찾기
+		@PostMapping(value = "/catdog-findPw")
+		public String findPw(@RequestParam Map<String, Object> map, Model model, HttpServletRequest request) throws Exception {
+		    request.setCharacterEncoding("UTF-8");
+
+		    // 이름과 전화번호로 DB 조회
+		    Map info = catDogService.findPw(map);
+
+		    if (info == null || !info.containsKey("password")) {
+		        // 검색 결과 없음
+		        logger.info("아이디 없음");
+		        model.addAttribute("error", "아이디가 존재하지 않습니다."); // 에러 메시지 추가
+		    } else {
+		        // 검색 결과 있음
+		        logger.info("아이디 찾기 성공");
+		        model.addAttribute("password", info.get("password")); // user_id만 전달
+		    }
+
+		    return "catdog-find-pw"; // JSP 페이지 이름
+		}
 
 	// 로그인
 	@RequestMapping(value = "/catdog-login", method = RequestMethod.POST)
@@ -201,8 +243,10 @@ public class CatDogController {
 		request.setCharacterEncoding("UTF-8");
 
 		Map user = catDogService.login(map);
-
-		if (user == null) {
+		
+		Integer userStatus = (Integer) user.get("user_status");
+		
+		if (user == null || userStatus == 1) {
 			logger.info("실패");
 			return "redirect:catdog-login"; // prefix suffix 이용해서 이동
 		} else {

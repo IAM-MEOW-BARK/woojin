@@ -7,6 +7,7 @@ import java.util.Map;
 public interface CatDogDAO {
 	// 로그인
 	public Map login(Map<String, Object> map);
+	void updateConnectedAt(Map<String, Object> map);
 	
 	// 회원가입
 	public int create(MemberDTO meber) throws Exception;
@@ -15,10 +16,10 @@ public interface CatDogDAO {
 	public int getMemberByEmail(String user_id) throws Exception;
 	
 	// 회원 정보 찾기 (아이디)
-	public int findId(String name, int phone_num) throws Exception;
+	public Map findId(Map<String, Object> params);
 	
 	// 회원 정보 찾기 (비밀번호)
-	public int findPw(String user_id, String name, int phone_num) throws Exception;
+	public Map findPw(Map<String, Object> params);
 	
 	//제품 캐러셀 리스트 출력
 	public List <ProductDTO> list();

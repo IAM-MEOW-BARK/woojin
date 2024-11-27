@@ -4,6 +4,7 @@
 <%@ page session="true" %>
 <!DOCTYPE html>
 <html>
+<%@ include file="include/head.jsp" %>
 <head>
 <style type="text/css">
 	 .container-wrapper {
@@ -13,8 +14,10 @@
       }
       
       .email-input, .password-input, .name-input, .phone-input {
-      	width: 467px; height: 20px; font-size: 1rem; border: 2px solid #f0f0f1; border-radius: 5px; padding: 15px;
+      	width: 467px; height: 53px; font-size: 1rem; border: 2px solid #f0f0f1; border-radius: 5px; padding: 15px;
       }
+      
+      input:focus {outline: none;} /* outline 테두리 없애기 */
       
       .email-input:focus {
 		border-color: #ff6600;
@@ -159,45 +162,7 @@
 <title>회원가입</title>
 </head>
 <body>
-<script type="text/javascript">
-function checkSelectAll()  {
-	  // 전체 체크박스
-	  const checkboxes 
-	    = document.querySelectorAll('input[name="check"]');
-	  // 선택된 체크박스
-	  const checked 
-	    = document.querySelectorAll('input[name="check"]:checked');
-	  // select all 체크박스
-	  const selectAll 
-	    = document.querySelector('input[name="selectall"]');
-	  
-	  if(checkboxes.length === checked.length)  {
-	    selectAll.checked = true;
-	  }else {
-	    selectAll.checked = false;
-	  }
-	}
 
-	function selectAll(selectAll)  {
-	  const checkboxes 
-	     = document.getElementsByName('check');
-	  
-	  checkboxes.forEach((checkbox) => {
-	    checkbox.checked = selectAll.checked
-	  })
-	}
-
-//모달 열기 함수
-function showModal(event) {
-  event.preventDefault(); // 기본 링크 동작 막기
-  document.getElementById('modalOverlay').style.display = 'flex';
-}
-
-// 모달 닫기 함수
-function closeModal() {
-  document.getElementById('modalOverlay').style.display = 'none';
-}
-</script>
 <div class="container-wrapper">
 	<div style="display: flex; justify-content: center;  width:500px; height:220px; overflow:hidden; margin:0 auto;">
         <img
@@ -208,19 +173,21 @@ function closeModal() {
     </div>
     <form name="signup-frm" method="post">
 	      <div>        
-	        <input type="email" name="user_id" class="email-input" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;이메일">
+	        <input type="email" id="user_id" name="user_id" class="email-input" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;이메일" onblur="emailCheck()" onblur="validateEmail()" required>
+	        <label id="email-check-label" style="margin-left: 10px;"></label>
 	      </div>
 	      <div style="margin-top: 10px;">	        
-	         <input type="password" name="password" class="password-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;비밀번호">
+	         <input type="password" id="password" name="password" class="password-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;비밀번호" oninput="checkPasswordMatch()" required>
 	      </div>
 	      <div style="margin-top: 10px;">	        
-	         <input type="password" name="password-check" class="password-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;비밀번호 확인">
+	         <input type="password" id="password-check" name="password-check" class="password-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;비밀번호 확인" oninput="checkPasswordMatch()" required>
+	         <label id="password-check-label" style="margin-left: 10px; color: red;"></label>
 	      </div>
 	      <div style="margin-top: 10px;">	        
-	         <input type="text" name="name" class="name-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;이름">
+	         <input type="text" name="name" class="name-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;이름" required>
 	      </div>
 	      <div style="margin-top: 10px;">	        
-	         <input type="number" name="phone_num" class="phone-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;전화번호">	         	         
+	         <input type="text" id="phone_num" name="phone_num" class="phone-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;전화번호" required>	         	         
 	      </div>
 	      <!-- 옵션 -->
 	      <div class="option-group">
@@ -229,16 +196,16 @@ function closeModal() {
 	      		<label for="all-ok">모두 동의합니다.</label>
 	      	</div>
 	      	<div>
-	      		<input type="checkbox" id="14-ok" name="check" value="1" class="normal" onclick="checkSelectAll()" style="margin-left:20px;">
+	      		<input type="checkbox" id="14-ok" name="check" value="1" class="normal" onclick="checkSelectAll()" style="margin-left:20px;" onclick="checkSelectAll()">
 	      		<label for="14-ok">(필수) 본인은 만 14세 이상입니다.</label>
 	      	</div>
 	      	<div>
-	      		<input type="checkbox" id="term-ok" name="check" value="1" class="normal" onclick="checkSelectAll()" style="margin-left:20px;">
+	      		<input type="checkbox" id="term-ok" name="check" value="1" class="normal" onclick="checkSelectAll()" style="margin-left:20px;" onclick="checkSelectAll()">
 	      		<label for="term-ok">(필수) 이용약관</label>
 	      		<a href="#" target="_blank" style="color:#004b91;" onclick="showModal(event)">약관 보기</a>
 	      	</div>
 	      	<div>
-	      		<input type="checkbox" id="private-ok" name="check" value="1" class="normal" onclick="checkSelectAll()" style="margin-left:20px;">
+	      		<input type="checkbox" id="private-ok" name="check" value="1" class="normal" onclick="checkSelectAll()" style="margin-left:20px;" onclick="checkSelectAll()">
 	      		<label for="private-ok">(필수) 개인정보수집 및 이용동의</label>
 	      		<a href="catdog-term" id="private_click" style="color:#004b91;">약관 보기</a>
 	      	</div>
@@ -314,5 +281,146 @@ function closeModal() {
     </div>
     </form>
 </div>
+<script type="text/javascript">
+/* 핸드폰 번호 분류 */
+// 포커스가 벗어날 때 실행
+const phoneInput = document.getElementById("phone_num");
+
+phoneInput.addEventListener("blur", () => {
+   let value = phoneInput.value.replace(/\D/g, ""); // 숫자만 남기기
+   if (value.length === 11) {
+       phoneInput.value = value.replace(/(\d{3})(\d{4})(\d{4})/, "$1-$2-$3");
+   } else if (value.length === 10) {
+       phoneInput.value = value.replace(/(\d{3})(\d{3})(\d{4})/, "$1-$2-$3");
+   } else {
+       alert("유효한 전화번호를 입력하세요.");
+       phoneInput.value = "";
+   }
+});
+
+// 입력 시 숫자만 허용
+phoneInput.addEventListener("input", () => {
+   phoneInput.value = phoneInput.value.replace(/\D/g, "");
+});
+
+//체크박스 모두 선택
+function selectAll(selectAllCheckbox) {
+    const checkboxes = document.querySelectorAll('input[name="check"]');
+    checkboxes.forEach(checkbox => checkbox.checked = selectAllCheckbox.checked);
+}
+
+// 개별 체크박스 상태 확인
+function checkSelectAll() {
+    const allCheckbox = document.getElementById("all-ok");
+    const checkboxes = document.querySelectorAll('input[name="check"]');
+    const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+    allCheckbox.checked = allChecked;
+}
+
+// 폼 제출 시 체크박스 확인
+document.querySelector('form[name="signup-frm"]').addEventListener('submit', function (event) {
+    const checkboxes = document.querySelectorAll('input[name="check"]');
+    const allChecked = Array.from(checkboxes).every(checkbox => checkbox.checked);
+    if (!allChecked) {
+        alert("모든 필수 항목에 동의해야 합니다.");
+        event.preventDefault();
+    }
+});
+
+//모달 열기 함수
+function showModal(event) {
+  event.preventDefault(); // 기본 링크 동작 막기
+  document.getElementById('modalOverlay').style.display = 'flex';
+}
+
+// 모달 닫기 함수
+function closeModal() {
+  document.getElementById('modalOverlay').style.display = 'none';
+}
+
+// 비밀번호 확인
+function checkPasswordMatch() {
+    const password = document.getElementById("password").value;
+    const passwordCheck = document.getElementById("password-check").value;
+    const passwordCheckLabel = document.getElementById("password-check-label");
+
+    if (passwordCheck === "") {
+        passwordCheckLabel.textContent = ""; // 비밀번호 확인 필드가 비어 있으면 메시지 없음
+        return;
+    }
+
+    if (password === passwordCheck) {
+        passwordCheckLabel.textContent = "비밀번호가 일치합니다.";
+        passwordCheckLabel.style.color = "green";
+    } else { 
+        passwordCheckLabel.textContent = "비밀번호가 일치하지 않습니다.";
+        passwordCheckLabel.style.color = "red";
+    }
+}
+
+// 이메일 검증
+
+
+// 이메일 중복 체크
+let isEmailChecked = false; // 중복 확인 상태 추적
+function emailCheck() {
+	const email = document.getElementById("user_id").value;
+    const emailCheckLabel = document.getElementById("email-check-label");
+    
+    function validateEmail() {
+        const email = document.getElementById("user_id").value;
+        const emailCheckLabel = document.getElementById("email-check-label");
+
+        // 이메일 정규식 패턴
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+
+        // 이메일 형식 검증
+        if (!emailRegex.test(email)) {
+            emailCheckLabel.textContent = "유효한 이메일 형식이 아닙니다.";
+            emailCheckLabel.style.color = "red";
+            return false;
+        } else {
+            emailCheckLabel.textContent = ""; // 형식이 유효하면 메시지 제거
+            return true;
+        }
+    }
+
+    // 이메일 형식 검증 실패 시 중복 체크 중단
+    if (!validateEmail()) {
+        isEmailChecked = false;
+        return;
+    }
+    
+    $.ajax({
+        url: "${pageContext.request.contextPath}/member/emailCheck",
+        type: "POST",
+        dataType: "JSON",
+        data: { "user_id": $("#user_id").val() },
+        success: function (data) {
+        	if (data == 1) {
+                emailCheckLabel.textContent = "중복된 이메일입니다.";
+                emailCheckLabel.style.color = "red";
+                isEmailChecked = false;
+            } else if (data == 0) {
+                emailCheckLabel.textContent = "사용 가능한 이메일입니다.";
+                emailCheckLabel.style.color = "green";
+                isEmailChecked = true;
+            }
+        },
+        error: function () {
+            alert("요청 처리 중 에러가 발생했습니다.");
+            isEmailChecked = false;
+        }
+    });
+}
+
+//폼 제출 시 이메일 유효성 확인
+document.querySelector('form[name="signup-frm"]').addEventListener('submit', function (event) {
+    if (!validateEmail()) {
+        alert("올바른 이메일을 입력해주세요.");
+        event.preventDefault();
+    }
+});
+</script>
 </body>
 </html>

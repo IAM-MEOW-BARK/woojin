@@ -186,9 +186,8 @@ a.sidebar-link:hover {
 								상품 리스트</a></li>
 						<li class="sidebar-item"><a href="catdog-add-product-admin" class="sidebar-link">상품
 								등록</a></li>
-						<li class="sidebar-item"><a href="#" class="sidebar-link">상품
-								수정</a></li>
-					</ul></li>
+					</ul>
+				</li>
 				<li class="sidebar-item"><a href="#"
 					class="sidebar-link collapsed has-dropdown"
 					data-bs-toggle="collapse" data-bs-target="#user"

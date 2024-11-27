@@ -97,7 +97,7 @@
         />
       </div>
       <form method="post">
-	      <div>        
+	      <div>
 	        <input type="email" name="user_id"  class="email-input" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;아이디 또는 이메일을 입력해주세요">
 	      </div>
 	      <div style="margin-top: 10px;">	        

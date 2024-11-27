@@ -19,6 +19,19 @@ public class CatDogServiceImpl implements CatDogService {
 	}
 
 	@Override
+	public Map findId(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return catDogDAO.findId(map);
+	}
+
+	@Override
+	public Map findPw(Map<String, Object> map) {
+		// TODO Auto-generated method stub
+		return catDogDAO.findPw(map);
+	}
+
+	
+	@Override
 	public int create(MemberDTO meber) throws Exception {
 		// TODO Auto-generated method stub
 		return catDogDAO.create(meber);
@@ -102,4 +115,9 @@ public class CatDogServiceImpl implements CatDogService {
 	    System.out.println("Service에서 전달된 상품: " + product); // 디버깅 로그
 	    return product;
 	}
+
+
+
+
+	
 }

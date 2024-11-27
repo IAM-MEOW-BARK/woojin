@@ -97,6 +97,7 @@ td {
 							<option value="email">이메일</option>
 							<option value="socialType">소셜타입</option>
 							<option value="name">이름</option>
+							<option value="status">상태</option>
 					</select> <input type="text" name="searchKeyword" placeholder="검색어 입력">
 					</td>
 				</tr>
@@ -262,8 +263,6 @@ td {
 		    document.getElementById('hiddenSelectedIds').value = selectedIds;
 		    document.getElementById('deleteForm').submit();
 		}
-		
-	   
 	</script>
 </body>
 </html>

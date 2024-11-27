@@ -5,9 +5,27 @@
   <mapper namespace="kr.co.dong.boardMapper">
   	<!-- 로그인 -->
  	<select id="login" parameterType="java.util.Map" resultType="java.util.Map">
- 		select user_id,name,user_auth from member
+ 		select user_id,name,user_auth, user_status from member
  		where user_id=#{user_id} and password=#{password}
  	</select>
+ 	
+ 	<update id="updateConnectedAt" parameterType="java.util.Map">
+	    update member
+	    set connected_at = now()
+	    where user_id = #{user_id};
+	</update>
+	
+	<!-- 아이디 찾기 -->
+	<select id="find-id" parameterType="java.util.Map" resultType="java.util.Map">
+		select user_id from member
+		where name=#{name} and phone_num=#{phone_num}
+	</select>
+	
+	<!-- 비밀번호 찾기 -->
+	<select id="find-pw" parameterType="java.util.Map" resultType="java.util.Map">
+		select password from member
+		where user_id = #{user_id} and name = #{name} and phone_num = #{phone_num}
+	</select>
  	
  	<!-- 회원가입 -->
  	<insert id="sign-up" parameterType="MemberDTO">
@@ -81,6 +99,7 @@
     	VALUES (#{product_code}, #{product_name}, #{product_category}, #{product_price}, #{thumbnail_img}, #{product_img}, #{product_info}, NOW());
 	</insert>	
 	
+	<!-- 상품 수정 -->
 	<update id="updateProduct" parameterType="ProductDTO">
 	    UPDATE product
 	    SET product_name = #{product_name},

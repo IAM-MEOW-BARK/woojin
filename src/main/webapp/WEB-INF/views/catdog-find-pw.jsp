@@ -4,17 +4,27 @@
 <%@ page session="true" %>
 <!DOCTYPE html>
 <html>
+
 <head>
 <style type="text/css">
 	 .container-wrapper {
+	 	heightL auto;
+	 	min-height: 100%;
+	 	padding-bottom: 270px;
         width: 500px;
         margin: 0 auto;
-        margin-top: 30px;        
+       	transform: translateY(6rem);
+       	
       }
       
-       footer {
-      	position: reliative;
-      	transform: translateY(18%);
+      footer {
+      	width: 100%;
+      	height: 270px;
+      	position: relative;
+      	transform: translateY(0%);
+      	display: flex;
+      	align-items: center;
+      	justify-content: center;azimuth: 
       }
       
       .email-input, .password-input, .name-input, .phone-input {
@@ -161,7 +171,7 @@
     }
 </style>
 <meta charset="UTF-8">
-<title>회원가입</title>
+<title>비밀번호 찾기</title>
 </head>
 <body>
 <%@ include file="include/header.jsp"%>
@@ -176,22 +186,39 @@
     <h4>
     	<b>비밀번호 찾기</b>
 	</h4>
-    <form name="findId-frm">
-   		  <div style="margin-top: 10px;">	        
-	         <input type="text" class="name-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;이메일">
-	      </div>
-	      <div style="margin-top: 10px;">	        
-	         <input type="text" class="name-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;이름">
-	      </div>
-	      <div style="margin-top: 10px;">	        
-	         <input type="text" class="phone-input" id="phone-input" name="phone-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;전화번호">
-	      </div>
-	      <div class="login-button" style="margin-top: 5px;">
-	        <button type="submit">확인</button>
-          </div>
-    </form>
+    <c:if test="${empty password}">
+        <form method="post" action="/catdog-findPw">
+	        <div style="margin-top: 10px;">
+	                <input type="text" name="user_id" class="email-input" id="email-input" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;이메일" required>
+            </div>
+            <div style="margin-top: 10px;">
+                <input type="text" name="name" class="name-input" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;이름" required>
+            </div>
+            <div style="margin-top: 10px;">
+                <input type="text" name="phone_num" class="phone-input" id="phone-input" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;전화번호" required>
+            </div>
+            <div class="login-button" style="margin-top: 5px;">
+                <button type="submit">확인</button>
+            </div>
+        </form>
+    </c:if>
+    <c:if test="${not empty password}">
+        <div style="margin-top: 20px;">
+            <p>회원님의 비밀번호는 <strong>${password}</strong>입니다.</p>
+            <!-- <a href="/catdog-login" style="color: blue;">로그인하기</a> -->
+        </div>
+    </c:if>
+
+    <!-- 아이디 없음 -->
+    <c:if test="${not empty error}">
+        <div style="margin-top: 20px; color: red;">
+            <p>아이디가 존재하지 않습니다.</p>
+        </div>
+    </c:if>
 </div>
-<%@ include file="include/footer.jsp"%>
+<footer class="footer">
+	<%@ include file="include/footer.jsp"%>
+</footer>
 <script type="text/javascript">
 /* 핸드폰 번호 분류 */
 // 포커스가 벗어날 때 실행
