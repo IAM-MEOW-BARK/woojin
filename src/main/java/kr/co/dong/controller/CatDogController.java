@@ -373,6 +373,8 @@ public class CatDogController {
 	public String catDogSignUp() {
 		return "catdog-signup";
 	}
+	
+	@GetMapping()
 
 	// 일반 유저 회원가입
 	@PostMapping(value = "/catdog-signup")
