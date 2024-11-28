@@ -83,7 +83,14 @@ public interface CatDogDAO {
     
     // 회원 삭제 위에 deleteUser 참고
     
-    // 결제 skip 2차
+    // 상품 결제
+    public List<PaymentDTO> productPayment(String user_id);
+    
+    // 상품 유저
+    public int productUser(String user_id);
+    
+    // 상품 총액
+    public int getTotalCost(String order_code) throws Exception;
     
     // 상품 리스트 페이징
     public int productPaging();

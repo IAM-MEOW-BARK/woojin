@@ -26,7 +26,7 @@
             <!-- 로고 -->
             <div class="col-sm-4 col-lg-2 text-center text-sm-start d-flex gap-3 justify-content-center">
                 <div class="d-flex align-items-center my-3 my-sm-0">
-                    <a href="home">
+                    <a href="/">
                         <img src="${pageContext.request.contextPath}/resources/bootstrap/images/CATDOGLogo2.png" alt="logo" class="img-fluid" />
                     </a>
                 </div>

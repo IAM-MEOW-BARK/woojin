@@ -32,6 +32,7 @@ import kr.co.dong.board.BoardDTO;
 import kr.co.dong.board.BoardService;
 import kr.co.dong.catdog.CatDogService;
 import kr.co.dong.catdog.MemberDTO;
+import kr.co.dong.catdog.PaymentDTO;
 import kr.co.dong.catdog.ProductDTO;
 
 @Controller
@@ -356,10 +357,15 @@ public class CatDogController {
 	@GetMapping(value = "/catdog-main")
 	public String catDogMain() {
 		return "catdog-main";
-	}
-
-	@GetMapping(value = "/catdog-payment")
-	public String catDogPayment() {
+	}	
+	
+	@GetMapping(value="/catdog-payment")
+	public String catDogPayment (@RequestParam("user_id") String user_id, Model model) throws Exception {
+		List<PaymentDTO> p = catDogService.productPayment(user_id);
+		model.addAttribute("p", p);
+		
+		int t = catDogService.getTotalCost(user_id);
+		
 		return "catdog-payment";
 	}
 	

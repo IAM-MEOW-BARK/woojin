@@ -59,8 +59,8 @@
                         <h5 class="card-title fw-bold">배송지</h5>
                         <div class="mt-3">
                             <span class="badge bg-secondary mb-2">기본배송지</span>
-                            <p class="mb-1" id="deliveryContact"><strong>김우진</strong> / 010-7545-3256</p>
-                            <p class="mb-0" id="deliveryAddress">[08392] 경기도 광명시 철산3동 498번지</p>
+                            <p class="mb-1" id="deliveryContact"><strong>${payments.name}</strong> / ${payments.phone_num}</p>
+                            <p class="mb-0" id="deliveryAddress">${payments.zipcode} ${payments.address} ${payments.detail_address}</p>
                         </div>
                         <hr>
                         <div class="d-flex">
@@ -78,21 +78,19 @@
                         <div class="d-flex align-items-center mt-3">
                             <img src="${pageContext.request.contextPath}/resources/bootstrap/images/thumbnail_01.png" alt="상품 이미지" class="img-fluid" style="width: 100px; height: auto; margin-right: 15px;">
                             <div>
-                                <h6 class="mb-1">양면 초경량 후리스 네이비</h6>
+                                <h6 class="mb-1">${payments.product_name}</h6>
                                 <span class="badge bg-secondary">무료 배송</span>
                                 <p class="text-muted mb-1">지금 결제 시 <span class="fw-bold">내일 도착보장</span></p>
-                                <p class="mt-2 mb-0">강아지 패딩 양면 겨울옷 초경량 후리스</p>
                             </div>
                         </div>
                         <div class="mt-3">
-                            <p class="mb-1"><span class="fw-bold">옵션:</span> S</p>
-                            <p class="mb-1"><span class="fw-bold">수량:</span> 1개</p>
-                            <p class="fw-bold text-end">15,500원</p>
+                            <p class="mb-1"><span class="fw-bold">수량:</span> ${payments.cart_quantity}개</p>
+                            <p class="fw-bold text-end">${payments.product_price}원</p>
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between">
                             <span class="fw-bold">총 주문금액</span>
-                            <span class="fw-bold" style="color:#ff6600">15,500원</span>
+                            <span class="fw-bold" style="color:#ff6600">${total_cost}원</span>
                         </div>
                     </div>
                 </div>
@@ -111,7 +109,6 @@
                     </div>
                 </div>
             </div>
-
             <!-- 우측: 결제 요약 -->
             <div class="col-lg-4">
                 <div class="card shadow-sm">

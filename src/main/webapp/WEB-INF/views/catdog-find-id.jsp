@@ -169,6 +169,36 @@
     .modal-close-btn:hover {
       background-color: #0056b3;
     }
+    
+   	button {
+		cursor: pointer;
+	}
+	
+	.login-button button {
+	    width: 500px;
+	    height: 60px;
+	    border: none;
+	    background: #ff6600;
+	    color: #ffffff;
+	    font-size: 1rem;
+	    border-radius: 15px;
+	    margin-top: 20px;
+	}
+	
+	.login-button button:hover {
+		background-color: #FF4D00;
+		transition-duration :0.5s;
+	}
+	
+	.signup-button button {
+		width: 500px;
+		height:60px;
+		border: 1px solid #ff6600;
+		background: #ffffff;
+		color:#ff6600;
+		font-size: 1rem;
+		border-radius: 15px;
+	}
 </style>
 <meta charset="UTF-8">
 <title>회원가입</title>
@@ -205,6 +235,12 @@
             <p>회원님의 아이디는 <strong>${user_id}</strong>입니다.</p>
             <!-- <a href="/catdog-login" style="color: blue;">로그인하기</a> -->
         </div>
+        <div class="login-button" style="margin-top: 20px;">
+	        <button type="button" onclick="location.href=`catdog-login`">로그인</button>
+        </div>
+         <div class="signup-button" style="margin-top: 20px;">
+	        <button type="button" onclick="location.href=`catdog-find-pw`">비밀번호 찾기</button>
+	      </div>
     </c:if>
 
     <!-- 아이디 없음 -->

@@ -9,6 +9,7 @@
  		where user_id=#{user_id} and password=#{password}
  	</select>
  	
+ 	<!-- 최근 접속 -->
  	<update id="updateConnectedAt" parameterType="java.util.Map">
 	    update member
 	    set connected_at = now()
@@ -119,6 +120,48 @@
 	        #{product_code}
 	    </foreach>;
 	</delete>
+	
+	<!-- 상품 결제 (카트 정보) -->
+	<select id="productPayment" parameterType="java.lang.String" resultType="PaymentDTO">
+		SELECT
+			P.PRODUCT_CODE,
+			P.PRODUCT_NAME,
+			P.PRODUCT_PRICE,
+			P.THUMBNAIL_IMG,
+			C.CART_QUANTITY
+		FROM
+		CART C
+			LEFT JOIN PRODUCT P
+			ON C.PRODUCT_CODE = P.PRODUCT_CODE
+		WHERE C.USER_ID = #{USER_ID}
+	</select>
+	
+	<!-- 상품 유저 -->
+	<select id="productPaymentMember" resultType="PaymentDTO">
+		SELECT
+			M.USER_ID,
+			M.NAME,
+			M.PHONE_NUM,
+			M.ZIPCODE,
+			M.ADDRESS,
+			M.DETAIL_ADDRESS
+		FROM
+		CART C
+			LEFT JOIN MEMBER M
+			ON C.USER_ID =  M.USER_ID
+		WHERE C.USER_ID = #{USER_ID}
+	</select>
+	
+	<!-- 상품 총액 -->
+	<select id="getTotalCost" parameterType="java.lang.String" resultType="java.lang.Integer">
+      SELECT
+         sum(p.product_price * oi.order_quantity) as totalCost
+      FROM
+         order_item oi
+         LEFT JOIN product p ON oi.product_code = p.product_code
+      WHERE
+         oi.order_code = #{order_code}
+   </select>
        	
  	<!-- 회원 관리 리스트 -->
  	<select id="getTotalMember" resultType="MemberDTO">

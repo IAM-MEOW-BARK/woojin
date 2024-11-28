@@ -169,6 +169,22 @@
     .modal-close-btn:hover {
       background-color: #0056b3;
     }
+    
+    .login-button button {
+	    width: 500px;
+	    height: 60px;
+	    border: none;
+	    background: #ff6600;
+	    color: #ffffff;
+	    font-size: 1rem;
+	    border-radius: 15px;
+	    margin-top: 20px;
+	}
+	
+	.login-button button:hover {
+		background-color: #FF4D00;
+		transition-duration :0.5s;
+	}
 </style>
 <meta charset="UTF-8">
 <title>비밀번호 찾기</title>
@@ -205,7 +221,9 @@
     <c:if test="${not empty password}">
         <div style="margin-top: 20px;">
             <p>회원님의 비밀번호는 <strong>${password}</strong>입니다.</p>
-            <!-- <a href="/catdog-login" style="color: blue;">로그인하기</a> -->
+        </div>
+        <div class="login-button" style="margin-top: 20px;">
+	        <button type="button" onclick="location.href=`catdog-login`">로그인</button>
         </div>
     </c:if>
 

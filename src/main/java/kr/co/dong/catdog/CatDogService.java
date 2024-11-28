@@ -37,6 +37,15 @@ public interface CatDogService {
     // 상품 삭제
     public int deleteProduct(List<String> productCode);
     
+    // 상품 결제
+    public List<PaymentDTO> productPayment(String user_id);
+    
+    // 상품 유저
+    public int productUser(String user_id);
+    
+    // 상품 총액
+    public int getTotalCost(String order_code) throws Exception;
+    
     // 전체 상품 관리 리스트
     public List <ProductDTO> getTotalProduct(int start, int pageSize);
     

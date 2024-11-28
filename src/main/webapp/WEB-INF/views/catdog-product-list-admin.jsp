@@ -172,7 +172,7 @@ td {
 				                        </td>     			 	
 								 	<td style="text-align: center;">${product.product_code}</td>
 								 	<td class="text-center">
-										<img alt="thumbnail_image" src="${pageContext.request.contextPath}/resources/upload/${product.thumbnail_img}"  style="width: 30px; height: auto;">
+										<img alt="thumbnail_image" src="${pageContext.request.contextPath}/resources/upload/${product.thumbnail_img}"  style="width: 30px; height: 30px;">
 									</td>
 								 	<td style="text-align: center;">
 							            <c:choose>

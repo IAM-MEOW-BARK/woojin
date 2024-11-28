@@ -15,7 +15,16 @@ public class CatDogServiceImpl implements CatDogService {
 	@Override
 	public Map login(Map<String, Object>map) {
 		// TODO Auto-generated method stub
-		return catDogDAO.login(map);
+		  // 1. 로그인 쿼리 실행
+	    Map<String, Object> user = catDogDAO.login(map);
+
+	    // 2. 로그인 성공 시 connected_at 업데이트
+	    if (user != null) {
+	        catDogDAO.updateConnectedAt(map); // connected_at 컬럼에 현재 시각 업데이트
+	    }
+
+	    // 3. 로그인 결과 반환
+	    return user;
 	}
 
 	@Override
@@ -116,8 +125,23 @@ public class CatDogServiceImpl implements CatDogService {
 	    return product;
 	}
 
+	@Override
+	public List<PaymentDTO> productPayment(String user_id) {
+		// TODO Auto-generated method stub
+		return catDogDAO.productPayment(user_id);
+	}
+	
+	@Override
+	public int productUser(String user_id) {
+		// TODO Auto-generated method stub
+		return catDogDAO.productUser(user_id);
+	}	
 
-
+	@Override
+	public int getTotalCost(String order_code) throws Exception {
+	   // TODO Auto-generated method stub
+       return catDogDAO.getTotalCost(order_code);
+   }
 
 	
 }

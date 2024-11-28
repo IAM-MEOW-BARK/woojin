@@ -3,11 +3,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="true" %>
 <!DOCTYPE html>
-<html lang="en">
+<html>
   <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>로그인 페이지</title>
+  <%@ include file="include/head.jsp" %>
     <style>
       .container-wrapper {
         width: 500px;
@@ -16,7 +14,7 @@
       }
       
       .email-input, .password-input {
-      	width: 467px; height: 35px; font-size: 1rem; border: 2px solid #f0f0f1; border-radius: 5px; padding: 15px;
+      	width: 500px; height: 55px; font-size: 1rem; border: 2px solid #f0f0f1; border-radius: 5px; padding: 15px;
       }
       
       .email-input:focus {
@@ -86,8 +84,11 @@
 		width: 40px; height: 40px;
 	}
     </style>
+    <meta charset="UTF-8" />    
+    <title>로그인 페이지</title>
   </head>
   <body>
+  	<%@ include file="include/header.jsp"%>
     <div class="container-wrapper">
       <div style="display: flex; justify-content: center;  width:500px; height:300px; overflow:hidden; margin:0 auto;">
         <img

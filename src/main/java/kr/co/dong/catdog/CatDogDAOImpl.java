@@ -208,8 +208,20 @@ public class CatDogDAOImpl implements CatDogDAO{
 	    return product;
 	}
 
-	
+	@Override
+	public List<PaymentDTO> productPayment(String user_id) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(namespace + ".productPayment" + user_id);
+	}
 
-	
-	
+	 // 주문 총 결제액
+    public int getTotalCost(String order_code) throws Exception {
+       return sqlSession.selectOne(namespace + ".getTotalCost", order_code);
+    }
+
+	@Override
+	public int productUser(String user_id) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + ".productPaymentMember" + user_id);
+	}
 }
