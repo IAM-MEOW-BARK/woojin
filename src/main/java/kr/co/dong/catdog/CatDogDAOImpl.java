@@ -135,6 +135,12 @@ public class CatDogDAOImpl implements CatDogDAO{
 		// TODO Auto-generated method stub
 		return sqlSession.insert(namespace + ".add-product", productDTO);
 	}
+	
+	@Override
+	public int checkProductCode(int product_code) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + ".product-code-check" , product_code);
+	}
 
 	@Override
 	public int updateProduct(ProductDTO productDTO) {
@@ -224,4 +230,6 @@ public class CatDogDAOImpl implements CatDogDAO{
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(namespace + ".productPaymentMember" + user_id);
 	}
+
+	
 }

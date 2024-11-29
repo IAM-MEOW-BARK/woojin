@@ -186,7 +186,8 @@ a.sidebar-link:hover {
 								상품 리스트</a></li>
 						<li class="sidebar-item"><a href="catdog-add-product-admin" class="sidebar-link">상품
 								등록</a></li>
-								<li class="sidebar-item"><a href="catdog-payment" class="sidebar-link">결제 페이지</a></li>
+						<li class="sidebar-item"><a href="catdog-payment" class="sidebar-link">결제 페이지</a></li>
+						<li class="sidebar-item"><a href="catdog-product-test" class="sidebar-link">상품 테스트</a></li>
 					</ul>
 				</li>
 				<li class="sidebar-item"><a href="#"

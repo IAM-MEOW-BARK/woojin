@@ -80,6 +80,12 @@ public class CatDogServiceImpl implements CatDogService {
 		// TODO Auto-generated method stub
 		return catDogDAO.addProduct(productDTO);
 	}
+	
+	@Override
+	public int checkProductCode(int product_code) throws Exception {
+		// TODO Auto-generated method stub
+		return catDogDAO.checkProductCode(product_code);
+	}
 
 	@Override
 	public List<ProductDTO> getTotalProduct(int start, int pageSize) {
@@ -142,6 +148,8 @@ public class CatDogServiceImpl implements CatDogService {
 	   // TODO Auto-generated method stub
        return catDogDAO.getTotalCost(order_code);
    }
+
+	
 
 	
 }

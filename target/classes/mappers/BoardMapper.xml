@@ -41,6 +41,11 @@
 	    where user_id = #{user_id}
 	</select>
 	
+	<!-- 상품코드 중복 -->
+	<select id="product-code-check" parameterType="Integer" resultType="int">
+		select count(*) from product
+	    where product_code = #{product_code}
+	</select>
 		
 	<!-- 상품 관리 리스트 -->
 	<select id="getTotalProduct" resultType="ProductDTO">
@@ -122,7 +127,7 @@
 	</delete>
 	
 	<!-- 상품 결제 (카트 정보) -->
-	<select id="productPayment" parameterType="java.lang.String" resultType="PaymentDTO">
+	<!-- <select id="productPayment" parameterType="java.lang.String" resultType="PaymentDTO">
 		SELECT
 			P.PRODUCT_CODE,
 			P.PRODUCT_NAME,
@@ -136,7 +141,7 @@
 		WHERE C.USER_ID = #{USER_ID}
 	</select>
 	
-	<!-- 상품 유저 -->
+	상품 유저
 	<select id="productPaymentMember" resultType="PaymentDTO">
 		SELECT
 			M.USER_ID,
@@ -152,7 +157,7 @@
 		WHERE C.USER_ID = #{USER_ID}
 	</select>
 	
-	<!-- 상품 총액 -->
+	상품 총액
 	<select id="getTotalCost" parameterType="java.lang.String" resultType="java.lang.Integer">
       SELECT
          sum(p.product_price * oi.order_quantity) as totalCost
@@ -161,7 +166,7 @@
          LEFT JOIN product p ON oi.product_code = p.product_code
       WHERE
          oi.order_code = #{order_code}
-   </select>
+   </select> -->
        	
  	<!-- 회원 관리 리스트 -->
  	<select id="getTotalMember" resultType="MemberDTO">

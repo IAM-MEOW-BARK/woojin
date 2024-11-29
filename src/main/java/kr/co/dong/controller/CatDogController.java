@@ -2,16 +2,15 @@ package kr.co.dong.controller;
 
 
 import java.io.File;
-import java.io.FileOutputStream;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
 import javax.inject.Inject;
+import javax.servlet.http.Cookie;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.servlet.http.Cookie;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -28,8 +27,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import kr.co.dong.board.BoardDTO;
-import kr.co.dong.board.BoardService;
 import kr.co.dong.catdog.CatDogService;
 import kr.co.dong.catdog.MemberDTO;
 import kr.co.dong.catdog.PaymentDTO;
@@ -110,11 +107,18 @@ public class CatDogController {
 		catDogService.deleteProduct(productCode);
 
 		return "redirect:/catdog-product-list-admin";			
-	}	
+	}
+	
+	// 상품 코드 중복 체크
+	@PostMapping(value = "product/checkProductCode")
+	@ResponseBody
+	public int checkCode(@RequestParam("product_code") int product_code) throws Exception {
+		return catDogService.checkProductCode(product_code);
+	}
 	
 	// 상품 등록
 	@PostMapping("/catdog-add-product")
-	public String catDogAddProduct(@ModelAttribute ProductDTO productDTO, HttpServletRequest request) throws Exception {
+	public String catDogAddProduct(@ModelAttribute ProductDTO productDTO, HttpServletRequest request, HttpSession session) throws Exception {
 	    request.setCharacterEncoding("UTF-8");
 
 	    // 파일 업로드 경로
@@ -124,7 +128,7 @@ public class CatDogController {
 	        dir.mkdirs(); // 디렉터리가 없으면 생성
 	    }
 
-	 // 파일 저장
+	    // 파일 저장
 	    MultipartFile file = productDTO.getThumbnail_imgFile();
 	    if (file != null && !file.isEmpty()) {
 	        String safeFileName = file.getOriginalFilename().replaceAll("[^a-zA-Z0-9._-]", "_");
@@ -140,12 +144,34 @@ public class CatDogController {
 	    } else {
 	        System.out.println("파일이 업로드되지 않았습니다.");
 	    }
+	    
+		
+		  // 상세 이미지 파일 저장 
+	      MultipartFile productFile = productDTO.getProduct_imgFile();
+		  if (productFile != null && !productFile.isEmpty()) { String
+		  safeDetailFileName =
+		  productFile.getOriginalFilename().replaceAll("[^a-zA-Z0-9._-]", "_"); File
+		  uploadedDetailFile = new File(loc, safeDetailFileName);
+		  productFile.transferTo(uploadedDetailFile);
+		  
+		  // 상세 이미지 파일 저장 확인 while (!uploadedDetailFile.exists()) { Thread.sleep(100);
+		  // 디스크 반영 대기 }
+		  
+		  productDTO.setProduct_img(safeDetailFileName); // 상세 이미지 파일 이름 설정 } else {
+		  System.out.println("상세 이미지 파일이 업로드되지 않았습니다."); }
 
 	    // 서비스 호출
 	    int result = catDogService.addProduct(productDTO);
 	    System.out.println(productDTO);
+	    
+	    // 성공 메시지 설정
+	    if (result > 0) {
+	    	 session.setAttribute("successMessage", "상품 등록 완료!");
+	    } else {
+	    	session.setAttribute("errorMessage", "상품 등록 실패. 다시 시도하세요.");
+	    }
 
-	    return "redirect:/catdog-product-list-admin";
+	    return "redirect:/catdog-add-product-admin";
 	}
 	
 	// 상품 목록 + 페이징
@@ -183,6 +209,42 @@ public class CatDogController {
 		
 	    return mAV;
 	}
+	
+	// 상품 목록 + 페이징
+		@GetMapping("/catdog-product-test")
+		public ModelAndView productTestList(HttpServletResponse response,
+			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+	        @RequestParam(value = "pageListNum", defaultValue = "1") int pageListNum) {
+		    response.setHeader("Cache-Control", "no-cache, no-store, must-revalidate");
+		    response.setHeader("Pragma", "no-cache");
+		    response.setDateHeader("Expires", 0);
+		    
+		    int pageSize = 10; // 한 페이지당 게시글 수
+		    int pageListSize = 10; // 한 번에 표시할 페이지 수
+		    
+		    // 전체 게시글 수
+		    int totalList = catDogService.productPaging();
+		    int totalPage = (int) Math.ceil((double) totalList / pageSize);
+		    
+		    // 현재 페이지에서 가져올 데이터의 시작 인덱스 계산
+		    int start = (pageNum - 1) * pageSize;
+		    
+		    // 현재 페이지 번호 목록의 시작과 끝
+		    int startPage = (pageListNum - 1) * pageListSize + 1;
+		    int endPage = Math.min(startPage + pageListSize - 1, totalPage);
+
+		    ModelAndView mAV = new ModelAndView();	    
+		    List<ProductDTO> productTestList = catDogService.getTotalProduct(start, pageSize);	    
+		    mAV.addObject("totalPage", totalPage); // 전체 페이지 수
+		    mAV.addObject("currentPage", pageNum); // 현재 페이지 번호
+			mAV.addObject("productTestList", productTestList); 
+		    mAV.addObject("pageListNum", pageListNum);
+		    mAV.addObject("startPage", startPage); // 페이지 네비게이션 시작
+		    mAV.addObject("endPage", endPage); // 페이지 네비게이션 끝
+		    mAV.setViewName("catdog-product-test");
+			
+		    return mAV;
+		}
 
 	@GetMapping(value = "/catdog-login")
 	public String catdogLogin() {
@@ -369,14 +431,12 @@ public class CatDogController {
 		return "catdog-payment";
 	}
 	
+	// 일반 유저 회원가입
 	@GetMapping(value="/catdog-signup")
 	public String catDogSignUp() {
 		return "catdog-signup";
 	}
 	
-	@GetMapping()
-
-	// 일반 유저 회원가입
 	@PostMapping(value = "/catdog-signup")
 	public String signup(MemberDTO member, HttpServletRequest request, RedirectAttributes rttr) throws Exception {
 		request.setCharacterEncoding("utf-8");

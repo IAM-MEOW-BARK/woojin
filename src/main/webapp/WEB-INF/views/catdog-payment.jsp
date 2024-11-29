@@ -25,7 +25,7 @@
     </style>
 </head>
 <body>                
-     <%-- <div class="card-body">
+     <div class="card-body">
          <div class="d-flex justify-content-between align-items-center">
              <h5 class="card-title mb-0">
                  <i class="bi bi-geo-alt"></i>
@@ -47,7 +47,7 @@
          <div class="bg-light p-3 text-muted">
              <span th:text="${memo}">문 앞에 놓아주세요.</span>
          </div>
-     </div> --%>
+     </div>
      <!-- 좌측 -->
      <div class="container mt-5">
         <div class="row">

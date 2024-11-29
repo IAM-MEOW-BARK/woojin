@@ -70,7 +70,7 @@ td {
 			<table class="table table-bordered">
 				<tr>
 					<th class="table-light">이메일</th>
-					<td><input type="text" id="user_id" name="user_id" onblur="validateEmail()" required>
+					<td><input type="text" id="user_id" name="user_id" required>
 					<button type="button" class="btn btn-secondary btn-sm" onclick="emailCheck();">중복확인</button>
 					<label id="email-check-label" style="margin-left: 10px;"></label>
                 <!-- <div id="email-validation-message" style="margin-top: 5px; font-size: 12px;"></div> -->						

@@ -14,7 +14,7 @@ public interface CatDogService {
 	public Map findPw(Map<String, Object> map);
 	
 	// 회원가입
-	public int create(MemberDTO meber) throws Exception;
+	public int create(MemberDTO member) throws Exception;
 	
 	// 이메일 중복 체크
 	public int getMemberByEmail(String user_id) throws Exception;
@@ -30,6 +30,9 @@ public interface CatDogService {
 		
 	// 상품 등록
     public int addProduct(ProductDTO productDTO) throws Exception;
+    
+    // 상품 코드 중복 체크
+ 	public int checkProductCode(int product_code) throws Exception;
     
     // 상품 수정
     public int updateProduct(ProductDTO productDTO);

@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <!DOCTYPE html>
 <html>
 <%@ include file="include/head.jsp" %>
@@ -60,6 +61,26 @@ td {
 </head>
 <body>
 	<%@ include file="include/catdog-sidebar.jsp"%>
+	 <%-- 성공 메시지 표시 --%>
+    <c:if test="${not empty sessionScope.successMessage}">
+        <script>
+            alert("${sessionScope.successMessage}");
+            const redirect = confirm("상품 목록 페이지로 이동하시겠습니까?");
+            if (redirect) {
+                // 상품 목록 페이지로 이동
+                window.location.href = "/catdog-product-list-admin";
+            }
+        </script>
+        <c:remove var="successMessage" scope="session" />
+    </c:if>
+
+    <%-- 실패 메시지 표시 --%>
+    <c:if test="${not empty sessionScope.errorMessage}">
+        <script>
+            alert("${sessionScope.errorMessage}");
+        </script>
+        <c:remove var="errorMessage" scope="session" />
+    </c:if>
 	<div class="main p-5">
 		<h6>
 			<strong>상품 등록</strong>
@@ -79,7 +100,7 @@ td {
 				<tr>
 					<th class="table-light">상품 코드</th>
 					<td><input type="number" id="product_code" name="product_code" required>
-						<button class="btn btn-secondary btn-sm">중복확인</button></td>
+						<button type="button" class="btn btn-secondary btn-sm" onclick="productCodeCheck();">중복확인</button></td>
 				</tr>
 				<tr>
 					<th class="table-light">상품 명</th>
@@ -151,8 +172,8 @@ td {
 				<tr>
 					<th class="table-light">상품 상세 이미지</th>
 					<td>
-						<!-- <input type="text" id="product_img" name="product_img" placeholder="파일 경로가 여기에 표시됩니다"> -->
-						<!-- <input type="file" id="imageDetailUpload" accept="image/*"> -->
+						<input type="text" id="product_img" name="product_img" placeholder="파일 경로가 여기에 표시됩니다">
+						<input type="file" id="imageDetailUpload" name="product_imgFile" accept="image/*">
 					</td>
 				</tr>
 				<tr>
@@ -170,6 +191,7 @@ td {
 			</div>
 		</form>
 	</div>
+	
 	<script src="https://cdn.ckeditor.com/ckeditor5/29.1.0/classic/ckeditor.js"></script>
 	<script type="text/javascript">
 		/* CKEditor  */
@@ -213,15 +235,43 @@ td {
         }
     });
 		
-	// 폼 유효성 검사
-    document.querySelector('form').addEventListener('submit', function(event) {
-        const productName = document.getElementById('product_name').value.trim();
-        if (!productName) {
-            alert('상품 명은 필수 입력 항목입니다.');
-            event.preventDefault(); // 폼 제출 중단
-        }
-    });
 	
+  	// 폼 유효성 검사 및 확인 창 표시
+	document.getElementById('productForm').addEventListener('submit', function(event) {
+	    const productName = document.getElementById('product_name').value.trim();
+	    if (!productName) {
+	        alert('상품 명은 필수 입력 항목입니다.');
+	        event.preventDefault(); // 폼 제출 중단
+	        return;
+	    }  
+	});
+  	
+	// ajax
+    let isProductCodeChecked = false; // 중복 확인 상태 추적
+    
+    function productCodeCheck() {
+	    $.ajax({
+	        url: "${pageContext.request.contextPath}/product/checkProductCode",
+	        type: "POST",
+	        dataType: "JSON",
+	        data: { "product_code": $("#product_code").val() },
+	        success: function (data) {
+	            if (data == 1) {
+	                alert("중복된 상품코드입니다.");
+	                isProductCodeChecked = false;
+	            } else if (data == 0) {
+	                alert("사용 가능한 상품코드 입니다.");
+	                isProductCodeChecked = true;
+	            }
+	        },
+	        error: function () {
+	            alert("요청 처리 중 에러가 발생했습니다.");
+	            isProductCodeChecked = false;
+	        }
+	    });
+	}
+	
+  	
    /*  document.querySelector('#productForm').addEventListener('submit', function (event) {
         event.preventDefault(); // 기본 제출 중단
 

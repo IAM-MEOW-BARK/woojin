@@ -9,6 +9,7 @@ public class ProductDTO {
    private int product_price;
    private String thumbnail_img;
    private MultipartFile thumbnail_imgFile;
+   private MultipartFile product_imgFile;
    private String product_img;
    private String product_info;
    private String product_regdate;
@@ -21,9 +22,15 @@ public class ProductDTO {
 	public void setThumbnail_imgFile(MultipartFile thumbnail_imgFile) {
 		this.thumbnail_imgFile = thumbnail_imgFile;
 	}
+	public MultipartFile getProduct_imgFile() {
+		   return product_imgFile;
+	}
+	public void setProduct_imgFile(MultipartFile product_imgFile) {
+			this.product_imgFile = product_imgFile;
+    }
 	public int getProduct_code() {
 	      return product_code;
-	   }
+   }
    public void setProduct_code(int product_code) {
       this.product_code = product_code;
    }
@@ -51,7 +58,9 @@ public class ProductDTO {
    public void setThumbnail_img(String thumbnail_img) {
       this.thumbnail_img = thumbnail_img;
    }
-   public String getProduct_img() {
+   
+   
+	public String getProduct_img() {
       return product_img;
    }
    public void setProduct_img(String product_img) {
@@ -75,13 +84,15 @@ public class ProductDTO {
    public void setProduct_update(String product_update) {
       this.product_update = product_update;
    }
+   
    @Override
    public String toString() {
-      return "ProductDTO [product_code=" + product_code + ", product_name=" + product_name + ", product_category="
-            + product_category + ", product_price=" + product_price + ", thumbnail_img=" + thumbnail_img
-            + ", product_img=" + product_img + ", product_info=" + product_info + ", product_regdate="
-            + product_regdate + ", product_update=" + product_update + "]";
-   }
+	   return "ProductDTO [product_code=" + product_code + ", product_name=" + product_name + ", product_category="
+			+ product_category + ", product_price=" + product_price + ", thumbnail_img=" + thumbnail_img
+			+ ", thumbnail_imgFile=" + thumbnail_imgFile + ", product_imgFile=" + product_imgFile + ", product_img="
+			+ product_img + ", product_info=" + product_info + ", product_regdate=" + product_regdate
+			+ ", product_update=" + product_update + "]";
+}
 
    
 }
