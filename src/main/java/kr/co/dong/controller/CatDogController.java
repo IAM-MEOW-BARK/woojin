@@ -29,6 +29,7 @@ import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import kr.co.dong.catdog.CatDogService;
 import kr.co.dong.catdog.MemberDTO;
+import kr.co.dong.catdog.OrderItemDTO;
 import kr.co.dong.catdog.PaymentDTO;
 import kr.co.dong.catdog.ProductDTO;
 
@@ -421,15 +422,16 @@ public class CatDogController {
 		return "catdog-main";
 	}	
 	
-	@GetMapping(value="/catdog-payment")
-	public String catDogPayment (@RequestParam("user_id") String user_id, Model model) throws Exception {
-		List<PaymentDTO> p = catDogService.productPayment(user_id);
-		model.addAttribute("p", p);
-		
-		int t = catDogService.getTotalCost(user_id);
-		
-		return "catdog-payment";
-	}
+	/*
+	 * @GetMapping(value="/catdog-payment") public String catDogPayment
+	 * (@RequestParam("user_id") String user_id, Model model) throws Exception {
+	 * List<PaymentDTO> p = catDogService.productPayment(user_id);
+	 * model.addAttribute("p", p);
+	 * 
+	 * int t = catDogService.getTotalCost(user_id);
+	 * 
+	 * return "catdog-payment"; }
+	 */
 	
 	// 일반 유저 회원가입
 	@GetMapping(value="/catdog-signup")
@@ -532,5 +534,34 @@ public class CatDogController {
 		List<Map<String, Object>> products = catDogService.searchProduct(searchType, searchKeyword, startDate, endDate);
 		model.addAttribute("productList", products);
 		return "catdog-product-list-admin"; // JSP 경로
+	}
+	
+	// 결제 페이지 회원
+	@GetMapping(value = "catdog-payment")
+	public String paymentMember(@RequestParam("user_id") String user_id, Model model, HttpSession session) {
+	    // 회원 정보 가져오기
+		Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
+		System.out.println("user::::::::" + user);
+		PaymentDTO pdto = catDogService.getMember((String) user.get("user_id"));
+		model.addAttribute("paymentMember", pdto);
+		
+		List<OrderItemDTO> orderInfo = catDogService.getOrderInfo(user_id);
+		model.addAttribute("orderInfo", orderInfo);
+		
+		System.out.println("orderInfo" + orderInfo);
+		
+	    // 데이터를 Model 객체에 추가
+		/*
+		 * model.addAttribute("user_name", user.get("name"));
+		 * model.addAttribute("phone_num", user.get("phone_num"));
+		 * model.addAttribute("zipcode", user.get("zipcode"));
+		 * model.addAttribute("address", user.get("address"));
+		 * model.addAttribute("detailaddress", user.get("detailaddress"));
+		 */
+		
+	    
+	    System.out.println(user);
+
+	    return "catdog-payment"; // 뷰 이름 반환
 	}
 }

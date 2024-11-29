@@ -149,7 +149,16 @@ public class CatDogServiceImpl implements CatDogService {
        return catDogDAO.getTotalCost(order_code);
    }
 
-	
+	@Override
+	public PaymentDTO getMember(String user_id) {
+		// TODO Auto-generated method stub
+		return catDogDAO.getMember(user_id);
+	}
 
+	@Override
+	public List<OrderItemDTO> getOrderInfo(String order_code) {
+		// TODO Auto-generated method stub
+		return catDogDAO.getOrderInfo(order_code);
+	}
 	
 }

@@ -90,13 +90,21 @@
  	<!-- 상품 관리 리스트 페이징 -->
  	<select id="productPaging" resultType="java.lang.Integer">
 		select count(*) from product;
-	</select>
+	</select>	
 	
 	<!-- 상품 단일 조회  -->
 	<select id="getProductByCode" parameterType="java.util.Map" resultType="ProductDTO">
 	    SELECT *
 	    FROM product
 	    WHERE product_code = #{product_code}
+	</select>
+	
+	<select id="getOrderInfo" parameterType="String" resultType="OrderItemDTO">
+		select p.thumbnail_img, p.product_price, oi.order_quantity, (p.product_price * oi.order_quantity) as total_price, p.product_name
+		from order_item oi
+		left join product p
+		on p.product_code = oi.product_code
+		where order_code = #{order_code}
 	</select>
 	
 	<!-- 상품 등록  -->
@@ -125,6 +133,8 @@
 	        #{product_code}
 	    </foreach>;
 	</delete>
+	
+	
 	
 	<!-- 상품 결제 (카트 정보) -->
 	<!-- <select id="productPayment" parameterType="java.lang.String" resultType="PaymentDTO">
@@ -173,6 +183,12 @@
  		select * from member
  		order by user_created_at desc
  		limit #{start}, #{pageSize}
+ 	</select>
+ 	
+ 	<!-- 결제 페이지 회원 정보 -->
+ 	<select id="getMember" resultType="PaymentDTO">
+ 		select name, phone_num, zipcode, address, detailaddress from member
+ 		where user_id = #{user_id}
  	</select>
  	
  	<!-- 회원 관리 리스트 페이징 -->

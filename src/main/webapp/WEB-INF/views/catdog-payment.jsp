@@ -22,10 +22,12 @@
         .container {
  	   		max-width: 1000px !important; /* 원하는 크기로 설정 */
 		}
+		
+		input:focus {outline: none;}
     </style>
 </head>
 <body>                
-     <div class="card-body">
+   <%--   <div class="card-body">
          <div class="d-flex justify-content-between align-items-center">
              <h5 class="card-title mb-0">
                  <i class="bi bi-geo-alt"></i>
@@ -47,7 +49,7 @@
          <div class="bg-light p-3 text-muted">
              <span th:text="${memo}">문 앞에 놓아주세요.</span>
          </div>
-     </div>
+     </div> --%>
      <!-- 좌측 -->
      <div class="container mt-5">
         <div class="row">
@@ -58,9 +60,18 @@
                     <div class="card-body">
                         <h5 class="card-title fw-bold">배송지</h5>
                         <div class="mt-3">
+                        
                             <span class="badge bg-secondary mb-2">기본배송지</span>
-                            <p class="mb-1" id="deliveryContact"><strong>${payments.name}</strong> / ${payments.phone_num}</p>
-                            <p class="mb-0" id="deliveryAddress">${payments.zipcode} ${payments.address} ${payments.detail_address}</p>
+                            <%-- <p class="mb-1" id="deliveryContact2"><strong>${paymentMember.name}</strong> / ${paymentMember.phone_num}</p> --%>
+                            <div>
+                            	<input type="text" id="deliveryContact" style="border: none; font-weight: bold" value="${paymentMember.name}" readonly>
+                            </div>
+                            <div>
+                            	<input type="text" id="deliveryContact" style="border: none" size="11" value="${paymentMember.phone_num}" readonly>
+                            </div>
+                            <div>
+                            	<input type="text" id="deliveryAddress" style="border: none;" size="70" value="${paymentMember.zipcode} ${paymentMember.address} ${paymentMember.detailaddress}" readonly>
+                            </div>
                         </div>
                         <hr>
                         <div class="d-flex">
@@ -75,22 +86,22 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-body">
                         <h5 class="card-title fw-bold">주문 상품</h5>
-                        <div class="d-flex align-items-center mt-3">
+                        <%-- <div class="d-flex align-items-center mt-3">
                             <img src="${pageContext.request.contextPath}/resources/bootstrap/images/thumbnail_01.png" alt="상품 이미지" class="img-fluid" style="width: 100px; height: auto; margin-right: 15px;">
                             <div>
-                                <h6 class="mb-1">${payments.product_name}</h6>
+                                <h6 class="mb-1">${orderInfo.product_name}</h6>
                                 <span class="badge bg-secondary">무료 배송</span>
                                 <p class="text-muted mb-1">지금 결제 시 <span class="fw-bold">내일 도착보장</span></p>
                             </div>
-                        </div>
+                        </div> --%>
                         <div class="mt-3">
-                            <p class="mb-1"><span class="fw-bold">수량:</span> ${payments.cart_quantity}개</p>
-                            <p class="fw-bold text-end">${payments.product_price}원</p>
+                            <p class="mb-1"><span class="fw-bold">수량:</span> ${orderInfo.order_quantity}개</p>
+                            <p class="fw-bold text-end">${orderInfo.product_price}원</p>
                         </div>
                         <hr>
                         <div class="d-flex justify-content-between">
                             <span class="fw-bold">총 주문금액</span>
-                            <span class="fw-bold" style="color:#ff6600">${total_cost}원</span>
+                            <span class="fw-bold" style="color:#ff6600">${orderInfo.total_cost}원</span>
                         </div>
                     </div>
                 </div>
@@ -163,32 +174,32 @@
                     <form id="editAddressForm">
                         <div class="mb-3">
                             <label for="recipient" class="form-label">수령인</label>
-                            <input type="text" class="form-control" id="recipient" name="recipient" value="김우진">
+                            <input type="text" class="form-control" id="recipient" name="recipient" value="${paymentMember.name}">
                         </div>
                         <div class="mb-3">
                             <label for="phone" class="form-label">전화번호</label>
-                            <input type="text" class="form-control" id="phone" name="phone" value="010-7545-3256">
+                            <input type="text" class="form-control" id="phone" name="phone" value="${paymentMember.phone_num}">
                         </div>
                         <div class="mb-3">
                             <label for="zipCode" class="form-label">우편번호</label>
-                            <input type="text" class="form-control" id="zipCode" name="zipCode" value="08392" readonly>
+                            <input type="text" class="form-control" id="zipCode" name="zipCode" value="${paymentMember.zipcode}" readonly>
                         </div>
                         <div class="mb-3">
                             <label for="address" class="form-label">주소</label>
                             <div class="input-group">
-                                <input type="text" class="form-control" id="address" name="address" value="경기도 광명시 철산3동 498번지" readonly>
+                                <input type="text" class="form-control" id="address" name="address" value="${paymentMember.address}" readonly>
                                 <button type="button" class="btn btn-outline-secondary" onclick="openDaumPostcode()">검색</button>
                             </div>
                         </div>
                         <div id="addressDetail" class="mb-3">
                             <label for="addressDetail" class="form-label">상세 주소</label>
-                            <input type="text" class="form-control" id="detailAddress" name="detailAddress">
+                            <input type="text" class="form-control" id="detailAddress" name="detailAddress" value="${paymentMember.detailaddress}">
                         </div>
                     </form>
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">취소</button>
-                    <button type="button" class="btn btn-primary" id="saveButton">저장</button>
+                    <button type="button" class="btn btn-primary" id="saveButton" onclick="saveChanges()">저장</button>
                 </div>
             </div>
         </div>
@@ -205,56 +216,62 @@
 	        }).open();
 	    }
 
-	    document.addEventListener('DOMContentLoaded', () => {
-	        function saveChanges() {
-	            // DOM 요소 가져오기
-	            const recipientElement = document.getElementById('recipient');
-	            const phoneElement = document.getElementById('phone');
-	            const zipCodeElement = document.getElementById('zipCode');
-	            const addressElement = document.getElementById('address');
-	            const addressDetailElement = document.getElementById('detailAddress');
+	   function saveChanges() {
+            // DOM 요소 가져오기
+            var recipientElement = document.getElementById('recipient');
+            var phoneElement = document.getElementById('phone');
+            var zipCodeElement = document.getElementById('zipCode');
+            var addressElement = document.getElementById('address');
+            var addressDetailElement = document.getElementById('detailAddress');
 
-	            // 요소가 존재하지 않을 경우 에러 출력
-	            if (!recipientElement || !phoneElement || !zipCodeElement || !addressElement || !addressDetailElement) {
-	                console.error('필수 입력 요소를 찾을 수 없습니다.');
-	                return;
-	            }
+            // DOM 요소 존재 확인
+            if (!recipientElement || !phoneElement || !zipCodeElement || !addressElement || !addressDetailElement) {
+                console.error('필수 입력 요소를 찾을 수 없습니다.');
+                return;
+            }
 
-	            // 값 가져오기
-	            const recipient = recipientElement.value.trim();
-	            const phone = phoneElement.value.trim();
-	            const zipCode = zipCodeElement.value.trim();
-	            const address = addressElement.value.trim();
-	            const addressDetail = addressDetailElement.value.trim();
+            // 값 가져오기
+            var recipient = recipientElement.value.trim();
+            var phone = phoneElement.value.trim();
+            var zipCode = zipCodeElement.value.trim();
+            var address = addressElement.value.trim();
+            var addressDetail = addressDetailElement.value.trim();
 
-	            const fullAddress = `${address} ${addressDetail}`.trim();
+            var fullAddress = zipCode + " " + address + " " +  addressDetail;
 
-	            // UI 업데이트
-	            const deliveryContact = document.getElementById('deliveryContact');
-	            const deliveryAddress = document.getElementById('deliveryAddress');
+            // 업데이트 대상 DOM 요소
+            var deliveryContact = document.getElementById('deliveryContact');
+            var deliveryAddress = document.getElementById('deliveryAddress');
 
-	            if (!deliveryContact || !deliveryAddress) {
-	                console.error('UI 업데이트 요소를 찾을 수 없습니다.');
-	                return;
-	            }
+            // 대상 DOM 요소 존재 확인
+            if (!deliveryContact || !deliveryAddress) {
+                console.error('UI 업데이트 요소를 찾을 수 없습니다.');
+                return;
+            }
 
-	            deliveryContact.textContent = `${recipient} / ${phone}`;
-	            deliveryAddress.textContent = `[${zipCode}] ${fullAddress}`;
+            // 업데이트
+            deliveryContact.value = recipient;
+            deliveryAddress.value = fullAddress;
+            
+            console.log('UI 업데이트 완료:', {
+                deliveryContact: deliveryContact.value,
+                deliveryAddress: deliveryAddress.value,
+            });
+           
 
-	            // 모달 닫기
-	            const modalElement = document.getElementById('editAddressModal');
-	            const modalInstance = bootstrap.Modal.getInstance(modalElement);
-	            modalInstance.hide();
-	        }
 
-	        // 버튼 클릭 이벤트 설정
-	        const saveButton = document.querySelector('.btn-primary');
-	        if (saveButton) {
-	            saveButton.addEventListener('click', saveChanges);
-	        } else {
-	            console.error('저장 버튼을 찾을 수 없습니다.');
-	        }
-	    });
+            // 모달 닫기
+            const modalElement = document.getElementById('editAddressModal');
+            if (modalElement) {
+                const modalInstance = bootstrap.Modal.getInstance(modalElement);
+                if (modalInstance) {
+                    modalInstance.hide();
+                } else {
+                    console.error('모달 인스턴스를 찾을 수 없습니다.');
+                }
+            }
+        }
+
     </script>
 </body>
 </html>

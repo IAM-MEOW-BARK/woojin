@@ -217,7 +217,7 @@ public class CatDogDAOImpl implements CatDogDAO{
 	@Override
 	public List<PaymentDTO> productPayment(String user_id) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList(namespace + ".productPayment" + user_id);
+		return sqlSession.selectList(namespace + ".productPayment", user_id);
 	}
 
 	 // 주문 총 결제액
@@ -228,7 +228,20 @@ public class CatDogDAOImpl implements CatDogDAO{
 	@Override
 	public int productUser(String user_id) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectOne(namespace + ".productPaymentMember" + user_id);
+		return sqlSession.selectOne(namespace + ".productPaymentMember" , user_id);
+	}
+
+	@Override
+	public PaymentDTO getMember(String user_id) {
+		// TODO Auto-generated method stub
+		PaymentDTO deliveryMember = sqlSession.selectOne(namespace + ".getMember", user_id);
+		return deliveryMember;
+	}
+
+	@Override
+	public List<OrderItemDTO> getOrderInfo(String order_code) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectList(namespace + ".getOrderInfo", order_code);
 	}
 
 	

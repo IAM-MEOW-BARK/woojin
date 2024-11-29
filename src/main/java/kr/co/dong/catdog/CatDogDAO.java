@@ -81,6 +81,12 @@ public interface CatDogDAO {
     // 전체 회원 리스트
     public List <MemberDTO> getTotalMember(int start, int pageSize);
     
+    // 단일 회원 정보
+    public PaymentDTO getMember(String user_id);
+    
+    // 결제 오더 정보
+    public List<OrderItemDTO> getOrderInfo(String order_code);
+    
     // 회원 리스트 검색 필터
     List<Map<String, Object>> searchWithFilters(String searchType, String searchKeyword, String startDate, String endDate);
     

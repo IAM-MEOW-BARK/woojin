@@ -7,7 +7,7 @@ public class PaymentDTO {
 	private int phone_num;
 	private int zipcode;
 	private String address;
-	private String detail_address;
+	private String detailaddress;
 	// 상품
 	private int product_code;
 	private String product_name;
@@ -46,11 +46,11 @@ public class PaymentDTO {
 	public void setAddress(String address) {
 		this.address = address;
 	}
-	public String getDetail_address() {
-		return detail_address;
+	public String getDetailaddress() {
+		return detailaddress;
 	}
-	public void setDetail_address(String detail_address) {
-		this.detail_address = detail_address;
+	public void setDetailaddress(String detailaddress) {
+		this.detailaddress = detailaddress;
 	}
 	public int getProduct_code() {
 		return product_code;
@@ -86,7 +86,7 @@ public class PaymentDTO {
 	@Override
 	public String toString() {
 		return "PaymentDTO [user_id=" + user_id + ", name=" + name + ", phone_num=" + phone_num + ", zipcode=" + zipcode
-				+ ", address=" + address + ", detail_address=" + detail_address + ", product_code=" + product_code
+				+ ", address=" + address + ", detailaddress=" + detailaddress + ", product_code=" + product_code
 				+ ", product_name=" + product_name + ", product_price=" + product_price + ", thumbnail_img="
 				+ thumbnail_img + ", cart_quantity=" + cart_quantity + "]";
 	}

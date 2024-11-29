@@ -9,7 +9,36 @@ public class OrderItemDTO {
 	private int order_return;
 	private int product_price;
 	
+	private String thumbnail_img;
+	private int order_quantity;
+	private int total_price;
+	private String product_name;
 	
+	
+	public String getProduct_name() {
+		return product_name;
+	}
+	public void setProduct_name(String product_name) {
+		this.product_name = product_name;
+	}
+	public String getThumbnail_img() {
+		return thumbnail_img;
+	}
+	public void setThumbnail_img(String thumbnail_img) {
+		this.thumbnail_img = thumbnail_img;
+	}
+	public int getOrder_quantity() {
+		return order_quantity;
+	}
+	public void setOrder_quantity(int order_quantity) {
+		this.order_quantity = order_quantity;
+	}
+	public int getTotal_price() {
+		return total_price;
+	}
+	public void setTotal_price(int total_price) {
+		this.total_price = total_price;
+	}
 	public int getOrder_item_id() {
 		return order_item_id;
 	}
@@ -57,6 +86,8 @@ public class OrderItemDTO {
 	public String toString() {
 		return "OrderItemDTO [order_item_id=" + order_item_id + ", order_code=" + order_code + ", product_id="
 				+ product_id + ", cart_quantity=" + cart_quantity + ", order_status=" + order_status + ", order_return="
-				+ order_return + ", product_price=" + product_price + "]";
+				+ order_return + ", product_price=" + product_price + ", thumbnail_img=" + thumbnail_img
+				+ ", order_quantity=" + order_quantity + ", total_price=" + total_price + ", product_name="
+				+ product_name + "]";
 	}
 }

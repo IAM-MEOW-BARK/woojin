@@ -63,4 +63,10 @@ public interface CatDogService {
     
     // 상품 리스트 페이징
     public int memberPaging();
+    
+    // 결제 페이지 단일 회원
+    public PaymentDTO getMember(String user_id);
+    
+    // 결제 오더 정보
+    public List<OrderItemDTO> getOrderInfo(String order_code);
 }
