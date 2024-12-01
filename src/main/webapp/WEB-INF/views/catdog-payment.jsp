@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt" %>
 <!DOCTYPE html>
 <html lang="ko">
 <%@ include file="include/head.jsp" %>
@@ -59,18 +61,19 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-body">
                         <h5 class="card-title fw-bold">배송지</h5>
-                        <div class="mt-3">
-                        
+                        <div class="mt-3">                        
                             <span class="badge bg-secondary mb-2">기본배송지</span>
-                            <%-- <p class="mb-1" id="deliveryContact2"><strong>${paymentMember.name}</strong> / ${paymentMember.phone_num}</p> --%>
                             <div>
                             	<input type="text" id="deliveryContact" style="border: none; font-weight: bold" value="${paymentMember.name}" readonly>
                             </div>
                             <div>
-                            	<input type="text" id="deliveryContact" style="border: none" size="11" value="${paymentMember.phone_num}" readonly>
+                            	<input type="text" id="deliveryContact" style="border: none" size="11" value="0${paymentMember.phone_num}" readonly>
                             </div>
                             <div>
-                            	<input type="text" id="deliveryAddress" style="border: none;" size="70" value="${paymentMember.zipcode} ${paymentMember.address} ${paymentMember.detailaddress}" readonly>
+                            	<input type="text" id="zipcode" style="border: none;" size="70" value="${paymentMember.zipcode}" readonly>
+                            </div>
+                            <div>
+                            	<input type="text" id="deliveryAddress" style="border: none;" size="70" value="${paymentMember.address} ${paymentMember.detailaddress}" readonly>
                             </div>
                         </div>
                         <hr>
@@ -86,32 +89,38 @@
                 <div class="card shadow-sm mb-4">
                     <div class="card-body">
                         <h5 class="card-title fw-bold">주문 상품</h5>
-                        <%-- <div class="d-flex align-items-center mt-3">
-                            <img src="${pageContext.request.contextPath}/resources/bootstrap/images/thumbnail_01.png" alt="상품 이미지" class="img-fluid" style="width: 100px; height: auto; margin-right: 15px;">
-                            <div>
-                                <h6 class="mb-1">${orderInfo.product_name}</h6>
-                                <span class="badge bg-secondary">무료 배송</span>
-                                <p class="text-muted mb-1">지금 결제 시 <span class="fw-bold">내일 도착보장</span></p>
-                            </div>
-                        </div> --%>
-                        <div class="mt-3">
-                            <p class="mb-1"><span class="fw-bold">수량:</span> ${orderInfo.order_quantity}개</p>
-                            <p class="fw-bold text-end">${orderInfo.product_price}원</p>
-                        </div>
-                        <hr>
-                        <div class="d-flex justify-content-between">
-                            <span class="fw-bold">총 주문금액</span>
-                            <span class="fw-bold" style="color:#ff6600">${orderInfo.total_cost}원</span>
-                        </div>
+                        <c:forEach var="item" items="${orderInfo}">
+	                        <div class="d-flex align-items-center mt-3">
+	                            <img src="${pageContext.request.contextPath}/resources/bootstrap/images/thumbnail_01.png" alt="상품 이미지" class="img-fluid" style="width: 100px; height: auto; margin-right: 15px;">
+	                            <div>
+	                                <h6 class="mb-1">${item.product_name}</h6>
+	                                <span class="badge bg-secondary">무료 배송</span>
+	                                <p class="text-muted mb-1">지금 결제 시 <span class="fw-bold">내일 도착보장</span></p>
+	                            </div>
+	                        </div>
+	                        <div class="mt-3">
+	                            <p class="mb-1"><span class="fw-bold">수량:</span> ${item.order_quantity}개</p>
+	                            <p class="fw-bold text-end">
+	                            	<fmt:formatNumber value="${item.product_price}" type="number" groupingUsed="true" />원
+	                            </p>
+	                        </div>
+						    <hr>
+						</c:forEach>
+						<div class="d-flex justify-content-between">
+						    <span class="fw-bold">총 주문금액</span>
+						    <span class="fw-bold" style="color:#ff6600">
+						    	<fmt:formatNumber value="${totalPrice}" type="number" groupingUsed="true" />원
+						    </span>
+						</div>
                     </div>
                 </div>
-
                 <!-- 결제수단 -->
-                <div class="card shadow-sm">
+                <div class="card shadow-sm" style=" margin-bottom: 20px;">
                     <div class="card-body">
                         <div class="d-flex justify-content-between align-items-center mb-3">
                             <h5 class="card-title fw-bold">결제수단</h5>
-                            <span class="fw-bold" style="color:#ff6600">15,500원</span>
+                            
+                            <span class="fw-bold" style="color:#ff6600"><fmt:formatNumber value="${totalPrice}" type="number" groupingUsed="true" />원</span>
                         </div>
                         <div class="form-check">
                             <input class="form-check-input" type="radio" name="paymentMethod" id="cardPayment" checked>
@@ -127,7 +136,11 @@
                         <div class="mb-3">
                             <div class="d-flex justify-content-between">
                                 <span class="price-detail">상품 금액</span>
-                                <span><b>15,500원</b></span>
+                                <span>
+									<b>
+	                               		<fmt:formatNumber value="${totalPrice}" type="number" groupingUsed="true" />원
+	                               	</b>
+								</span>
                             </div>
                             <div class="d-flex justify-content-between">
                                 <span class="price-detail">배송비</span>
@@ -148,7 +161,11 @@
                             <hr>
                             <div class="d-flex justify-content-between">
                                 <span class="final-price"><b>최종 결제 금액</b></span>
-                                <span class="final-price" style="font-size:20px;"><b>15,500원</b></span>
+                                <span class="final-price" style="font-size:20px;">
+                                	<b>
+                                		<fmt:formatNumber value="${totalPrice}" type="number" groupingUsed="true" />원
+                                	</b>
+                               	</span>
                             </div>
                             <div class="d-flex justify-content-between mt-2">
                                 <span class="price-detail">적립 예정 포인트</span>
@@ -237,11 +254,13 @@
             var address = addressElement.value.trim();
             var addressDetail = addressDetailElement.value.trim();
 
-            var fullAddress = zipCode + " " + address + " " +  addressDetail;
+            var fullAddress = address + " " +  addressDetail;
+            
 
             // 업데이트 대상 DOM 요소
             var deliveryContact = document.getElementById('deliveryContact');
             var deliveryAddress = document.getElementById('deliveryAddress');
+            var zipcode = document.getElementById('zipcode');
 
             // 대상 DOM 요소 존재 확인
             if (!deliveryContact || !deliveryAddress) {
@@ -252,6 +271,7 @@
             // 업데이트
             deliveryContact.value = recipient;
             deliveryAddress.value = fullAddress;
+            zipcode.value = zipCode;
             
             console.log('UI 업데이트 완료:', {
                 deliveryContact: deliveryContact.value,

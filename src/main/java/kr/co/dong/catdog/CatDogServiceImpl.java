@@ -160,5 +160,11 @@ public class CatDogServiceImpl implements CatDogService {
 		// TODO Auto-generated method stub
 		return catDogDAO.getOrderInfo(order_code);
 	}
+
+	@Override
+	public String getOrderCodeByUserId(String user_id) {
+		// TODO Auto-generated method stub
+		 return catDogDAO.getOrderCodeByUserId(user_id);
+	}
 	
 }

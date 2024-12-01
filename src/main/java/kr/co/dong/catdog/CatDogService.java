@@ -69,4 +69,5 @@ public interface CatDogService {
     
     // 결제 오더 정보
     public List<OrderItemDTO> getOrderInfo(String order_code);
+    public String getOrderCodeByUserId(String user_id);
 }

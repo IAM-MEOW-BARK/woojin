@@ -99,12 +99,31 @@
 	    WHERE product_code = #{product_code}
 	</select>
 	
+	<!-- 상품 상세 -->
 	<select id="getOrderInfo" parameterType="String" resultType="OrderItemDTO">
+	    SELECT 
+	        p.thumbnail_img AS thumbnail_img,
+	        p.product_price AS product_price,
+	        oi.order_quantity AS order_quantity,
+	        (p.product_price * oi.order_quantity) AS total_price,
+	        p.product_name AS product_name
+	    FROM order_item oi
+	    LEFT JOIN product p ON p.product_code = oi.product_code
+	    WHERE oi.order_code = #{order_code}
+	</select>
+	<!-- <select id="getOrderInfo" parameterType="String" resultType="OrderItemDTO">
 		select p.thumbnail_img, p.product_price, oi.order_quantity, (p.product_price * oi.order_quantity) as total_price, p.product_name
 		from order_item oi
 		left join product p
 		on p.product_code = oi.product_code
 		where order_code = #{order_code}
+	</select> -->
+	
+	<!-- user_id로 order_code 가져오기 -->
+	<select id="getOrderCodeByUserId" parameterType="String" resultType="String">
+	    SELECT order_code
+	    FROM orders
+	    WHERE user_id = #{user_id}
 	</select>
 	
 	<!-- 상품 등록  -->

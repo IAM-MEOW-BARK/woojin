@@ -244,5 +244,11 @@ public class CatDogDAOImpl implements CatDogDAO{
 		return sqlSession.selectList(namespace + ".getOrderInfo", order_code);
 	}
 
+	@Override
+	public String getOrderCodeByUserId(String user_id) {
+		// TODO Auto-generated method stub
+		 return sqlSession.selectOne(namespace + ".getOrderCodeByUserId", user_id);
+	}
+
 	
 }
