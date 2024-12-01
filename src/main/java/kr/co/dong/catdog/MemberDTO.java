@@ -6,7 +6,7 @@ public class MemberDTO {
 	private String password;
 	private String name;
 	private String phone_num;
-	private int zipcode;
+	private String zipcode;
 	private String address;
 	private String detailaddress;
 	private String user_address;
@@ -76,10 +76,10 @@ public class MemberDTO {
 		this.connected_at = connected_at;
 	}	
 	
-	public int getZipcode() {
+	public String getZipcode() {
 		return zipcode;
 	}
-	public void setZipcode(int zipcode) {
+	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
 	}
 	public String getAddress() {

@@ -234,20 +234,46 @@ public class CatDogDAOImpl implements CatDogDAO{
 	@Override
 	public PaymentDTO getMember(String user_id) {
 		// TODO Auto-generated method stub
-		PaymentDTO deliveryMember = sqlSession.selectOne(namespace + ".getMember", user_id);
-		return deliveryMember;
+		 PaymentDTO member = sqlSession.selectOne(namespace + ".getMember", user_id);
+	     System.out.println("DAO: 회원 정보: " + member);
+	     return member;
 	}
 
 	@Override
 	public List<OrderItemDTO> getOrderInfo(String order_code) {
 		// TODO Auto-generated method stub
-		return sqlSession.selectList(namespace + ".getOrderInfo", order_code);
+		List<OrderItemDTO> orderInfo = sqlSession.selectList(namespace + ".getOrderInfo", order_code);
+	    System.out.println("DAO: 주문 정보: " + orderInfo);
+	    return orderInfo;
 	}
 
 	@Override
 	public String getOrderCodeByUserId(String user_id) {
 		// TODO Auto-generated method stub
 		 return sqlSession.selectOne(namespace + ".getOrderCodeByUserId", user_id);
+	}
+	
+	// 결제
+	@Override
+	public void updateAddress(String user_id, String name, String phone_num, String zipcode, String address, String detailaddress) {
+	    Map<String, Object> params = new HashMap<>();
+	    params.put("user_id", user_id);
+	    params.put("name", name);
+	    params.put("phone_num", phone_num);
+	    params.put("zipcode", zipcode);
+	    params.put("address", address);
+	    params.put("detailaddress", detailaddress);
+	    sqlSession.update(namespace + ".updateAddress", params);
+	}
+
+	@Override
+	public void updatePaymentStatus(String userId) {
+	    sqlSession.update(namespace + ".updatePaymentStatus", userId);
+	}
+
+	@Override
+	public void deleteOrderItems(String userId) {
+	    sqlSession.delete(namespace + ".deleteOrderItems", userId);
 	}
 
 	

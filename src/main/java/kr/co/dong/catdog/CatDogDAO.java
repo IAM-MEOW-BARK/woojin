@@ -95,6 +95,9 @@ public interface CatDogDAO {
     
     // 상품 결제
     public List<PaymentDTO> productPayment(String user_id);
+    void updateAddress(String userId, String name, String phone_num, String zipcode, String address, String detailaddress);
+    void updatePaymentStatus(String userId);
+    void deleteOrderItems(String userId);
     
     // 상품 유저
     public int productUser(String user_id);

@@ -5,7 +5,7 @@ public class PaymentDTO {
 	private String user_id;
 	private String name;
 	private int phone_num;
-	private int zipcode;
+	private String  zipcode;
 	private String address;
 	private String detailaddress;
 	// 상품
@@ -34,10 +34,10 @@ public class PaymentDTO {
 	public void setPhone_num(int phone_num) {
 		this.phone_num = phone_num;
 	}
-	public int getZipcode() {
+	public String getZipcode() {
 		return zipcode;
 	}
-	public void setZipcode(int zipcode) {
+	public void setZipcode(String zipcode) {
 		this.zipcode = zipcode;
 	}
 	public String getAddress() {

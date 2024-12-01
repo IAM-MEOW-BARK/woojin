@@ -172,7 +172,16 @@
                                 <span>0p</span>
                             </div>
                         </div>
-                        <button class="btn w-100 font-bold text-white" style="background-color: #ff6600;">결제하기</button>
+                        <form action="${pageContext.request.contextPath}/processPayment" method="post">
+						    <input type="hidden" name="name" value="${paymentMember.name}">
+						    <input type="hidden" name="phone_num" value="${paymentMember.phone_num}">
+						    <input type="hidden" name="zipcode" value="${paymentMember.zipcode}">
+						    <input type="hidden" name="address" value="${paymentMember.address}">
+						    <input type="hidden" name="detailaddress" value="${paymentMember.detailaddress}">
+						
+						    <button type="submit" class="btn w-100 font-bold text-white" style="background-color: #ff6600;">결제하기</button>
+						</form>
+                        <!-- <button class="btn w-100 font-bold text-white" style="background-color: #ff6600;">결제하기</button> -->
                     </div>
                 </div>
             </div>
@@ -222,6 +231,8 @@
         </div>
     </div>
     <script type="text/javascript">
+	   
+
 	    // 주소 검색 API 호출
 	    function openDaumPostcode() {
 	        new daum.Postcode({
@@ -291,7 +302,15 @@
                 }
             }
         }
+	
+	   
+	   document.getElementById("paymentForm").addEventListener("submit", function (event) {
+	        // Alert 메시지 표시
+	        alert("결제가 성공적으로 완료되었습니다.");
 
+	        // 여기서 리디렉트는 서버에서 처리되므로 추가 동작은 필요 없습니다.
+	        // 이벤트를 막지 않고 정상적으로 서버에 요청을 보냄
+	    });
     </script>
 </body>
 </html>

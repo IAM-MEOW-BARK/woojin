@@ -311,10 +311,10 @@ public class CatDogController {
 		Integer userStatus = (Integer) user.get("user_status");
 		
 		if (user == null || userStatus == 1) {
-			logger.info("실패");
+			logger.info("로그인 실패: 유효하지 않은 사용자 또는 상태");
 			return "redirect:catdog-login"; // prefix suffix 이용해서 이동
 		} else {
-			logger.info("성공");
+			logger.info("로그인 성공: " + user);
 			session.setAttribute("user", user);
 
 			Integer userAuth = (Integer) user.get("user_auth");
@@ -541,9 +541,21 @@ public class CatDogController {
 	public String paymentMember(@RequestParam("user_id") String user_id, Model model, HttpSession session) {
 	    // 회원 정보 가져오기
 		Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");		
+		
+		if (user == null) {
+	        System.out.println("세션에 사용자가 없습니다.");
+	        return "redirect:/catdog-login";
+	    }
+		
+		// 회원 정보
 		PaymentDTO pdto = catDogService.getMember((String) user.get("user_id"));
 		model.addAttribute("paymentMember", pdto);
+		
+		 
+		
+		
 		System.out.println("Session user: " + session.getAttribute("user"));
+		
 		
 		// user_id로 order_code 가져오기
 		 String order_code = catDogService.getOrderCodeByUserId((String) user.get("user_id"));
@@ -554,8 +566,10 @@ public class CatDogController {
 		    
 		// order_code로 주문 정보 가져오기
 		List<OrderItemDTO> orderInfo = catDogService.getOrderInfo(order_code);
+		
 		model.addAttribute("orderInfo", orderInfo);
 		System.out.println("orderInfo :::" + orderInfo);
+		System.out.println("주문 코드:::: " + order_code);
 		
 		// 총 금액
 		int totalPrice = 0;
@@ -565,5 +579,48 @@ public class CatDogController {
 	    model.addAttribute("totalPrice", totalPrice);
 		
 	    return "catdog-payment"; // 뷰 이름 반환
+	}
+	
+	// 결제
+	@PostMapping("/processPayment")
+	public String processPayment(
+			 @RequestParam("name") String name,
+	         @RequestParam("phone_num") String phone_num,
+	         @RequestParam("zipcode") String zipcode,
+	         @RequestParam("address") String address,
+	         @RequestParam("detailaddress") String detailaddress,
+	        HttpSession session,
+	        Model model) {
+		Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
+		
+		String userId = (String) user.get("user_id");
+		System.out.println("세션 사용자 ID: " + userId);
+	    if (userId == null) {
+	        return "redirect:/catdog-login"; // 로그인 필요 시 리다이렉트
+	    }
+	    
+	    // 디버깅
+	    System.out.println("Name: " + name);
+	    System.out.println("Phone: " + phone_num);
+	    System.out.println("Zipcode: " + zipcode);
+	    System.out.println("Address: " + address);
+	    System.out.println("Detail Address: " + detailaddress);
+
+	    try {
+	        // 1. 배송지 정보 업데이트
+	        catDogService.updateAddress(userId, name, phone_num, zipcode, address, detailaddress);
+
+	        // 2. 결제 상태 업데이트 (payment_status -> 0)
+	        catDogService.updatePaymentStatus(userId);
+
+	        // 3. 주문 아이템 삭제
+	        catDogService.deleteOrderItems(userId);
+	        
+	        return "redirect:/";
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        model.addAttribute("errorMessage", "결제 처리 중 오류가 발생했습니다.");
+	        return "catdog-payment"; // 결제 페이지로 다시 이동
+	    }
 	}
 }
