@@ -111,5 +111,6 @@ public interface CatDogDAO {
     
     // 상품 리스트 페이징
     public int memberPaging();
+    
 	
 }

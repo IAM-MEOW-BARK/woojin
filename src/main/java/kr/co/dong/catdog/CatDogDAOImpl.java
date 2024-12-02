@@ -169,7 +169,7 @@ public class CatDogDAOImpl implements CatDogDAO{
 	public List<Map<String, Object>> searchWithFilters(String searchType, String searchKeyword, String startDate,
 			String endDate) {
 		// TODO Auto-generated method stub
-			Map<String, Object> params = new HashMap<String, Object>();
+			Map<String, Object> params = new HashMap<>();
 	        params.put("searchType", searchType);
 	        params.put("searchKeyword", searchKeyword);
 	        params.put("startDate", startDate);
@@ -284,7 +284,6 @@ public class CatDogDAOImpl implements CatDogDAO{
 	@Override
 	public List<Integer> getProductCodeByUserId(String user_id) {
 	    return sqlSession.selectList(namespace + ".getProductCodeByUserId", user_id);
-	}
-	
+	}	
 	
 }

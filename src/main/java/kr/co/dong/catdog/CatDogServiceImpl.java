@@ -191,13 +191,5 @@ public class CatDogServiceImpl implements CatDogService {
 	public List<Integer> getProductCodeByUserId(String user_id) {
 	    return catDogDAO.getProductCodeByUserId(user_id);
 	}
-
-	@Override
-	public void deleteOrderItems(String user_id, int product_code) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	
 	
 }
