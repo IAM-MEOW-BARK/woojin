@@ -95,9 +95,10 @@ public interface CatDogDAO {
     
     // 상품 결제
     public List<PaymentDTO> productPayment(String user_id);
-    void updateAddress(String userId, String name, String phone_num, String zipcode, String address, String detailaddress);
-    void updatePaymentStatus(String userId);
-    void deleteOrderItems(String userId);
+    void updateAddress(String user_id, String name, String phone_num, String zipcode, String address, String detailaddress);
+    void updatePaymentStatus(String user_id);
+    public void deleteOrderItems(String user_id, List<Integer> product_code);
+    public List<Integer> getProductCodeByUserId(String user_id);
     
     // 상품 유저
     public int productUser(String user_id);
@@ -110,4 +111,5 @@ public interface CatDogDAO {
     
     // 상품 리스트 페이징
     public int memberPaging();
+	
 }

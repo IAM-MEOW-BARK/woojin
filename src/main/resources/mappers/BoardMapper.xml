@@ -128,7 +128,7 @@
 	<select id="getOrderCodeByUserId" parameterType="String" resultType="String">
 	    SELECT order_code
 	    FROM orders
-	    WHERE user_id = #{user_id}
+	    WHERE user_id_fk = #{user_id_fk}
 	</select>
 	
 	<!-- 상품 등록  -->
@@ -230,17 +230,26 @@
     <!-- 결제 상태 변경 -->
     <update id="updatePaymentStatus" parameterType="java.lang.String">
         UPDATE orders
-        SET payment_status = 0
-        WHERE user_id = #{user_id}
+        SET payment_status = 1
+        WHERE user_id_fk = #{user_id}
     </update>
 
     <!-- 주문 아이템 삭제 -->
-    <delete id="deleteOrderItems" parameterType="java.lang.String">
-        DELETE FROM order_item
-        WHERE order_code IN (
-            SELECT order_code FROM orders WHERE user_id = #{user_id}
-        )
-    </delete>
+   <delete id="deleteOrderItems" parameterType="java.util.Map">
+	    DELETE FROM cart
+	    WHERE user_id = #{user_id}
+	    AND product_code IN
+	    <foreach item="code" index="index" collection="product_code" open="(" separator="," close=")">
+	        #{code}
+	    </foreach>
+	</delete>
+    
+    <!-- product_code 가져오기 -->
+    <select id="getProductCodeByUserId" parameterType="java.lang.String" resultType="java.lang.Integer">
+	    SELECT product_code
+	    FROM cart
+	    WHERE user_id = #{user_id}
+	</select>
  	
  	<!-- 회원 관리 리스트 페이징 -->
  	<select id="memberPaging" resultType="java.lang.Integer">

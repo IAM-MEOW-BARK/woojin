@@ -301,36 +301,42 @@ public class CatDogController {
 		}
 
 	// 로그인
-	@RequestMapping(value = "/catdog-login", method = RequestMethod.POST)
-	public String login(@RequestParam Map<String, Object> map, HttpServletRequest request, HttpServletResponse response,
-			HttpSession session) throws Exception {
-		request.setCharacterEncoding("UTF-8");
+		@PostMapping(value = "/catdog-login")
+		public String login(@RequestParam Map<String, Object> map, HttpServletRequest request, HttpServletResponse response,
+		                    HttpSession session, Model model) throws Exception {
+		    request.setCharacterEncoding("UTF-8");
 
-		Map user = catDogService.login(map);
-		
-		Integer userStatus = (Integer) user.get("user_status");
-		
-		if (user == null || userStatus == 1) {
-			logger.info("로그인 실패: 유효하지 않은 사용자 또는 상태");
-			return "redirect:catdog-login"; // prefix suffix 이용해서 이동
-		} else {
-			logger.info("로그인 성공: " + user);
-			session.setAttribute("user", user);
+		    Map user = catDogService.login(map);
 
-			Integer userAuth = (Integer) user.get("user_auth");
+		    if (user == null) {
+		        logger.info("로그인 실패: 유효하지 않은 사용자");
+		        return "redirect:/catdog-login"; // prefix suffix 이용해서 이동
+		    }
 
-			if (userAuth == 1) {
-				logger.info("관리자 계정으로 로그인");
-				return "redirect:/catdog-user-list-admin";
-			} else if (userAuth == 0) {
-				logger.info("일반 사용자 계정으로 로그인");
-				return "redirect:/catdog-main";
-			} else {
-				logger.warn("알 수 없는 USER_AUTH 값: " + userAuth);
-				return "redirect:/catdog-login";
-			}
+		    Integer userStatus = (Integer) user.get("user_status"); 
+
+		    if (userStatus == 1) {
+		        logger.info("로그인 실패: 비활성화된 사용자");
+		        return "redirect:/catdog-login";
+		    }
+
+		    logger.info("로그인 성공: " + user);
+		    session.setAttribute("user", user);
+
+		    Integer userAuth = (Integer) user.get("user_auth");
+
+		    if (userAuth == 1) {
+		        logger.info("관리자 계정으로 로그인");
+		        return "redirect:/catdog-user-list-admin";
+		    } else if (userAuth == 0) {
+		        logger.info("일반 사용자 계정으로 로그인");
+		        return "redirect:/catdog-main";
+		    } else {
+		        logger.warn("알 수 없는 USER_AUTH 값: " + userAuth);
+		        return "redirect:/catdog-login";
+		    }
 		}
-	}
+
 	
 	// 로그아웃
 	@GetMapping(value = "/catdog-logout")
@@ -584,43 +590,39 @@ public class CatDogController {
 	// 결제
 	@PostMapping("/processPayment")
 	public String processPayment(
-			 @RequestParam("name") String name,
-	         @RequestParam("phone_num") String phone_num,
-	         @RequestParam("zipcode") String zipcode,
-	         @RequestParam("address") String address,
-	         @RequestParam("detailaddress") String detailaddress,
+	        @RequestParam("name") String name,
+	        @RequestParam("phone_num") String phone_num,
+	        @RequestParam("zipcode") String zipcode,
+	        @RequestParam("address") String address,
+	        @RequestParam("detailaddress") String detailaddress,
 	        HttpSession session,
 	        Model model) {
-		Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
-		
-		String userId = (String) user.get("user_id");
-		System.out.println("세션 사용자 ID: " + userId);
-	    if (userId == null) {
-	        return "redirect:/catdog-login"; // 로그인 필요 시 리다이렉트
+	    Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
+
+	    String user_id = (String) user.get("user_id");
+	    if (user_id == null || user_id.isEmpty()) {
+	        return "redirect:/catdog-login";
 	    }
-	    
-	    // 디버깅
-	    System.out.println("Name: " + name);
-	    System.out.println("Phone: " + phone_num);
-	    System.out.println("Zipcode: " + zipcode);
-	    System.out.println("Address: " + address);
-	    System.out.println("Detail Address: " + detailaddress);
+
+	    // product_code를 데이터베이스에서 조회
+	    List<Integer> product_code = catDogService.getProductCodeByUserId(user_id);
+	    if (product_code == null) {
+	        model.addAttribute("errorMessage", "Product code를 찾을 수 없습니다.");
+	        return "catdog-payment";
+	    }
 
 	    try {
-	        // 1. 배송지 정보 업데이트
-	        catDogService.updateAddress(userId, name, phone_num, zipcode, address, detailaddress);
+	        catDogService.updateAddress(user_id, name, phone_num, zipcode, address, detailaddress);
+	        catDogService.updatePaymentStatus(user_id);
+	        catDogService.deleteOrderItems(user_id, product_code); // product_code 전달
 
-	        // 2. 결제 상태 업데이트 (payment_status -> 0)
-	        catDogService.updatePaymentStatus(userId);
-
-	        // 3. 주문 아이템 삭제
-	        catDogService.deleteOrderItems(userId);
-	        
 	        return "redirect:/";
 	    } catch (Exception e) {
 	        e.printStackTrace();
 	        model.addAttribute("errorMessage", "결제 처리 중 오류가 발생했습니다.");
-	        return "catdog-payment"; // 결제 페이지로 다시 이동
+	        return "catdog-payment";
 	    }
 	}
+
+
 }

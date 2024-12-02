@@ -172,16 +172,32 @@ public class CatDogServiceImpl implements CatDogService {
 		 return catDogDAO.getOrderCodeByUserId(user_id);
 	}
 	
-	public void updateAddress(String userId, String name, String phone_num, String zipcode, String address, String detailaddress) {
-	    catDogDAO.updateAddress(userId, name, phone_num, zipcode, address, detailaddress);
+	public void updateAddress(String user_id, String name, String phone_num, String zipcode, String address, String detailaddress) {
+	    catDogDAO.updateAddress(user_id, name, phone_num, zipcode, address, detailaddress);
 	}
 
-	public void updatePaymentStatus(String userId) {
-	    catDogDAO.updatePaymentStatus(userId);
+	public void updatePaymentStatus(String user_id) {
+	    catDogDAO.updatePaymentStatus(user_id);
+	}	
+	
+	@Override
+	public void deleteOrderItems(String user_id, List<Integer> product_code) {
+		// TODO Auto-generated method stub
+		catDogDAO.deleteOrderItems(user_id, product_code);
 	}
 
-	public void deleteOrderItems(String userId) {
-	    catDogDAO.deleteOrderItems(userId);
+	
+	@Override
+	public List<Integer> getProductCodeByUserId(String user_id) {
+	    return catDogDAO.getProductCodeByUserId(user_id);
 	}
+
+	@Override
+	public void deleteOrderItems(String user_id, int product_code) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	
 	
 }

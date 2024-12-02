@@ -72,8 +72,11 @@ public interface CatDogService {
     public String getOrderCodeByUserId(String user_id);
     
     // 결제
-    public void updateAddress(String userId, String name, String phone_num, String zipcode, String address, String detailaddress);
-    public void updatePaymentStatus(String userId);
-    public void deleteOrderItems(String userId);
+    public void updateAddress(String user_id, String name, String phone_num, String zipcode, String address, String detailaddress);
+    public void updatePaymentStatus(String user_id);
+    public void deleteOrderItems(String user_id, int product_code);
+    public List<Integer> getProductCodeByUserId(String user_id);
+
+	public void deleteOrderItems(String user_id, List<Integer> product_code);
     
 }

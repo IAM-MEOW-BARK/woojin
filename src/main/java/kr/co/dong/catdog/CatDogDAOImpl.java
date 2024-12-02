@@ -267,14 +267,24 @@ public class CatDogDAOImpl implements CatDogDAO{
 	}
 
 	@Override
-	public void updatePaymentStatus(String userId) {
-	    sqlSession.update(namespace + ".updatePaymentStatus", userId);
+	public void updatePaymentStatus(String user_id) {
+	    sqlSession.update(namespace + ".updatePaymentStatus", user_id);
+	}	
+	
+	@Override
+	public void deleteOrderItems(String user_id, List<Integer> product_code) {
+		// TODO Auto-generated method stub
+		Map<String, Object> params = new HashMap<>();
+	    params.put("user_id", user_id);
+	    params.put("product_code", product_code);
+
+	    sqlSession.delete(namespace + ".deleteOrderItems", params);
 	}
 
 	@Override
-	public void deleteOrderItems(String userId) {
-	    sqlSession.delete(namespace + ".deleteOrderItems", userId);
+	public List<Integer> getProductCodeByUserId(String user_id) {
+	    return sqlSession.selectList(namespace + ".getProductCodeByUserId", user_id);
 	}
-
+	
 	
 }

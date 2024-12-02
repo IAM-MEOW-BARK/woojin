@@ -172,12 +172,12 @@
                                 <span>0p</span>
                             </div>
                         </div>
-                        <form action="${pageContext.request.contextPath}/processPayment" method="post">
-						    <input type="hidden" name="name" value="${paymentMember.name}">
-						    <input type="hidden" name="phone_num" value="${paymentMember.phone_num}">
-						    <input type="hidden" name="zipcode" value="${paymentMember.zipcode}">
-						    <input type="hidden" name="address" value="${paymentMember.address}">
-						    <input type="hidden" name="detailaddress" value="${paymentMember.detailaddress}">
+                        <form action="/processPayment" method="post">
+						    <input type="hidden"  id="deliveryContact" name="name" value="${paymentMember.name}">
+						    <input type="hidden"  id="deliveryContact" name="phone_num" value="${paymentMember.phone_num}">
+						    <input type="hidden"  id="zipcode" name="zipcode" value="${paymentMember.zipcode}">
+						    <input type="hidden"  id="deliveryAddress" name="address" value="${paymentMember.address}">
+						    <input type="hidden"  id="deliveryAddress" name="detailaddress" value="${paymentMember.detailaddress}">
 						
 						    <button type="submit" class="btn w-100 font-bold text-white" style="background-color: #ff6600;">결제하기</button>
 						</form>
@@ -244,64 +244,63 @@
 	        }).open();
 	    }
 
-	   function saveChanges() {
-            // DOM 요소 가져오기
-            var recipientElement = document.getElementById('recipient');
-            var phoneElement = document.getElementById('phone');
-            var zipCodeElement = document.getElementById('zipCode');
-            var addressElement = document.getElementById('address');
-            var addressDetailElement = document.getElementById('detailAddress');
+	    function saveChanges() {
+	        // DOM 요소 가져오기
+	        var recipientElement = document.getElementById('recipient');
+	        var phoneElement = document.getElementById('phone');
+	        var zipCodeElement = document.getElementById('zipCode');
+	        var addressElement = document.getElementById('address');
+	        var addressDetailElement = document.getElementById('detailAddress');
 
-            // DOM 요소 존재 확인
-            if (!recipientElement || !phoneElement || !zipCodeElement || !addressElement || !addressDetailElement) {
-                console.error('필수 입력 요소를 찾을 수 없습니다.');
-                return;
-            }
+	        // 값 가져오기
+	        var recipient = recipientElement.value.trim();
+	        var phone = phoneElement.value.trim();
+	        var zipCode = zipCodeElement.value.trim();
+	        var address = addressElement.value.trim();
+	        var addressDetail = addressDetailElement.value.trim();
 
-            // 값 가져오기
-            var recipient = recipientElement.value.trim();
-            var phone = phoneElement.value.trim();
-            var zipCode = zipCodeElement.value.trim();
-            var address = addressElement.value.trim();
-            var addressDetail = addressDetailElement.value.trim();
+	        // 업데이트 대상 DOM 요소 (UI 업데이트)
+	        var deliveryContact = document.getElementById('deliveryContact');
+	        var deliveryAddress = document.getElementById('deliveryAddress');
+	        var zipcode = document.getElementById('zipcode');
 
-            var fullAddress = address + " " +  addressDetail;
-            
+	        deliveryContact.value = recipient;
+	        deliveryAddress.value = address + " " + addressDetail;
+	        zipcode.value = zipCode;
 
-            // 업데이트 대상 DOM 요소
-            var deliveryContact = document.getElementById('deliveryContact');
-            var deliveryAddress = document.getElementById('deliveryAddress');
-            var zipcode = document.getElementById('zipcode');
+	        // <form> 필드 업데이트
+	        var formRecipient = document.querySelector('form input[name="name"]');
+	        var formPhone = document.querySelector('form input[name="phone_num"]');
+	        var formZipCode = document.querySelector('form input[name="zipcode"]');
+	        var formAddress = document.querySelector('form input[name="address"]');
+	        var formDetailAddress = document.querySelector('form input[name="detailaddress"]');
 
-            // 대상 DOM 요소 존재 확인
-            if (!deliveryContact || !deliveryAddress) {
-                console.error('UI 업데이트 요소를 찾을 수 없습니다.');
-                return;
-            }
+	        if (formRecipient) formRecipient.value = recipient;
+	        if (formPhone) formPhone.value = phone;
+	        if (formZipCode) formZipCode.value = zipCode;
+	        if (formAddress) formAddress.value = address;
+	        if (formDetailAddress) formDetailAddress.value = addressDetail;
 
-            // 업데이트
-            deliveryContact.value = recipient;
-            deliveryAddress.value = fullAddress;
-            zipcode.value = zipCode;
-            
-            console.log('UI 업데이트 완료:', {
-                deliveryContact: deliveryContact.value,
-                deliveryAddress: deliveryAddress.value,
-            });
-           
+	        console.log('Form fields updated:', {
+	            name: formRecipient ? formRecipient.value : null,
+	            phone_num: formPhone ? formPhone.value : null,
+	            zipcode: formZipCode ? formZipCode.value : null,
+	            address: formAddress ? formAddress.value : null,
+	            detailaddress: formDetailAddress ? formDetailAddress.value : null,
+	        });
 
+	        // 모달 닫기
+	        const modalElement = document.getElementById('editAddressModal');
+	        if (modalElement) {
+	            const modalInstance = bootstrap.Modal.getInstance(modalElement);
+	            if (modalInstance) {
+	                modalInstance.hide();
+	            } else {
+	                console.error('모달 인스턴스를 찾을 수 없습니다.');
+	            }
+	        }
+	    }
 
-            // 모달 닫기
-            const modalElement = document.getElementById('editAddressModal');
-            if (modalElement) {
-                const modalInstance = bootstrap.Modal.getInstance(modalElement);
-                if (modalInstance) {
-                    modalInstance.hide();
-                } else {
-                    console.error('모달 인스턴스를 찾을 수 없습니다.');
-                }
-            }
-        }
 	
 	   
 	   document.getElementById("paymentForm").addEventListener("submit", function (event) {
