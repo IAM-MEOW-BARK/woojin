@@ -1,7 +1,11 @@
 package kr.co.dong.controller;
 
 
+import java.io.BufferedReader;
 import java.io.File;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,6 +19,7 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -25,6 +30,9 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+
+import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import kr.co.dong.catdog.CartDTO;
 import kr.co.dong.catdog.CatDogService;
@@ -728,4 +736,104 @@ public class CatDogController {
 
 		return "mypage";
 	}
+	
+	private final String KAKAO_CLIENT_ID = "26fead75e8276cd122d06ab66a97fe89"; // 카카오 REST API 키
+    private final String REDIRECT_URI = "http://localhost:8080/kakao/login";
+
+    @GetMapping("/kakao/login")
+    public String kakaoLogin() {
+        String kakaoAuthUrl = "https://kauth.kakao.com/oauth/authorize" +
+                "?client_id=" + KAKAO_CLIENT_ID +
+                "&redirect_uri=" + REDIRECT_URI +
+                "&response_type=code";
+        return "redirect:" + kakaoAuthUrl;
+    }    
+    @ResponseBody
+    public String kakaoCallback(@RequestParam String code) {
+        try {
+            // 1. Access Token 요청
+            String tokenUrl = "https://kauth.kakao.com/oauth/token" +
+                    "?grant_type=authorization_code" +
+                    "&client_id=" + KAKAO_CLIENT_ID +
+                    "&redirect_uri=" + REDIRECT_URI +
+                    "&code=" + code;
+
+            HttpURLConnection connection = (HttpURLConnection) new URL(tokenUrl).openConnection();
+            connection.setRequestMethod("POST");
+            connection.setDoOutput(true);
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            String responseLine;
+            StringBuilder response = new StringBuilder();
+            while ((responseLine = br.readLine()) != null) {
+                response.append(responseLine);
+            }
+            br.close();
+
+            // 2. Access Token 추출
+            // JSON 파싱 예시로 대체
+            String accessToken = extractAccessToken(response.toString());
+
+            // 3. 사용자 정보 가져오기
+            Map<String, Object> userInfo = getUserInfo(accessToken);
+            return "카카오 사용자 정보: " + userInfo;
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            return "카카오 로그인 실패";
+        }
+    }
+
+    private String extractAccessToken(String response) {
+        // JSON 파싱하여 access_token 추출 (간략화된 예제)
+        // 라이브러리 사용 가능: Jackson, Gson 등
+        return "extracted_access_token";
+    }
+
+    private Map<String, Object> getUserInfo(String accessToken) throws Exception {
+        String apiUrl = "https://kapi.kakao.com/v2/user/me";
+        URL url = new URL(apiUrl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("GET");
+        connection.setRequestProperty("Authorization", "Bearer " + accessToken);
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        StringBuilder response = new StringBuilder();
+        String line;
+        while ((line = br.readLine()) != null) {
+            response.append(line);
+        }
+        br.close();
+
+        // 사용자 정보 파싱
+        ObjectMapper mapper = new ObjectMapper();
+        return mapper.readValue(response.toString(), Map.class);
+    }
+    
+    // 토큰 요청
+    private String getAccessToken(String code) throws Exception {
+        String tokenUrl = "https://kauth.kakao.com/oauth/token" +
+                          "?grant_type=authorization_code" +
+                          "&client_id=" + KAKAO_CLIENT_ID +
+                          "&redirect_uri=" + REDIRECT_URI +
+                          "&code=" + code;
+
+        URL url = new URL(tokenUrl);
+        HttpURLConnection connection = (HttpURLConnection) url.openConnection();
+        connection.setRequestMethod("POST");
+        connection.setDoOutput(true);
+
+        BufferedReader br = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+        StringBuilder response = new StringBuilder();
+        String line;
+        while ((line = br.readLine()) != null) {
+            response.append(line);
+        }
+        br.close();
+
+        // Access Token 파싱
+        ObjectMapper mapper = new ObjectMapper();
+        Map<String, String> responseMap = mapper.readValue(response.toString(), Map.class);
+        return responseMap.get("access_token");
+    }
 }

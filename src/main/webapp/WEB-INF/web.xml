@@ -44,5 +44,28 @@
        <filter-name>encodingFilter</filter-name>
        <url-pattern>/*</url-pattern>
      </filter-mapping>
+     
+     <dependencies>
+	    <!-- Spring Web -->
+	    <dependency>
+	        <groupId>org.springframework</groupId>
+	        <artifactId>spring-web</artifactId>
+	        <version>5.3.11</version>
+	    </dependency>
+	
+	    <!-- JSON 처리 라이브러리 -->
+	    <dependency>
+	        <groupId>com.fasterxml.jackson.core</groupId>
+	        <artifactId>jackson-databind</artifactId>
+	        <version>2.13.1</version>
+	    </dependency>
+	
+	    <!-- HTTP Client -->
+	    <dependency>
+	        <groupId>org.apache.httpcomponents</groupId>
+	        <artifactId>httpclient</artifactId>
+	        <version>4.5.13</version>
+	    </dependency>
+	</dependencies>
 
 </web-app>

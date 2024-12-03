@@ -101,7 +101,7 @@
 	      <div>
 	        <input type="email" name="user_id"  class="email-input" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;아이디 또는 이메일을 입력해주세요">
 	      </div>
-	      <div style="margin-top: 10px;">	        
+	      <div style="margin-top: 10px;">	        naver
 	         <input type="password" name="password" class="password-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;비밀번호를 입력해주세요">
 	      </div>
 	      <div class="login-button" style="margin-top: 20px;">
@@ -119,7 +119,7 @@
     	<p class="easyway-text">간편하게 로그인/회원가입</p>
     	<div class="social-login">
     		<div>
-    			<a href="#">
+    			<a href="https://kauth.kakao.com/oauth/authorize?client_id=26fead75e8276cd122d06ab66a97fe89&redirect_uri=http://localhost:8080/kakao/login&response_type=code">
     				<img alt="카카오" src="${pageContext.request.contextPath}/resources/bootstrap/images/btn_kakao.svg" >
     			</a>
    			</div>
