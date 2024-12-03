@@ -248,9 +248,8 @@ public class CatDogDAOImpl implements CatDogDAO{
 	}
 
 	@Override
-	public String getOrderCodeByUserId(String user_id) {
-		// TODO Auto-generated method stub
-		 return sqlSession.selectOne(namespace + ".getOrderCodeByUserId", user_id);
+	public List<String> getOrderCodeByUserId(String user_id) {
+	    return sqlSession.selectList(namespace + ".getOrderCodeByUserId", user_id);
 	}
 	
 	// 결제
@@ -314,4 +313,61 @@ public class CatDogDAOImpl implements CatDogDAO{
         // SQL 실행
         return sqlSession.selectOne(namespace + ".getFilteredMemberCount", params);
     }
+
+	@Override
+	public List<ProductDTO> searchProductWithPaging(String searchType, String searchKeyword, String startDate,
+			String endDate, int start, int pageSize) {
+		 // 파라미터 생성
+        Map<String, Object> params = new HashMap<>();
+        params.put("searchType", searchType);
+        params.put("searchKeyword", searchKeyword);
+        params.put("startDate", startDate);
+        params.put("endDate", endDate);
+        params.put("start", start);
+        params.put("pageSize", pageSize);
+
+        // SQL 실행
+        return sqlSession.selectList(namespace + ".searchProductWithPaging", params);
+	}
+
+	@Override
+	public int getFilteredProductCount(String searchType, String searchKeyword, String startDate, String endDate) {
+		// 파라미터 생성
+        Map<String, Object> params = new HashMap<>();
+        params.put("searchType", searchType);
+        params.put("searchKeyword", searchKeyword);
+        params.put("startDate", startDate);
+        params.put("endDate", endDate);
+
+        // SQL 실행
+        return sqlSession.selectOne(namespace + ".getFilteredProductCount", params);
+	}
+	
+	@Override
+	public String addOrder(OrderDTO orderDTO) throws Exception {
+	    sqlSession.insert(namespace + ".addOrder", orderDTO);
+	    return orderDTO.getOrder_code(); // MyBatis에서 반환된 order_code 사용
+	}
+
+	@Override
+	public void addOrderItems(List<OrderItemDTO> orderItems) throws Exception {
+		sqlSession.insert(namespace + ".addOrderItems", orderItems);
+	}
+	
+	 // 장바구니 정보
+    public List<CartDTO> getCartInfo(String user_id) throws Exception {
+    	return sqlSession.selectList(namespace + ".getCartInfo", user_id);
+    }
+
+    // 장바구니 상품 정보
+    public List<CartDTO> getCartItem(String user_id) throws Exception {
+    	return sqlSession.selectList(namespace + ".getCartItem", user_id);
+    }
+    
+    // 마이페이지
+    public List<MyDTO> getMyOrders(String user_id) throws Exception {
+		return sqlSession.selectList(namespace + ".getMyOrders", user_id);
+	}
+
+    
 }

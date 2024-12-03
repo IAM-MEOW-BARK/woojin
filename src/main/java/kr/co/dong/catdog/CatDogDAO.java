@@ -65,6 +65,10 @@ public interface CatDogDAO {
     
     // 상품 리스트 검색 필터
     List<Map<String, Object>> productListFilter(String searchType, String searchKeyword, String startDate, String endDate);
+    // 검색 조건과 페이징을 사용한 상품 리스트 조회
+  	public List<ProductDTO> searchProductWithPaging(String searchType, String searchKeyword, String startDate, String endDate, int start, int pageSize);
+  	// 검색 조건에 맞는 상품 수 조회
+  	public int getFilteredProductCount(String searchType, String searchKeyword, String startDate, String endDate);
     
     // 상품 등록
     public int addProduct(ProductDTO productDTO) throws Exception;
@@ -86,7 +90,7 @@ public interface CatDogDAO {
     
     // 결제 오더 정보
     public List<OrderItemDTO> getOrderInfo(String order_code);    
-    public String getOrderCodeByUserId(String user_id);
+    public List<String> getOrderCodeByUserId(String user_id);
     
     // 회원 리스트 검색 필터
     List<Map<String, Object>> searchWithFilters(String searchType, String searchKeyword, String startDate, String endDate);
@@ -116,5 +120,15 @@ public interface CatDogDAO {
     // 상품 리스트 페이징
     public int memberPaging();
     
+    // 카트
+    public String addOrder(OrderDTO orderDTO) throws Exception;
+    public void addOrderItems(List<OrderItemDTO> orderItems) throws Exception;
+	public List<CartDTO> getCartInfo(String user_id) throws Exception;
+	
+	// 장바구니 상품 정보
+    public List<CartDTO> getCartItem(String user_id) throws Exception;
+	
+	// 마이페이지
+    public List<MyDTO> getMyOrders(String user_id) throws Exception;
 	
 }

@@ -7,7 +7,10 @@
  		<typeAlias alias="ProductDTO" type="kr.co.dong.catdog.ProductDTO"/>
  		<typeAlias alias="MemberDTO" type="kr.co.dong.catdog.MemberDTO"/>
  		<typeAlias alias="PaymentDTO" type="kr.co.dong.catdog.PaymentDTO"/>
+ 		<typeAlias alias="OrderDTO" type="kr.co.dong.catdog.OrderDTO"/>
  		<typeAlias alias="OrderItemDTO" type="kr.co.dong.catdog.OrderItemDTO"/>
+ 		<typeAlias alias="MyDTO" type="kr.co.dong.catdog.MyDTO"/>
+ 		<typeAlias alias="CartDTO" type="kr.co.dong.catdog.CartDTO"/>
  		
  		<typeAlias alias="BoardDTO" type="kr.co.dong.board.BoardDTO"/>
  		<typeAlias alias="BoardReply" type="kr.co.dong.board.BoardReply"/>

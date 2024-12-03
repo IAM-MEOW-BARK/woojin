@@ -1,7 +1,10 @@
 package kr.co.dong.catdog;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 import javax.inject.Inject;
 
@@ -167,7 +170,7 @@ public class CatDogServiceImpl implements CatDogService {
 	}
 
 	@Override
-	public String getOrderCodeByUserId(String user_id) {
+	public List<String> getOrderCodeByUserId(String user_id) {
 		// TODO Auto-generated method stub
 		 return catDogDAO.getOrderCodeByUserId(user_id);
 	}
@@ -201,5 +204,56 @@ public class CatDogServiceImpl implements CatDogService {
 	public int getFilteredMemberCount(String searchType, String searchKeyword, String startDate, String endDate) {
 	    return catDogDAO.getFilteredMemberCount(searchType, searchKeyword, startDate, endDate);
 	}
+
+	@Override
+	public List<ProductDTO> searchProductWithPaging(String searchType, String searchKeyword, String startDate,
+			String endDate, int start, int pageSize) {
+		// TODO Auto-generated method stub
+		 return catDogDAO.searchProductWithPaging(searchType, searchKeyword, startDate, endDate, start, pageSize);
+	}
+
+	@Override
+	public int getFilteredProductCount(String searchType, String searchKeyword, String startDate, String endDate) {
+		// TODO Auto-generated method stub
+		return catDogDAO.getFilteredProductCount(searchType, searchKeyword, startDate, endDate);
+	}	
+	
+	@Override
+	public String addOrder(OrderDTO orderDTO) throws Exception {
+		// 랜덤 코드 생성
+		String orderCode = generateOrderCode();
+		orderDTO.setOrder_code(orderCode);
+
+		// 데이터베이스 삽입
+		return catDogDAO.addOrder(orderDTO);
+	}
+
+	private String generateOrderCode() {
+		// UUID를 이용하여 랜덤 코드 생성
+		String oc = LocalDate.now().format(DateTimeFormatter.ofPattern("yyMMdd"))
+				+ UUID.randomUUID().toString().substring(0, 8).toUpperCase();
+		return oc;
+	}
+
+	@Override
+	public void addOrderItems(List<OrderItemDTO> orderItems) throws Exception {
+		catDogDAO.addOrderItems(orderItems);
+	}
+	
+	@Override
+	public List<CartDTO> getCartInfo(String user_id) throws Exception {
+		return catDogDAO.getCartInfo(user_id);
+	}
+	
+	@Override
+	public List<CartDTO> getCartItem(String user_id) throws Exception {
+		return catDogDAO.getCartItem(user_id);
+	}
+	
+	public List<MyDTO> getMyOrders(String user_id) throws Exception {
+		return catDogDAO.getMyOrders(user_id);
+	}
+
+	
 	
 }

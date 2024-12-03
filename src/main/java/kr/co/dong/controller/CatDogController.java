@@ -2,6 +2,7 @@ package kr.co.dong.controller;
 
 
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -19,16 +20,17 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
+import kr.co.dong.catdog.CartDTO;
 import kr.co.dong.catdog.CatDogService;
 import kr.co.dong.catdog.MemberDTO;
+import kr.co.dong.catdog.MyDTO;
+import kr.co.dong.catdog.OrderDTO;
 import kr.co.dong.catdog.OrderItemDTO;
 import kr.co.dong.catdog.PaymentDTO;
 import kr.co.dong.catdog.ProductDTO;
@@ -473,19 +475,26 @@ public class CatDogController {
 	        @RequestParam(value = "endDate", required = false) String endDate,
 	        @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
 	        @RequestParam(value = "pageListNum", defaultValue = "1") int pageListNum) {
-	    
+
 	    // 날짜 검증 및 변환
+	    if (startDate == null || startDate.isEmpty()) {
+	        startDate = null; // null 처리
+	    } else {
+	        startDate += " 00:00:00";
+	    }
+
+	    if (endDate == null || endDate.isEmpty()) {
+	        endDate = null; // null 처리
+	    } else {
+	        endDate += " 23:59:59";
+	    }
+
 	    if (startDate != null && endDate != null && startDate.compareTo(endDate) > 0) {
 	        String temp = startDate;
 	        startDate = endDate;
 	        endDate = temp;
 	    }
-	    if (startDate != null && !startDate.isEmpty()) {
-	        startDate += " 00:00:00";
-	    }
-	    if (endDate != null && !endDate.isEmpty()) {
-	        endDate += " 23:59:59";
-	    }
+
 	    if (searchKeyword != null && searchKeyword.trim().isEmpty()) {
 	        searchKeyword = null;
 	    }
@@ -519,6 +528,7 @@ public class CatDogController {
 	    return mAV;
 	}
 
+
 	/*
 	 * @PostMapping("/searchMember") public String searchMember(
 	 * 
@@ -546,42 +556,90 @@ public class CatDogController {
 	 */
 	
 	// 상품 리스트 검색 필터
-	@PostMapping("/searchProduct")
-	public String searchProduct(
-			@RequestParam("searchType") String searchType,
-			@RequestParam("searchKeyword") String searchKeyword,
-			@RequestParam(value = "startDate", required = false) String startDate,
-			@RequestParam(value = "endDate", required = false) String endDate, Model model) {
-		if (startDate != null && endDate != null && startDate.compareTo(endDate) > 0) {
-			// startDate가 endDate보다 클 경우 스왑
-			String temp = startDate;
-			startDate = endDate;
-			endDate = temp;
-		}
+		@PostMapping("/searchProduct")
+		public ModelAndView searchProduct(
+		        @RequestParam(value = "searchType", required = false) String searchType,
+		        @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
+		        @RequestParam(value = "startDate", required = false) String startDate,
+		        @RequestParam(value = "endDate", required = false) String endDate,
+		        @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+		        @RequestParam(value = "pageListNum", defaultValue = "1") int pageListNum) {
+		    
+		    // 날짜 검증 및 변환
+		    if (startDate != null && endDate != null && startDate.compareTo(endDate) > 0) {
+		        String temp = startDate;
+		        startDate = endDate;
+		        endDate = temp;
+		    }
+		    if (startDate != null && !startDate.isEmpty()) {
+		        startDate += " 00:00:00";
+		    }
+		    if (endDate != null && !endDate.isEmpty()) {
+		        endDate += " 23:59:59";
+		    }
+		    if (searchKeyword != null && searchKeyword.trim().isEmpty()) {
+		        searchKeyword = null;
+		    }
 
-		if (searchKeyword == null || searchKeyword.trim().isEmpty()) {
-			searchKeyword = null; // Mapper에서 처리
-		}
-		if (startDate != null && !startDate.isEmpty()) {
-			startDate += " 00:00:00";
-		}
-		if (endDate != null && !endDate.isEmpty()) {
-			endDate += " 23:59:59";
-		}
-		if (startDate != null && endDate != null && startDate.compareTo(endDate) > 0) {
-			String temp = startDate;
-			startDate = endDate;
-			endDate = temp;
-		}
+		    // 페이징 계산
+		    int pageSize = 10; // 한 페이지당 게시글 수
+		    int pageListSize = 10; // 한 번에 표시할 페이지 수
+		    int totalList = catDogService.getFilteredProductCount(searchType, searchKeyword, startDate, endDate);
+		    int totalPage = (int) Math.ceil((double) totalList / pageSize);
+		    int start = (pageNum - 1) * pageSize;
+		    int startPage = (pageListNum - 1) * pageListSize + 1;
+		    int endPage = Math.min(startPage + pageListSize - 1, totalPage);
 
-		List<Map<String, Object>> products = catDogService.searchProduct(searchType, searchKeyword, startDate, endDate);
-		model.addAttribute("productList", products);
-		return "catdog-product-list-admin"; // JSP 경로
-	}
+		    // 검색 조건에 맞는 회원 리스트 가져오기
+		    List<ProductDTO> products = catDogService.searchProductWithPaging(searchType, searchKeyword, startDate, endDate, start, pageSize);
+
+		    // ModelAndView로 데이터 전달
+		    ModelAndView mAV = new ModelAndView();
+		    mAV.addObject("productList", products);
+		    mAV.addObject("totalPage", totalPage);
+		    mAV.addObject("currentPage", pageNum);
+		    mAV.addObject("pageListNum", pageListNum);
+		    mAV.addObject("startPage", startPage);
+		    mAV.addObject("endPage", endPage);
+		    mAV.addObject("searchType", searchType);
+		    mAV.addObject("searchKeyword", searchKeyword);
+		    mAV.addObject("startDate", startDate);
+		    mAV.addObject("endDate", endDate);
+		    mAV.setViewName("catdog-product-list-admin");
+
+		    return mAV;
+		}
+	/*
+	 * @PostMapping("/searchProduct") public String searchProduct(
+	 * 
+	 * @RequestParam("searchType") String searchType,
+	 * 
+	 * @RequestParam("searchKeyword") String searchKeyword,
+	 * 
+	 * @RequestParam(value = "startDate", required = false) String startDate,
+	 * 
+	 * @RequestParam(value = "endDate", required = false) String endDate, Model
+	 * model) { if (startDate != null && endDate != null &&
+	 * startDate.compareTo(endDate) > 0) { // startDate가 endDate보다 클 경우 스왑 String
+	 * temp = startDate; startDate = endDate; endDate = temp; }
+	 * 
+	 * if (searchKeyword == null || searchKeyword.trim().isEmpty()) { searchKeyword
+	 * = null; // Mapper에서 처리 } if (startDate != null && !startDate.isEmpty()) {
+	 * startDate += " 00:00:00"; } if (endDate != null && !endDate.isEmpty()) {
+	 * endDate += " 23:59:59"; } if (startDate != null && endDate != null &&
+	 * startDate.compareTo(endDate) > 0) { String temp = startDate; startDate =
+	 * endDate; endDate = temp; }
+	 * 
+	 * List<Map<String, Object>> products = catDogService.searchProduct(searchType,
+	 * searchKeyword, startDate, endDate); model.addAttribute("productList",
+	 * products); return "catdog-product-list-admin"; // JSP 경로 }
+	 */
 	
 	// 결제 페이지 회원
 	@GetMapping(value = "catdog-payment")
-	public String paymentMember(@RequestParam("user_id") String user_id, Model model, HttpSession session) {
+	public String paymentMember(
+			@RequestParam("user_id") String user_id,
+		    @RequestParam("order_code") String order_code, Model model, HttpSession session) {
 	    // 회원 정보 가져오기
 		Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");		
 		
@@ -594,18 +652,15 @@ public class CatDogController {
 		PaymentDTO pdto = catDogService.getMember((String) user.get("user_id"));
 		model.addAttribute("paymentMember", pdto);
 		
-		 
-		
-		
 		System.out.println("Session user: " + session.getAttribute("user"));
 		
-		
-		// user_id로 order_code 가져오기
-		 String order_code = catDogService.getOrderCodeByUserId((String) user.get("user_id"));
-		    if (order_code == null || order_code.isEmpty()) {
-		        System.out.println("order_code가 없습니다.");
-		        return "redirect:/catdog-product-list-admin";
-		    }
+		/*
+		 * // user_id로 order_code 가져오기 String order_code =
+		 * catDogService.getOrderCodeByUserId((String) user.get("user_id")); if
+		 * (order_code == null || order_code.isEmpty()) {
+		 * System.out.println("order_code가 없습니다."); return
+		 * "redirect:/catdog-product-list-admin"; }
+		 */
 		    
 		// order_code로 주문 정보 가져오기
 		List<OrderItemDTO> orderInfo = catDogService.getOrderInfo(order_code);
@@ -660,6 +715,96 @@ public class CatDogController {
 	        return "catdog-payment";
 	    }
 	}
+	
+	// 장바구니
+	@GetMapping("/cart")
+	public String cart(@RequestParam("user_id") String user_id, HttpSession session, Model model) throws Exception {
+		Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
+		if (user == null) {
+			return "redirect:/catdog-login";
+		}
+		model.addAttribute("user_name", user.get("name"));
+		model.addAttribute("user_id", user.get("user_id"));
 
+		List<CartDTO> cartInfo = catDogService.getCartInfo(user_id);
+		model.addAttribute("cartInfo", cartInfo);
+		System.out.println("cartInfo = " + cartInfo);
 
+		return "cart";
+	}
+	
+	@PostMapping("/cart")
+	public String cart(@RequestParam("user_id_fk") String user_id, HttpServletRequest request,
+			RedirectAttributes rttr) throws Exception {
+		
+		request.setCharacterEncoding("UTF-8");
+
+		// 1. OrderDTO 생성 및 저장
+		OrderDTO order = new OrderDTO();
+		order.setUser_id_fk(user_id);
+		order.setPayment_status(0); // 0: 미결제
+		String orderCode = catDogService.addOrder(order);
+		logger.info("Generated order_code: " + orderCode); // orderCode 확인
+		
+		logger.info("Generated order_code: " + orderCode); // orderCode 반환 확인
+		
+		// 2. CartDTO 데이터를 OrderItemDTO로 변환하여 저장
+		List<CartDTO> cartItems = catDogService.getCartInfo(user_id);
+		List<OrderItemDTO> orderItems = new ArrayList<OrderItemDTO>();
+		for (CartDTO cart : cartItems) {
+			OrderItemDTO orderItem = new OrderItemDTO();
+			orderItem.setOrder_code(orderCode);
+			orderItem.setProduct_code(cart.getProduct_code());
+			orderItem.setOrder_quantity(cart.getCart_quantity());
+			orderItem.setProduct_name(cart.getProduct_name());
+			orderItem.setProduct_price(cart.getProduct_price());
+			orderItems.add(orderItem);			
+		}
+		catDogService.addOrderItems(orderItems);
+		
+		// 3. 결과 메시지 및 페이지 이동
+		System.out.println("★★★★★★★★★★order = " + order);
+		System.out.println("★★★★★★★★★★orderItems = " + orderItems);
+//		int o = catDogService.addOrder(orderDTO);
+//
+//		if (o > 0) {
+//			rttr.addFlashAttribute("msg", "주문 추가 성공");
+//		}
+		
+		// RedirectAttributes로 데이터 전달
+	    rttr.addAttribute("user_id", user_id);
+	    rttr.addAttribute("order_code", orderCode);
+
+	    return "redirect:/catdog-payment";
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	// 마이페이지
+	@GetMapping("/mypage")
+	public String mypage(HttpSession session, Model model) throws Exception {
+		Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
+		if (user == null) {
+			return "redirect:/catdog-login";
+		}
+
+		model.addAttribute("user_name", user.get("name"));
+		model.addAttribute("user_id", user.get("user_id"));
+
+		List<MyDTO> myOrders = catDogService.getMyOrders((String) user.get("user_id"));
+		model.addAttribute("myOrders", myOrders);
+
+		System.out.println(myOrders);
+
+		return "mypage";
+	}
 }

@@ -61,6 +61,11 @@ public interface CatDogService {
     // 상품 리스트 검색 필터
     public List<Map<String, Object>> searchProduct(String searchType, String searchKeyword, String startDate, String endDate);
     
+    // 검색 조건과 페이징을 사용한 상품 리스트 조회
+ 	public List<ProductDTO> searchProductWithPaging(String searchType, String searchKeyword, String startDate, String endDate, int start, int pageSize);
+ 	// 검색 조건에 맞는 상품 수 조회
+ 	public int getFilteredProductCount(String searchType, String searchKeyword, String startDate, String endDate);
+    
     // 상품 단일 조회
     public ProductDTO getProductByCode(int product_code);
     
@@ -75,11 +80,20 @@ public interface CatDogService {
     
     // 결제 오더 정보
     public List<OrderItemDTO> getOrderInfo(String order_code);
-    public String getOrderCodeByUserId(String user_id);
+    public List<String> getOrderCodeByUserId(String user_id);
     
     // 결제
     public void updateAddress(String user_id, String name, String phone_num, String zipcode, String address, String detailaddress);
     public void updatePaymentStatus(String user_id);
     public void deleteOrderItems(String user_id, List<Integer> product_code);
-    public List<Integer> getProductCodeByUserId(String user_id);    
+    public List<Integer> getProductCodeByUserId(String user_id);
+    
+    // 카트
+	public String addOrder(OrderDTO orderDTO) throws Exception;
+	public void addOrderItems(List<OrderItemDTO> orderItems) throws Exception;
+	public List<CartDTO> getCartInfo(String user_id) throws Exception;
+	public List<CartDTO> getCartItem(String user_id) throws Exception;
+	
+	// 장바구니
+	public List<MyDTO> getMyOrders(String user_id) throws Exception;
 }

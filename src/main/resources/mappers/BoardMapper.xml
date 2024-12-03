@@ -84,8 +84,59 @@
             AND product_regdate <= #{endDate}
             ]]>
 		</if>
-		 LIMIT #{offset}, #{pageSize}
     </select>
+    
+    <!-- 상품 검색 필터 페이징 -->    
+    <select id="searchProductWithPaging" resultType="ProductDTO">
+	    SELECT *
+	    FROM product
+	    WHERE 1=1
+	        <if test="searchKeyword != null and searchKeyword != ''">
+		        <choose>
+	            <when test="searchType == 'product_name'">
+	                AND product_name LIKE CONCAT('%', #{searchKeyword}, '%')
+	            </when>
+	            <when test="searchType == 'product_code'">
+	                AND product_code LIKE CONCAT('%', #{searchKeyword}, '%')
+	            </when>
+	            <when test="searchType == 'product_category'">
+	                AND product_category LIKE CONCAT('%', #{searchKeyword}, '%')
+	            </when>
+	        </choose>
+	        </if>
+	        <if test="startDate != null and startDate != ''">
+	            AND product_regdate >= #{startDate}
+	        </if>
+	        <if test="endDate != null and endDate != ''">
+	         <![CDATA[
+	            AND product_regdate <= #{endDate}
+	           ]]>
+	        </if>
+	    ORDER BY product_regdate DESC
+	    LIMIT #{start}, #{pageSize}
+	</select>
+
+	<select id="getFilteredProductCount" resultType="java.lang.Integer">
+	    SELECT COUNT(*)
+	    FROM product
+	    WHERE 1=1
+	       <if test="searchKeyword != null and searchKeyword != ''">
+		        <if test="searchType == 'product_name'">
+		            AND product_name LIKE CONCAT('%', #{searchKeyword}, '%')
+		        </if>
+		        <if test="searchType == 'product_code'">
+		            AND product_code LIKE CONCAT('%', #{searchKeyword}, '%')
+		        </if>
+	        </if>
+	        <if test="startDate != null and startDate != ''">
+	            AND product_regdate >= #{startDate}
+	        </if>
+	        <if test="endDate != null and endDate != ''">
+	        	<![CDATA[
+	            AND product_regdate <= #{endDate}
+	            ]]>
+	        </if>
+	</select>
  	
  	<!-- 상품 관리 리스트 페이징 -->
  	<select id="productPaging" resultType="java.lang.Integer">
@@ -281,25 +332,27 @@
     </select>
     
     <!-- 회원 검색 필터 페이징 -->
-    <select id="searchMemberWithPaging" resultType="MemberDTO">
+    <select id="searchMemberWithPaging" parameterType="java.util.Map" resultType="MemberDTO">
 	    SELECT *
 	    FROM member
 	    WHERE 1=1
 	        <if test="searchKeyword != null and searchKeyword != ''">
-		        <if test="searchType == 'email'">
-		            AND user_id LIKE CONCAT('%', #{searchKeyword}, '%')
-		        </if>
-		        <if test="searchType == 'name'">
-		            AND name LIKE CONCAT('%', #{searchKeyword}, '%')
-		        </if>
+	            <choose>
+	                <when test="searchType == 'email'">
+	                    AND user_id LIKE CONCAT('%', #{searchKeyword}, '%')
+	                </when>
+	                <when test="searchType == 'name'">
+	                    AND name LIKE CONCAT('%', #{searchKeyword}, '%')
+	                </when>
+	            </choose>
 	        </if>
 	        <if test="startDate != null and startDate != ''">
 	            AND user_created_at >= #{startDate}
 	        </if>
 	        <if test="endDate != null and endDate != ''">
-	         <![CDATA[
+	        <![CDATA[
 	            AND user_created_at <= #{endDate}
-	           ]]>
+	            ]]>
 	        </if>
 	    ORDER BY user_created_at DESC
 	    LIMIT #{start}, #{pageSize}
@@ -336,6 +389,95 @@
 	        #{user_id}
 	    </foreach>
 	</update>
+	
+	<!-- 카트 -->
+	<!-- 장바구니에서 주문하기 -->
+	<insert id="addOrder" parameterType="OrderDTO"
+		useGeneratedKeys="true" keyProperty="order_code">
+		INSERT INTO
+		orders(order_code,
+		user_id_fk, payment_status)
+		VALUES (#{order_code},
+		#{user_id_fk}, "0")
+	</insert>
+
+	<!-- 장바구니에서 주문 아이템 추가하기 -->
+	<insert id="addOrderItems" parameterType="list">
+		INSERT INTO
+		order_item (order_code, product_code, order_quantity)
+		VALUES
+		<foreach collection="list" item="item" separator=",">
+			(#{item.order_code}, #{item.product_code}, #{item.order_quantity})
+		</foreach>
+		;
+	</insert>
+	
+	<!-- 마이페이지 주문 내역 -->
+	<select id="getMyOrders" parameterType="java.lang.String"
+		resultType="MyDTO">
+		SELECT
+		o.ordered_at AS orderedAt,
+		o.order_code AS orderCode,
+		(SELECT p.product_name
+		FROM order_item oi
+		JOIN product p ON
+		oi.product_code = p.product_code
+		WHERE oi.order_code = o.order_code
+		ORDER BY oi.product_code ASC
+		LIMIT 1) AS firstProductName,
+		(SELECT
+		SUM(p.product_price *
+		oi.order_quantity)
+		FROM order_item oi
+		JOIN product
+		p ON oi.product_code = p.product_code
+		WHERE oi.order_code =
+		o.order_code) AS totalPrice,
+		o.payment_status AS
+		paymentStatus
+
+		FROM
+		orders o
+
+		WHERE
+		o.user_id_fk = #{user_id}
+		ORDER BY
+		o.ordered_at DESC
+	</select>
+
+	<resultMap id="orderResultMap" type="OrderDTO">
+		<result property="orderCode" column="order_code" />
+		<result property="userIdFk" column="user_id_fk" />
+		<result property="orderedAt" column="ordered_at" />
+		<result property="productCost" column="product_cost" />
+		<result property="paymentStatus" column="payment_status" />
+	</resultMap>
+	
+	<!-- 장바구니 -->
+	<!-- 장바구니 통합쓰 ㅋㅋㅋ -->
+	<select id="getCartInfo" parameterType="java.lang.String"
+		resultType="CartDTO">
+		SELECT
+		c.user_id,
+		c.product_code,
+		p.thumbnail_img,
+		p.product_name,
+		c.cart_quantity,
+		p.product_price,
+		(c.cart_quantity *
+		p.product_price) AS totalPrice
+		FROM cart c LEFT JOIN product p ON
+		c.product_code = p.product_code
+		WHERE
+		c.user_id = #{user_id}
+	</select>
+
+	<!-- 장바구니 아이템 삭제 -->
+	<delete id="deleteCart" parameterType="CartDTO">
+		DELETE FROM cart
+		WHERE
+		user_id = #{user_id} and product_code = #{product_code}
+	</delete>
 	 	
  	<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  -->
  	

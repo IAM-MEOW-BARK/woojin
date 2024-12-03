@@ -90,6 +90,11 @@ td {
 		<form action="searchMember" method="post">
 			<input type="hidden" name="pageNum" value="${currentPage}">
     		<input type="hidden" name="pageSize" value="${pageSize}">
+		    <input type="hidden" name="pageListNum" value="${pageListNum}">
+		    <input type="hidden" name="searchType" value="${searchType}">
+		    <input type="hidden" name="searchKeyword" value="${searchKeyword}">
+		    <input type="hidden" name="startDate" value="${startDate}">
+		    <input type="hidden" name="endDate" value="${endDate}">
 			<table class="table table-bordered">
 				<tr>
 					<th>검색어</th>
@@ -209,19 +214,19 @@ td {
 			<br>
 		</div>
 		<div class="pagination-container">
-            <div class="pagination">
-                <c:if test="${startPage > 1}">
-                    <a href="catdog-user-list-admin?pageNum=${startPage - 1}&pageListNum=${pageListNum - 1}">&lt;</a>
-                </c:if>
-                <c:forEach begin="${startPage}" end="${endPage}" var="page">
-                    <a href="catdog-user-list-admin?pageNum=${page}&pageListNum=${pageListNum}"
-                       class="${currentPage == page ? 'active' : ''}">${page}</a>
-                </c:forEach>
-                <c:if test="${endPage < totalPage}">
-                    <a href="catdog-user-list-admin?pageNum=${endPage + 1}&pageListNum=${pageListNum + 1}">&gt;</a>
-                </c:if>
-            </div>
-        </div>
+	    <div class="pagination">
+	        <c:if test="${startPage > 1}">
+	            <a href="searchMember?pageNum=${startPage - 1}&pageListNum=${pageListNum}&searchKeyword=${searchKeyword}&searchType=${searchType}&startDate=${startDate}&endDate=${endDate}">&lt;</a>
+	        </c:if>
+	        <c:forEach begin="${startPage}" end="${endPage}" var="page">
+	            <a href="searchMember?pageNum=${page}&pageListNum=${pageListNum}&searchKeyword=${searchKeyword}&searchType=${searchType}&startDate=${startDate}&endDate=${endDate}"
+	               class="${currentPage == page ? 'active' : ''}">${page}</a>
+	        </c:forEach>
+	        <c:if test="${endPage < totalPage}">
+	            <a href="searchMember?pageNum=${endPage + 1}&pageListNum=${pageListNum}&searchKeyword=${searchKeyword}&searchType=${searchType}&startDate=${startDate}&endDate=${endDate}">&gt;</a>
+	        </c:if>
+	    </div>
+	</div>
 	</div>
 	<script type="text/javascript">
 		// 페이지 로드 시 시작 날짜를 오늘로 설정
