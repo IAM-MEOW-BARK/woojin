@@ -466,42 +466,84 @@ public class CatDogController {
 
 	// 회원 리스트 검색 필터
 	@PostMapping("/searchMember")
-	public String searchMember(
-			@RequestParam("searchType") String searchType,
-			@RequestParam("searchKeyword") String searchKeyword,
-			@RequestParam(value = "startDate", required = false) String startDate,
-			@RequestParam(value = "endDate", required = false) String endDate, Model model) {
-		if (startDate != null && endDate != null && startDate.compareTo(endDate) > 0) {
-			// startDate가 endDate보다 클 경우 스왑
-			String temp = startDate;
-			startDate = endDate;
-			endDate = temp;
-		}
+	public ModelAndView searchMember(
+	        @RequestParam(value = "searchType", required = false) String searchType,
+	        @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
+	        @RequestParam(value = "startDate", required = false) String startDate,
+	        @RequestParam(value = "endDate", required = false) String endDate,
+	        @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+	        @RequestParam(value = "pageListNum", defaultValue = "1") int pageListNum) {
+	    
+	    // 날짜 검증 및 변환
+	    if (startDate != null && endDate != null && startDate.compareTo(endDate) > 0) {
+	        String temp = startDate;
+	        startDate = endDate;
+	        endDate = temp;
+	    }
+	    if (startDate != null && !startDate.isEmpty()) {
+	        startDate += " 00:00:00";
+	    }
+	    if (endDate != null && !endDate.isEmpty()) {
+	        endDate += " 23:59:59";
+	    }
+	    if (searchKeyword != null && searchKeyword.trim().isEmpty()) {
+	        searchKeyword = null;
+	    }
 
-		if (searchKeyword == null || searchKeyword.trim().isEmpty()) {
-			searchKeyword = null; // Mapper에서 처리
-		}
-		if (startDate != null && !startDate.isEmpty()) {
-			startDate += " 00:00:00";
-		}
-		if (endDate != null && !endDate.isEmpty()) {
-			endDate += " 23:59:59";
-		}
-		if (startDate != null && endDate != null && startDate.compareTo(endDate) > 0) {
-			String temp = startDate;
-			startDate = endDate;
-			endDate = temp;
-		}
+	    // 페이징 계산
+	    int pageSize = 10; // 한 페이지당 게시글 수
+	    int pageListSize = 10; // 한 번에 표시할 페이지 수
+	    int totalList = catDogService.getFilteredMemberCount(searchType, searchKeyword, startDate, endDate);
+	    int totalPage = (int) Math.ceil((double) totalList / pageSize);
+	    int start = (pageNum - 1) * pageSize;
+	    int startPage = (pageListNum - 1) * pageListSize + 1;
+	    int endPage = Math.min(startPage + pageListSize - 1, totalPage);
 
-		System.out.println("searchType: " + searchType);
-		System.out.println("searchKeyword: " + searchKeyword);
-		System.out.println("startDate: " + startDate);
-		System.out.println("endDate: " + endDate);
+	    // 검색 조건에 맞는 회원 리스트 가져오기
+	    List<MemberDTO> members = catDogService.searchMemberWithPaging(searchType, searchKeyword, startDate, endDate, start, pageSize);
 
-		List<Map<String, Object>> members = catDogService.searchMember(searchType, searchKeyword, startDate, endDate);
-		model.addAttribute("memberList", members);
-		return "catdog-user-list-admin"; // JSP 경로
+	    // ModelAndView로 데이터 전달
+	    ModelAndView mAV = new ModelAndView();
+	    mAV.addObject("memberList", members);
+	    mAV.addObject("totalPage", totalPage);
+	    mAV.addObject("currentPage", pageNum);
+	    mAV.addObject("pageListNum", pageListNum);
+	    mAV.addObject("startPage", startPage);
+	    mAV.addObject("endPage", endPage);
+	    mAV.addObject("searchType", searchType);
+	    mAV.addObject("searchKeyword", searchKeyword);
+	    mAV.addObject("startDate", startDate);
+	    mAV.addObject("endDate", endDate);
+	    mAV.setViewName("catdog-user-list-admin");
+
+	    return mAV;
 	}
+
+	/*
+	 * @PostMapping("/searchMember") public String searchMember(
+	 * 
+	 * @RequestParam("searchType") String searchType,
+	 * 
+	 * @RequestParam("searchKeyword") String searchKeyword,
+	 * 
+	 * @RequestParam(value = "startDate", required = false) String startDate,
+	 * 
+	 * @RequestParam(value = "endDate", required = false) String endDate, Model
+	 * model) { if (startDate != null && endDate != null &&
+	 * startDate.compareTo(endDate) > 0) { // startDate가 endDate보다 클 경우 스왑 String
+	 * temp = startDate; startDate = endDate; endDate = temp; }
+	 * 
+	 * if (searchKeyword == null || searchKeyword.trim().isEmpty()) { searchKeyword
+	 * = null; // Mapper에서 처리 } if (startDate != null && !startDate.isEmpty()) {
+	 * startDate += " 00:00:00"; } if (endDate != null && !endDate.isEmpty()) {
+	 * endDate += " 23:59:59"; } if (startDate != null && endDate != null &&
+	 * startDate.compareTo(endDate) > 0) { String temp = startDate; startDate =
+	 * endDate; endDate = temp; }
+	 * 
+	 * List<Map<String, Object>> members = catDogService.searchMember(searchType,
+	 * searchKeyword, startDate, endDate); model.addAttribute("memberList",
+	 * members); return "catdog-user-list-admin"; // JSP 경로 }
+	 */
 	
 	// 상품 리스트 검색 필터
 	@PostMapping("/searchProduct")
@@ -531,11 +573,6 @@ public class CatDogController {
 			startDate = endDate;
 			endDate = temp;
 		}
-
-		System.out.println("searchType: " + searchType);
-		System.out.println("searchKeyword: " + searchKeyword);
-		System.out.println("startDate: " + startDate);
-		System.out.println("endDate: " + endDate);
 
 		List<Map<String, Object>> products = catDogService.searchProduct(searchType, searchKeyword, startDate, endDate);
 		model.addAttribute("productList", products);

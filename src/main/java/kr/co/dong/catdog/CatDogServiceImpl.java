@@ -192,4 +192,14 @@ public class CatDogServiceImpl implements CatDogService {
 	    return catDogDAO.getProductCodeByUserId(user_id);
 	}
 	
+	// 검색 조건과 페이징을 사용한 회원 리스트 조회
+	public List<MemberDTO> searchMemberWithPaging(String searchType, String searchKeyword, String startDate, String endDate, int start, int pageSize) {
+	    return catDogDAO.searchMemberWithPaging(searchType, searchKeyword, startDate, endDate, start, pageSize);
+	}
+
+	// 검색 조건에 맞는 회원 수 조회
+	public int getFilteredMemberCount(String searchType, String searchKeyword, String startDate, String endDate) {
+	    return catDogDAO.getFilteredMemberCount(searchType, searchKeyword, startDate, endDate);
+	}
+	
 }

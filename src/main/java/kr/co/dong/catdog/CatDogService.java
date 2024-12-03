@@ -27,6 +27,12 @@ public interface CatDogService {
 	
 	// 회원 리스트 검색 필터
 	public List<Map<String, Object>> searchMember(String searchType, String searchKeyword, String startDate, String endDate);
+	
+	// 회원 리스트 페이징
+	// 검색 조건과 페이징을 사용한 회원 리스트 조회
+	public List<MemberDTO> searchMemberWithPaging(String searchType, String searchKeyword, String startDate, String endDate, int start, int pageSize);
+	// 검색 조건에 맞는 회원 수 조회
+	public int getFilteredMemberCount(String searchType, String searchKeyword, String startDate, String endDate);
 		
 	// 상품 등록
     public int addProduct(ProductDTO productDTO) throws Exception;

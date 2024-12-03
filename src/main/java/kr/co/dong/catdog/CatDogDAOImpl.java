@@ -284,6 +284,34 @@ public class CatDogDAOImpl implements CatDogDAO{
 	@Override
 	public List<Integer> getProductCodeByUserId(String user_id) {
 	    return sqlSession.selectList(namespace + ".getProductCodeByUserId", user_id);
-	}	
+	}
+
+	@Override
+    public List<MemberDTO> searchMemberWithPaging(String searchType, String searchKeyword, String startDate,
+                                                  String endDate, int start, int pageSize) {
+        // 파라미터 생성
+        Map<String, Object> params = new HashMap<>();
+        params.put("searchType", searchType);
+        params.put("searchKeyword", searchKeyword);
+        params.put("startDate", startDate);
+        params.put("endDate", endDate);
+        params.put("start", start);
+        params.put("pageSize", pageSize);
+
+        // SQL 실행
+        return sqlSession.selectList(namespace + ".searchMemberWithPaging", params);
+    }
 	
+	@Override
+    public int getFilteredMemberCount(String searchType, String searchKeyword, String startDate, String endDate) {
+        // 파라미터 생성
+        Map<String, Object> params = new HashMap<>();
+        params.put("searchType", searchType);
+        params.put("searchKeyword", searchKeyword);
+        params.put("startDate", startDate);
+        params.put("endDate", endDate);
+
+        // SQL 실행
+        return sqlSession.selectOne(namespace + ".getFilteredMemberCount", params);
+    }
 }
