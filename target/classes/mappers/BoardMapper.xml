@@ -322,42 +322,39 @@
         
         <!-- 기간 조건 -->        
 	     <if test="startDate != null and startDate != ''">
-	        AND user_created_at >= #{startDate}
-	    </if>
+		    AND user_created_at >= #{startDate}
+		</if>
 		<if test="endDate != null and endDate != ''">
-            <![CDATA[
-            AND user_created_at <= #{endDate}
-            ]]>
+		<![CDATA[
+		    AND user_created_at <= #{endDate}
+		    ]]>
 		</if>
     </select>
     
-    <!-- 회원 검색 필터 페이징 -->
-    <select id="searchMemberWithPaging" parameterType="java.util.Map" resultType="MemberDTO">
+      <!-- 회원 검색 필터 페이징 -->
+    <select id="searchMemberWithPaging" resultType="MemberDTO">
 	    SELECT *
 	    FROM member
 	    WHERE 1=1
 	        <if test="searchKeyword != null and searchKeyword != ''">
-	            <choose>
-	                <when test="searchType == 'email'">
-	                    AND user_id LIKE CONCAT('%', #{searchKeyword}, '%')
-	                </when>
-	                <when test="searchType == 'name'">
-	                    AND name LIKE CONCAT('%', #{searchKeyword}, '%')
-	                </when>
-	            </choose>
+		        <if test="searchType == 'email'">
+		            AND user_id LIKE CONCAT('%', #{searchKeyword}, '%')
+		        </if>
+		        <if test="searchType == 'name'">
+		            AND name LIKE CONCAT('%', #{searchKeyword}, '%')
+		        </if>
 	        </if>
 	        <if test="startDate != null and startDate != ''">
 	            AND user_created_at >= #{startDate}
 	        </if>
 	        <if test="endDate != null and endDate != ''">
-	        <![CDATA[
+	         <![CDATA[
 	            AND user_created_at <= #{endDate}
-	            ]]>
+	           ]]>
 	        </if>
 	    ORDER BY user_created_at DESC
 	    LIMIT #{start}, #{pageSize}
 	</select>
-
 	<select id="getFilteredMemberCount" resultType="java.lang.Integer">
 	    SELECT COUNT(*)
 	    FROM member

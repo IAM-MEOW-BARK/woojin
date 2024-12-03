@@ -475,26 +475,19 @@ public class CatDogController {
 	        @RequestParam(value = "endDate", required = false) String endDate,
 	        @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
 	        @RequestParam(value = "pageListNum", defaultValue = "1") int pageListNum) {
-
-	    // 날짜 검증 및 변환
-	    if (startDate == null || startDate.isEmpty()) {
-	        startDate = null; // null 처리
-	    } else {
-	        startDate += " 00:00:00";
-	    }
-
-	    if (endDate == null || endDate.isEmpty()) {
-	        endDate = null; // null 처리
-	    } else {
-	        endDate += " 23:59:59";
-	    }
-
+	    
+		// 날짜 검증 및 변환
 	    if (startDate != null && endDate != null && startDate.compareTo(endDate) > 0) {
 	        String temp = startDate;
 	        startDate = endDate;
 	        endDate = temp;
 	    }
-
+	    if (startDate != null && !startDate.isEmpty()) {
+	        startDate += " 00:00:00";
+	    }
+	    if (endDate != null && !endDate.isEmpty()) {
+	        endDate += " 23:59:59";
+	    }
 	    if (searchKeyword != null && searchKeyword.trim().isEmpty()) {
 	        searchKeyword = null;
 	    }
@@ -524,36 +517,8 @@ public class CatDogController {
 	    mAV.addObject("startDate", startDate);
 	    mAV.addObject("endDate", endDate);
 	    mAV.setViewName("catdog-user-list-admin");
-
 	    return mAV;
-	}
-
-
-	/*
-	 * @PostMapping("/searchMember") public String searchMember(
-	 * 
-	 * @RequestParam("searchType") String searchType,
-	 * 
-	 * @RequestParam("searchKeyword") String searchKeyword,
-	 * 
-	 * @RequestParam(value = "startDate", required = false) String startDate,
-	 * 
-	 * @RequestParam(value = "endDate", required = false) String endDate, Model
-	 * model) { if (startDate != null && endDate != null &&
-	 * startDate.compareTo(endDate) > 0) { // startDate가 endDate보다 클 경우 스왑 String
-	 * temp = startDate; startDate = endDate; endDate = temp; }
-	 * 
-	 * if (searchKeyword == null || searchKeyword.trim().isEmpty()) { searchKeyword
-	 * = null; // Mapper에서 처리 } if (startDate != null && !startDate.isEmpty()) {
-	 * startDate += " 00:00:00"; } if (endDate != null && !endDate.isEmpty()) {
-	 * endDate += " 23:59:59"; } if (startDate != null && endDate != null &&
-	 * startDate.compareTo(endDate) > 0) { String temp = startDate; startDate =
-	 * endDate; endDate = temp; }
-	 * 
-	 * List<Map<String, Object>> members = catDogService.searchMember(searchType,
-	 * searchKeyword, startDate, endDate); model.addAttribute("memberList",
-	 * members); return "catdog-user-list-admin"; // JSP 경로 }
-	 */
+	}	
 	
 	// 상품 리스트 검색 필터
 		@PostMapping("/searchProduct")
@@ -609,31 +574,6 @@ public class CatDogController {
 
 		    return mAV;
 		}
-	/*
-	 * @PostMapping("/searchProduct") public String searchProduct(
-	 * 
-	 * @RequestParam("searchType") String searchType,
-	 * 
-	 * @RequestParam("searchKeyword") String searchKeyword,
-	 * 
-	 * @RequestParam(value = "startDate", required = false) String startDate,
-	 * 
-	 * @RequestParam(value = "endDate", required = false) String endDate, Model
-	 * model) { if (startDate != null && endDate != null &&
-	 * startDate.compareTo(endDate) > 0) { // startDate가 endDate보다 클 경우 스왑 String
-	 * temp = startDate; startDate = endDate; endDate = temp; }
-	 * 
-	 * if (searchKeyword == null || searchKeyword.trim().isEmpty()) { searchKeyword
-	 * = null; // Mapper에서 처리 } if (startDate != null && !startDate.isEmpty()) {
-	 * startDate += " 00:00:00"; } if (endDate != null && !endDate.isEmpty()) {
-	 * endDate += " 23:59:59"; } if (startDate != null && endDate != null &&
-	 * startDate.compareTo(endDate) > 0) { String temp = startDate; startDate =
-	 * endDate; endDate = temp; }
-	 * 
-	 * List<Map<String, Object>> products = catDogService.searchProduct(searchType,
-	 * searchKeyword, startDate, endDate); model.addAttribute("productList",
-	 * products); return "catdog-product-list-admin"; // JSP 경로 }
-	 */
 	
 	// 결제 페이지 회원
 	@GetMapping(value = "catdog-payment")
@@ -653,14 +593,6 @@ public class CatDogController {
 		model.addAttribute("paymentMember", pdto);
 		
 		System.out.println("Session user: " + session.getAttribute("user"));
-		
-		/*
-		 * // user_id로 order_code 가져오기 String order_code =
-		 * catDogService.getOrderCodeByUserId((String) user.get("user_id")); if
-		 * (order_code == null || order_code.isEmpty()) {
-		 * System.out.println("order_code가 없습니다."); return
-		 * "redirect:/catdog-product-list-admin"; }
-		 */
 		    
 		// order_code로 주문 정보 가져오기
 		List<OrderItemDTO> orderInfo = catDogService.getOrderInfo(order_code);
@@ -777,17 +709,6 @@ public class CatDogController {
 
 	    return "redirect:/catdog-payment";
 	}
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
-	
 	
 	// 마이페이지
 	@GetMapping("/mypage")

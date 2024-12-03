@@ -214,18 +214,19 @@ td {
 			<br>
 		</div>
 		<div class="pagination-container">
-	    <div class="pagination">
-	        <c:if test="${startPage > 1}">
-	            <a href="searchMember?pageNum=${startPage - 1}&pageListNum=${pageListNum}&searchKeyword=${searchKeyword}&searchType=${searchType}&startDate=${startDate}&endDate=${endDate}">&lt;</a>
-	        </c:if>
-	        <c:forEach begin="${startPage}" end="${endPage}" var="page">
-	            <a href="searchMember?pageNum=${page}&pageListNum=${pageListNum}&searchKeyword=${searchKeyword}&searchType=${searchType}&startDate=${startDate}&endDate=${endDate}"
-	               class="${currentPage == page ? 'active' : ''}">${page}</a>
-	        </c:forEach>
-	        <c:if test="${endPage < totalPage}">
-	            <a href="searchMember?pageNum=${endPage + 1}&pageListNum=${pageListNum}&searchKeyword=${searchKeyword}&searchType=${searchType}&startDate=${startDate}&endDate=${endDate}">&gt;</a>
-	        </c:if>
-	    </div>
+            <div class="pagination">
+                <c:if test="${startPage > 1}">
+                    <a href="catdog-user-list-admin?pageNum=${startPage - 1}&pageListNum=${pageListNum - 1}">&lt;</a>
+                </c:if>
+                <c:forEach begin="${startPage}" end="${endPage}" var="page">
+                    <a href="catdog-user-list-admin?pageNum=${page}&pageListNum=${pageListNum}"
+                       class="${currentPage == page ? 'active' : ''}">${page}</a>
+                </c:forEach>
+                <c:if test="${endPage < totalPage}">
+                    <a href="catdog-user-list-admin?pageNum=${endPage + 1}&pageListNum=${pageListNum + 1}">&gt;</a>
+                </c:if>
+            </div>
+        </div>
 	</div>
 	</div>
 	<script type="text/javascript">
