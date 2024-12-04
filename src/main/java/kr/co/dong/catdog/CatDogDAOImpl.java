@@ -22,10 +22,15 @@ public class CatDogDAOImpl implements CatDogDAO{
 		return sqlSession.selectOne(namespace + ".login", map);
 	}
 	
+	@Override
+	public String socialLogin(String user_id) {
+		return sqlSession.selectOne(namespace + ".social-login", user_id);
+	}
+	
 	 @Override
-	    public void updateConnectedAt(Map<String, Object> map) {
-	        sqlSession.update(namespace + ".updateConnectedAt", map); // connected_at 업데이트 실행
- }
+    public void updateConnectedAt(Map<String, Object> map) {
+        sqlSession.update(namespace + ".updateConnectedAt", map); // connected_at 업데이트 실행
+	 }
 
 	@Override
 	public int create(MemberDTO meber) throws Exception {
@@ -37,6 +42,11 @@ public class CatDogDAOImpl implements CatDogDAO{
 	public int getMemberByEmail(String user_id) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(namespace + ".email-check", user_id);
+	}
+	
+	@Override
+	public Map checkUserId(Map<String, Object> map) throws Exception {
+		return sqlSession.selectOne(namespace + ".find-userId", map);
 	}
 
 	@Override

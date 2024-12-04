@@ -22,6 +22,18 @@
 		where name=#{name} and phone_num=#{phone_num}
 	</select>
 	
+	<!-- 소셜 로그인 아이디 찾기 -->
+	<select id="find-userId" parameterType="java.util.Map" resultType="java.util.Map">
+		select user_id from member
+		where user_id=#{user_id}
+	</select>
+	
+	<!-- 소셜 아이디 로그인 -->
+ 	<select id="socail-login" parameterType="java.util.Map" resultType="java.util.Map">
+ 		select user_id from member
+ 		where user_id=#{user_id}
+ 	</select>
+	
 	<!-- 비밀번호 찾기 -->
 	<select id="find-pw" parameterType="java.util.Map" resultType="java.util.Map">
 		select password from member

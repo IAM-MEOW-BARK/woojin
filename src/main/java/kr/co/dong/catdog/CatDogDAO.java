@@ -8,12 +8,16 @@ public interface CatDogDAO {
 	// 로그인
 	public Map login(Map<String, Object> map);
 	void updateConnectedAt(Map<String, Object> map);
+	public String socialLogin(String user_id);
 	
 	// 회원가입
 	public int create(MemberDTO meber) throws Exception;
 	
 	// 이메일 중복
 	public int getMemberByEmail(String user_id) throws Exception;
+	
+	// 소셜 아이디 중복
+	public Map checkUserId(Map<String, Object> params) throws Exception;
 	
 	// 회원 정보 찾기 (아이디)
 	public Map findId(Map<String, Object> params);

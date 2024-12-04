@@ -101,7 +101,7 @@
 	      <div>
 	        <input type="email" name="user_id"  class="email-input" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;아이디 또는 이메일을 입력해주세요">
 	      </div>
-	      <div style="margin-top: 10px;">	        naver
+	      <div style="margin-top: 10px;">
 	         <input type="password" name="password" class="password-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;비밀번호를 입력해주세요">
 	      </div>
 	      <div class="login-button" style="margin-top: 20px;">

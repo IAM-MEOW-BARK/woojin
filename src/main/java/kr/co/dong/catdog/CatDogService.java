@@ -1,11 +1,13 @@
 package kr.co.dong.catdog;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 public interface CatDogService {
 	// 로그인
 	public Map login(Map<String, Object> map);
+	public Map socialLogin(Map<String, Object> map);
 	
 	// 아이디 찾기
 	public Map findId(Map<String, Object> map);
@@ -18,9 +20,10 @@ public interface CatDogService {
 	
 	// 이메일 중복 체크
 	public int getMemberByEmail(String user_id) throws Exception;
-	
 	// 전체 회원 리스트
 	public List <MemberDTO> getTotalMember(int start, int pageSize);
+	// 소셜 아이디 중복
+	public Map checkUserId(Map<String, Object> params) throws Exception;
 	
 	// 회원 탈퇴	
 	public int deleteUsers(List<String> userIds);
@@ -96,4 +99,8 @@ public interface CatDogService {
 	
 	// 장바구니
 	public List<MyDTO> getMyOrders(String user_id) throws Exception;
+
+	// 카카오 로그인
+	public String getAccessToken(String code);
+	public HashMap<String, Object> getUserInfo (String access_Token);
 }

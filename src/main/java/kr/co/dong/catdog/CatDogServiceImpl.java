@@ -1,7 +1,15 @@
 package kr.co.dong.catdog;
 
+import java.io.BufferedReader;
+import java.io.BufferedWriter;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.io.OutputStreamWriter;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
@@ -9,6 +17,11 @@ import java.util.UUID;
 import javax.inject.Inject;
 
 import org.springframework.stereotype.Service;
+
+
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 @Service
 public class CatDogServiceImpl implements CatDogService {
@@ -18,6 +31,7 @@ public class CatDogServiceImpl implements CatDogService {
 	@Override
 	public Map login(Map<String, Object>map) {
 		// TODO Auto-generated method stub
+
 		  // 1. 로그인 쿼리 실행
 	    Map<String, Object> user = catDogDAO.login(map);
 
@@ -27,6 +41,21 @@ public class CatDogServiceImpl implements CatDogService {
 	    }
 
 	    // 3. 로그인 결과 반환
+	    return user;
+	}
+	
+	@Override
+	public Map socialLogin(Map<String, Object> map) {
+	    System.out.println("소셜 로그인 시도: " + map.get("user_id"));
+
+	    // 로그인 쿼리 실행
+	    Map<String, Object> user = catDogDAO.login(map);
+
+	    if (user != null) {
+	        // connected_at 업데이트
+	        catDogDAO.updateConnectedAt(map);
+	    }
+
 	    return user;
 	}
 
@@ -41,12 +70,29 @@ public class CatDogServiceImpl implements CatDogService {
 		// TODO Auto-generated method stub
 		return catDogDAO.findPw(map);
 	}
+	
+	@Override
+	public Map checkUserId(Map<String, Object> map) throws Exception {
+		return catDogDAO.checkUserId(map);
+	}
 
 	
 	@Override
-	public int create(MemberDTO meber) throws Exception {
+	public int create(MemberDTO member) throws Exception {
 		// TODO Auto-generated method stub
-		return catDogDAO.create(meber);
+		 // 중복 확인 로직 추가
+	    Map<String, Object> userMap = new HashMap<>();
+	    userMap.put("user_id", member.getUser_id());
+	    
+	    Map<String, Object> foundUser = catDogDAO.login(userMap);
+	    if (foundUser != null) {
+	        throw new RuntimeException("Duplicate user_id: " + member.getUser_id());
+	    }
+	    
+	    System.out.println("회원 추가 됩니다잉" + userMap);
+
+	    // 중복되지 않은 경우 INSERT 수행
+	    return catDogDAO.create(member);
 	}
 
 	@Override
@@ -253,6 +299,105 @@ public class CatDogServiceImpl implements CatDogService {
 	public List<MyDTO> getMyOrders(String user_id) throws Exception {
 		return catDogDAO.getMyOrders(user_id);
 	}
+	
+	// 카카오 로그인
+	public String getAccessToken(String authorize_code) {
+		String access_Token = "";
+        String refresh_Token = "";
+        String reqURL = "https://kauth.kakao.com/oauth/token";
+
+        try {
+            URL url = new URL(reqURL);
+
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("POST");
+            conn.setDoOutput(true);
+
+            BufferedWriter bw = new BufferedWriter(new OutputStreamWriter(conn.getOutputStream()));
+            StringBuilder sb = new StringBuilder();
+            sb.append("grant_type=authorization_code");
+            sb.append("&client_id=26fead75e8276cd122d06ab66a97fe89"); // 발급받은 키
+            sb.append("&redirect_uri=http://localhost:8080/kakao/login");
+            sb.append("&code=").append(authorize_code);
+            bw.write(sb.toString());
+            bw.flush();
+
+            int responseCode = conn.getResponseCode();
+            System.out.println("responseCode : " + responseCode);
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+            StringBuilder result = new StringBuilder();
+            String line;
+
+            while ((line = br.readLine()) != null) {
+                result.append(line);
+            }
+
+            System.out.println("response body : " + result);
+
+            JsonElement element = JsonParser.parseString(result.toString());
+            JsonObject jsonObject = element.getAsJsonObject();
+
+            access_Token = jsonObject.get("access_token").getAsString();
+            refresh_Token = jsonObject.get("refresh_token").getAsString();
+
+            System.out.println("access_token : " + access_Token);
+            System.out.println("refresh_token : " + refresh_Token);
+
+            br.close();
+            bw.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return access_Token;
+    }
+	
+	public HashMap<String, Object> getUserInfo(String access_Token) {
+        // 클라이언트별 정보를 저장하기 위한 HashMap
+        HashMap<String, Object> userInfo = new HashMap<>();
+        String reqURL = "https://kapi.kakao.com/v2/user/me";
+
+        try {
+            URL url = new URL(reqURL);
+            HttpURLConnection conn = (HttpURLConnection) url.openConnection();
+            conn.setRequestMethod("GET");
+
+            // Authorization 헤더에 Access Token 추가
+            conn.setRequestProperty("Authorization", "Bearer " + access_Token);
+
+            int responseCode = conn.getResponseCode();
+            System.out.println("responseCode : " + responseCode);
+
+            BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+
+            String line;
+            StringBuilder result = new StringBuilder();
+
+            while ((line = br.readLine()) != null) {
+                result.append(line);
+            }
+            System.out.println("response body : " + result);
+
+            // JSON 파싱
+            JsonElement element = JsonParser.parseString(result.toString());
+            JsonObject properties = element.getAsJsonObject().get("properties").getAsJsonObject();
+            JsonObject kakao_account = element.getAsJsonObject().get("kakao_account").getAsJsonObject();
+
+            // 필요한 정보 추출
+            String nickname = properties.get("nickname").getAsString();
+            String email = kakao_account.get("email").getAsString();
+
+            // HashMap에 저장
+            userInfo.put("user_id", email); // 이메일을 user_id로
+            userInfo.put("name", nickname); // 닉네임을 name으로
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return userInfo;
+    }
 
 	
 	
