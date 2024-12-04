@@ -352,6 +352,7 @@ public class CatDogController {
 		@RequestMapping("/kakao/login")
 		public String home(@RequestParam(value = "code", required = false) String code, HttpServletRequest request,
 		                   HttpServletResponse response, HttpSession session, Model model) throws Exception {
+			request.setCharacterEncoding("utf-8");
 		    System.out.println("######### Code: " + code);
 
 		    // Access Token 가져오기
@@ -373,12 +374,21 @@ public class CatDogController {
 		    userMap.put("user_id", userId);
 
 		    Map<String, Object> foundUser = catDogService.checkUserId(userMap);
+		    
+		    if(foundUser != null) {
+		        System.out.println("회원 정보 있음 - 로그인 처리");
+		        
+		        catDogService.socialLogin(foundUser);
+		        session.setAttribute("user", foundUser);
+		        session.setAttribute("access_token", access_Token);
+		    }
 
 		    if (foundUser == null || foundUser.isEmpty()) {
 		        System.out.println("회원 정보 없음 - 새로 생성");
 		        MemberDTO member = new MemberDTO();
 		        member.setUser_id(userId);
 		        member.setName(name);
+		        member.setSocial_id(1);
 
 		        System.out.println("회원 정보 생성 member :::::::::::" + member);
 
@@ -387,12 +397,7 @@ public class CatDogController {
 
 		        // 새로 생성된 유저 정보를 세션에 저장
 		        session.setAttribute("user", member);
-		    } else {
-		        System.out.println("회원 정보 있음 - 로그인 처리");
-		        session.setAttribute("user", foundUser);
-		    }
-
-		    session.setAttribute("access_token", access_Token);
+		    }		    
 
 		    System.out.println("###access_Token#### : " + access_Token);
 		    System.out.println("###userInfo#### : " + userInfo.get("user_id"));
@@ -465,29 +470,6 @@ public class CatDogController {
 		    return "redirect:/";
 		}
 
-
-	
-		/*
-		 * // 로그아웃
-		 * 
-		 * @GetMapping(value = "/catdog-logout") public String logout(HttpServletRequest
-		 * request, HttpServletResponse response, HttpSession session,
-		 * RedirectAttributes rttr) { // 1. 세션 무효화 if (session != null) {
-		 * session.invalidate(); // 서버 세션 삭제 }
-		 * 
-		 * // 2. 클라이언트 JSESSIONID 쿠키 삭제 // 직접 Set-Cookie 헤더를 통해 HttpOnly 포함 Cookie
-		 * cookie = new Cookie("JSESSIONID", null); // 쿠키 값 null cookie.setPath("/"); //
-		 * 경로 설정 cookie.setMaxAge(0); // 즉시 만료 response.addCookie(cookie); // 기본 쿠키 설정
-		 * 추가
-		 * 
-		 * // HttpOnly 속성을 명시적으로 추가 response.addHeader("Set-Cookie",
-		 * "JSESSIONID=; Path=/; HttpOnly; Max-Age=0");
-		 * 
-		 * // 3. 로그아웃 메시지 추가 rttr.addFlashAttribute("msg", "로그아웃 성공"); // 사용자 알림 메시지 추가
-		 * 
-		 * // 4. 홈으로 리다이렉트 return "redirect:/"; }
-		 */
-
 	// 관리자 회원 목록 + 페이징
 	@GetMapping(value = "/catdog-user-list-admin")
 	public ModelAndView list(
@@ -551,18 +533,7 @@ public class CatDogController {
 	@GetMapping(value = "/catdog-main")
 	public String catDogMain() {
 		return "catdog-main";
-	}	
-	
-	/*
-	 * @GetMapping(value="/catdog-payment") public String catDogPayment
-	 * (@RequestParam("user_id") String user_id, Model model) throws Exception {
-	 * List<PaymentDTO> p = catDogService.productPayment(user_id);
-	 * model.addAttribute("p", p);
-	 * 
-	 * int t = catDogService.getTotalCost(user_id);
-	 * 
-	 * return "catdog-payment"; }
-	 */
+	}
 	
 	// 일반 유저 회원가입
 	@GetMapping(value="/catdog-signup")
@@ -851,72 +822,5 @@ public class CatDogController {
 
 		return "mypage";
 	}
-	
-	
-	
-	/*
-	 * private final String KAKAO_CLIENT_ID = "26fead75e8276cd122d06ab66a97fe89"; //
-	 * 카카오 REST API 키 private final String REDIRECT_URI =
-	 * "http://localhost:8080/kakao/login";
-	 */
-
-	/*
-	 * @GetMapping("/kakao/login") public String kakaoLogin() { String kakaoAuthUrl
-	 * = "https://kauth.kakao.com/oauth/authorize" + "?client_id=" + KAKAO_CLIENT_ID
-	 * + "&redirect_uri=" + REDIRECT_URI + "&response_type=code"; return "redirect:"
-	 * + kakaoAuthUrl; }
-	 * 
-	 * @GetMapping("/kakao/callback") public String kakaoCallback(@RequestParam
-	 * String code, HttpSession session, Model model) { try { // 1. Access Token 요청
-	 * String tokenUrl = "https://kauth.kakao.com/oauth/token" +
-	 * "?grant_type=authorization_code" + "&client_id=" + KAKAO_CLIENT_ID +
-	 * "&redirect_uri=" + REDIRECT_URI + "&code=" + code;
-	 * 
-	 * HttpURLConnection connection = (HttpURLConnection) new
-	 * URL(tokenUrl).openConnection(); connection.setRequestMethod("POST");
-	 * connection.setDoOutput(true);
-	 * 
-	 * BufferedReader br = new BufferedReader(new
-	 * InputStreamReader(connection.getInputStream())); String responseLine;
-	 * StringBuilder response = new StringBuilder(); while ((responseLine =
-	 * br.readLine()) != null) { response.append(responseLine); } br.close();
-	 * 
-	 * // 2. Access Token 추출 (JSON 파싱) String accessToken =
-	 * extractAccessToken(response.toString());
-	 * 
-	 * System.out.println(accessToken);
-	 * 
-	 * // 3. 사용자 정보 가져오기 JsonNode userInfo = getUserInfo(accessToken);
-	 * 
-	 * // 4. 세션 및 모델에 사용자 정보 저장 String userId = userInfo.get("id").asText(); String
-	 * nickname = userInfo.get("properties").get("nickname").asText();
-	 * 
-	 * session.setAttribute("userId", userId); session.setAttribute("nickname",
-	 * nickname); model.addAttribute("nickname", nickname);
-	 * 
-	 * return "/"; // 로그인 후 보여줄 페이지
-	 * 
-	 * } catch (Exception e) { e.printStackTrace(); model.addAttribute("error",
-	 * "카카오 로그인 실패"); return "error"; // 에러 페이지 } }
-	 * 
-	 * private String extractAccessToken(String response) throws Exception {
-	 * ObjectMapper objectMapper = new ObjectMapper(); JsonNode responseJson =
-	 * objectMapper.readTree(response); return
-	 * responseJson.get("access_token").asText(); }
-	 * 
-	 * private JsonNode getUserInfo(String accessToken) throws Exception { String
-	 * apiUrl = "https://kapi.kakao.com/v2/user/me"; HttpURLConnection connection =
-	 * (HttpURLConnection) new URL(apiUrl).openConnection();
-	 * connection.setRequestMethod("GET");
-	 * connection.setRequestProperty("Authorization", "Bearer " + accessToken);
-	 * 
-	 * BufferedReader br = new BufferedReader(new
-	 * InputStreamReader(connection.getInputStream())); String responseLine;
-	 * StringBuilder response = new StringBuilder(); while ((responseLine =
-	 * br.readLine()) != null) { response.append(responseLine); } br.close();
-	 * 
-	 * ObjectMapper objectMapper = new ObjectMapper(); return
-	 * objectMapper.readTree(response.toString()); }
-	 */
 
 }

@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
@@ -15,6 +16,7 @@ import java.util.Map;
 import java.util.UUID;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.stereotype.Service;
 
@@ -305,9 +307,11 @@ public class CatDogServiceImpl implements CatDogService {
 		String access_Token = "";
         String refresh_Token = "";
         String reqURL = "https://kauth.kakao.com/oauth/token";
+        
 
         try {
             URL url = new URL(reqURL);
+            String redirectUri = "http://localhost:8080/kakao/login";
 
             HttpURLConnection conn = (HttpURLConnection) url.openConnection();
             conn.setRequestMethod("POST");
@@ -317,13 +321,13 @@ public class CatDogServiceImpl implements CatDogService {
             StringBuilder sb = new StringBuilder();
             sb.append("grant_type=authorization_code");
             sb.append("&client_id=26fead75e8276cd122d06ab66a97fe89"); // 발급받은 키
-            sb.append("&redirect_uri=http://localhost:8080/kakao/login");
+            sb.append( "&redirect_uri=" + URLEncoder.encode(redirectUri, "UTF-8"));
             sb.append("&code=").append(authorize_code);
             bw.write(sb.toString());
             bw.flush();
 
             int responseCode = conn.getResponseCode();
-            System.out.println("responseCode : " + responseCode);
+            System.out.println("responseCode:::::::: " + responseCode);
 
             BufferedReader br = new BufferedReader(new InputStreamReader(conn.getInputStream()));
             StringBuilder result = new StringBuilder();

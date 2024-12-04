@@ -108,7 +108,7 @@ td {
 					<th>기간</th>
 					<td>
 					<select>
-							<option value="registerDate">생성일</option>							
+							<option value="registerDate">생성일</option>
 					</select>
 					 <input type="date" id="endDate" name="endDate"> - 
 					 <input	type="date" id="startDate" name="startDate">
@@ -117,7 +117,8 @@ td {
 							<button type="button" onclick="setDate(-3)">3일</button>
 							<button type="button" onclick="setDate(-7)">일주일</button>
 							<button type="button" onclick="setDate(-30)">한달</button>
-						</div></td>
+						</div>
+					</td>
 				</tr>
 			</table>
 			<div style="text-align: right;">
@@ -128,8 +129,6 @@ td {
 			</div>
 		</form>
 		<hr style="color: black">
-		
-		
 		<div style="display: flex; justify-content: space-between;">
 			<div>
 				<form id="deleteForm" action="catdog/deleteProduct" method="post">
@@ -138,9 +137,6 @@ td {
         </form>
 			</div>
 			<div>
-				<!-- <button type="submit" class="btn btn-sm"
-					style="border-radius: 8px; background-color: #9A106C; color: white;">상품
-					수정</button> -->
 				<button type="button" class="btn btn-sm"
 					style="border-radius: 8px; background-color: #FF6600; color: white;" onclick="location.href='catdog-add-product-admin'">상품
 					등록</button>
@@ -166,46 +162,44 @@ td {
 				<tbody>
 					<tr>
 					<c:forEach var="product" items="${productList}">
-							 	<tr>
-							 		 <td>
-				                            <input type="checkbox" name="selectedCheckbox" value="${product.product_code}">
-				                        </td>     			 	
-								 	<td style="text-align: center;">${product.product_code}</td>
-								 	<td class="text-center">
-										<img alt="thumbnail_image" src="${pageContext.request.contextPath}/resources/upload/${product.thumbnail_img}"  style="width: 30px; height: 30px;">
-									</td>
-								 	<td style="text-align: center;">
-							            <c:choose>
-							                <c:when test="${product.product_category == 1}">
-							                    사료/간식
-							                </c:when>
-							                <c:when test="${product.product_category == 2}">
-							                    장난감/토이
-							                </c:when>
-							                <c:when test="${product.product_category == 3}">
-							                    목욕/케어
-							                </c:when>
-							                <c:when test="${product.product_category == 4}">
-							                    산책/훈련
-							                </c:when>
-							                <c:when test="${product.product_category == 5}">
-							                    의류/잡화
-							                </c:when>
-							            </c:choose>
-							        </td>			
-								 	<td>${product.product_name}</td>
-								 	<td style="text-align: center;">${product.product_regdate}</td>
-								 	<td style="text-align: center;">${product.product_update}</td>
-								 	<td style="text-align: right;">
-								 		<fmt:formatNumber value="${product.product_price}" type="number" groupingUsed="true" /><span> 원</span></td>
-								 	<td style="text-align: center;">
-								 		<button type="button" class="btn btn-secondary btn-sm" style="border-radius: 8px; color: white;" onclick="window.location.href = `catdog-product-modify?product_code=${product.product_code}`">
-											수정</button>
-								 	</td>
-						 	</tr>
-						</c:forEach>	
-					
-					
+						 	<tr>
+						 		 <td>
+		                            <input type="checkbox" name="selectedCheckbox" value="${product.product_code}">
+		                        </td>
+							 	<td style="text-align: center;">${product.product_code}</td>
+							 	<td class="text-center">
+									<img alt="thumbnail_image" src="${pageContext.request.contextPath}/resources/upload/${product.thumbnail_img}"  style="width: 30px; height: 30px;">
+								</td>
+							 	<td style="text-align: center;">
+						            <c:choose>
+						                <c:when test="${product.product_category == 1}">
+						                    사료/간식
+						                </c:when>
+						                <c:when test="${product.product_category == 2}">
+						                    장난감/토이
+						                </c:when>
+						                <c:when test="${product.product_category == 3}">
+						                    목욕/케어
+						                </c:when>
+						                <c:when test="${product.product_category == 4}">
+						                    산책/훈련
+						                </c:when>
+						                <c:when test="${product.product_category == 5}">
+						                    의류/잡화
+						                </c:when>
+						            </c:choose>
+						        </td>
+							 	<td>${product.product_name}</td>
+							 	<td style="text-align: center;">${product.product_regdate}</td>
+							 	<td style="text-align: center;">${product.product_update}</td>
+							 	<td style="text-align: right;">
+							 		<fmt:formatNumber value="${product.product_price}" type="number" groupingUsed="true" /><span> 원</span></td>
+							 	<td style="text-align: center;">
+							 		<button type="button" class="btn btn-secondary btn-sm" style="border-radius: 8px; color: white;" onclick="window.location.href = `catdog-product-modify?product_code=${product.product_code}`">
+										수정</button>
+							 	</td>
+				 			</tr>
+					</c:forEach>
 				</tbody>
 			</table>
 			<br>
