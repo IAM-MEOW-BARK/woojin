@@ -86,8 +86,6 @@ td {
 			<strong>전체 상품 리스트</strong>
 		</h6>
 		<form action="searchProduct" method="post">
-			<input type="hidden" name="pageNum" value="${currentPage}">
-    		<input type="hidden" name="pageSize" value="${pageSize}">
 			<table class="table table-bordered">
 				<tr>
 					<th>검색어</th>
@@ -206,20 +204,22 @@ td {
 			<div></div>
 			<br>
 		</div>
-		 <div class="pagination-container">
-            <div class="pagination">
-                <c:if test="${startPage > 1}">
-                    <a href="catdog-product-list-admin?pageNum=${startPage - 1}&pageListNum=${pageListNum - 1}">&lt;</a>
-                </c:if>
-                <c:forEach begin="${startPage}" end="${endPage}" var="page">
-                    <a href="catdog-product-list-admin?pageNum=${page}&pageListNum=${pageListNum}"
-                       class="${currentPage == page ? 'active' : ''}">${page}</a>
-                </c:forEach>
-                <c:if test="${endPage < totalPage}">
-                    <a href="catdog-product-list-admin?pageNum=${endPage + 1}&pageListNum=${pageListNum + 1}">&gt;</a>
-                </c:if>
-            </div>
-        </div>
+		 <c:set var="basePath" value="${not empty searchKeyword or not empty searchType or not empty startDate or not empty endDate ? 'searchProduct' : 'catdog-product-list-admin'}" />
+
+<div class="pagination-container">
+    <div class="pagination">
+        <c:if test="${startPage > 1}">
+            <a href="${basePath}?pageNum=${startPage - 1}&pageListNum=${pageListNum}&searchType=${searchType}&searchKeyword=${searchKeyword}&startDate=${startDate}&endDate=${endDate}">&lt;</a>
+        </c:if>
+        <c:forEach begin="${startPage}" end="${endPage}" var="page">
+            <a href="${basePath}?pageNum=${page}&pageListNum=${pageListNum}&searchType=${searchType}&searchKeyword=${searchKeyword}&startDate=${startDate}&endDate=${endDate}"
+               class="${currentPage == page ? 'active' : ''}">${page}</a>
+        </c:forEach>
+        <c:if test="${endPage < totalPage}">
+            <a href="${basePath}?pageNum=${endPage + 1}&pageListNum=${pageListNum}&searchType=${searchType}&searchKeyword=${searchKeyword}&startDate=${startDate}&endDate=${endDate}">&gt;</a>
+        </c:if>
+    </div>
+</div>
 	</div>
 	<script type="text/javascript">
 		window.onload = function () {

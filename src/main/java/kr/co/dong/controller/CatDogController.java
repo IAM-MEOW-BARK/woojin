@@ -27,6 +27,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
@@ -210,7 +211,7 @@ public class CatDogController {
 	    int startPage = (pageListNum - 1) * pageListSize + 1;
 	    int endPage = Math.min(startPage + pageListSize - 1, totalPage);
 
-	    ModelAndView mAV = new ModelAndView();	    
+	    ModelAndView mAV = new ModelAndView();
 	    List<ProductDTO> productList = catDogService.getTotalProduct(start, pageSize);	    
 	    mAV.addObject("totalPage", totalPage); // 전체 페이지 수
 	    mAV.addObject("currentPage", pageNum); // 현재 페이지 번호
@@ -471,37 +472,109 @@ public class CatDogController {
 		}
 
 	// 관리자 회원 목록 + 페이징
-	@GetMapping(value = "/catdog-user-list-admin")
-	public ModelAndView list(
-			@RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-            @RequestParam(value = "pageListNum", defaultValue = "1") int pageListNum) {
-		
-		int pageSize = 10; // 한 페이지당 게시글 수
-	    int pageListSize = 10; // 한 번에 표시할 페이지 수
-	    
-	    // 전체 게시글 수
-	    int totalList = catDogService.memberPaging();
-	    int totalPage = (int) Math.ceil((double) totalList / pageSize);
-	    
-	    // 현재 페이지에서 가져올 데이터의 시작 인덱스 계산
-	    int start = (pageNum - 1) * pageSize;
-	    
-	    // 현재 페이지 번호 목록의 시작과 끝
-	    int startPage = (pageListNum - 1) * pageListSize + 1;
-	    int endPage = Math.min(startPage + pageListSize - 1, totalPage);
-	    
-		ModelAndView mAV = new ModelAndView();
-		List<MemberDTO> list = catDogService.getTotalMember(start, pageSize);
-		mAV.addObject("memberList", list);
-		mAV.addObject("totalPage", totalPage); // 전체 페이지 수
-	    mAV.addObject("currentPage", pageNum); // 현재 페이지 번호
-	    mAV.addObject("pageListNum", pageListNum);
-	    mAV.addObject("startPage", startPage); // 페이지 네비게이션 시작
-	    mAV.addObject("endPage", endPage); // 페이지 네비게이션 끝
-	    mAV.setViewName("catdog-user-list-admin");
-		
-		return mAV;
-	}
+		@GetMapping(value = "/catdog-user-list-admin")
+		public ModelAndView list(
+		        @RequestParam(value = "searchType", required = false) String searchType,
+		        @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
+		        @RequestParam(value = "startDate", required = false) String startDate,
+		        @RequestParam(value = "endDate", required = false) String endDate,
+		        @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+		        @RequestParam(value = "pageListNum", defaultValue = "1") int pageListNum) {
+
+		    int pageSize = 10; // 한 페이지당 게시글 수
+		    int pageListSize = 10; // 한 번에 표시할 페이지 수
+
+		    // 검색 키워드와 검색 타입 처리
+		    if (searchKeyword != null && searchKeyword.trim().isEmpty()) {
+		        searchKeyword = null;
+		    }
+
+		    if (searchType != null && searchType.trim().isEmpty()) {
+		        searchType = null;
+		    }
+
+		    // 날짜 처리
+		    if (startDate != null && endDate != null && startDate.compareTo(endDate) > 0) {
+		        String temp = startDate;
+		        startDate = endDate;
+		        endDate = temp;
+		    }
+
+		    if (startDate != null && !startDate.isEmpty()) {
+		        startDate += " 00:00:00";
+		    }
+
+		    if (endDate != null && !endDate.isEmpty()) {
+		        endDate += " 23:59:59";
+		    }
+
+		    // 전체 게시글 수 (검색 조건 포함)
+		    int totalList = catDogService.getFilteredMemberCount(searchType, searchKeyword, startDate, endDate);
+		    int totalPage = (int) Math.ceil((double) totalList / pageSize);
+
+		    // 현재 페이지에서 가져올 데이터의 시작 인덱스 계산
+		    int start = (pageNum - 1) * pageSize;
+
+		    // 현재 페이지 번호 목록의 시작과 끝
+		    int startPage = (pageListNum - 1) * pageListSize + 1;
+		    int endPage = Math.min(startPage + pageListSize - 1, totalPage);
+
+		    // 검색 조건에 맞는 회원 리스트 가져오기
+		    List<MemberDTO> list = catDogService.searchMemberWithPaging(searchType, searchKeyword, startDate, endDate, start, pageSize);
+
+		    // ModelAndView로 데이터 전달
+		    ModelAndView mAV = new ModelAndView();
+		    mAV.addObject("memberList", list);
+		    mAV.addObject("totalPage", totalPage); // 전체 페이지 수
+		    mAV.addObject("currentPage", pageNum); // 현재 페이지 번호
+		    mAV.addObject("pageListNum", pageListNum);
+		    mAV.addObject("startPage", startPage); // 페이지 네비게이션 시작
+		    mAV.addObject("endPage", endPage); // 페이지 네비게이션 끝
+		    mAV.addObject("searchType", searchType); // 검색 조건
+		    mAV.addObject("searchKeyword", searchKeyword);
+		    mAV.addObject("startDate", startDate);
+		    mAV.addObject("endDate", endDate);
+		    mAV.setViewName("catdog-user-list-admin");
+
+		    return mAV;
+		}
+
+	/*
+	 * @GetMapping(value = "/catdog-user-list-admin") public ModelAndView list(
+	 * 
+	 * @RequestParam(value = "searchType", required = false) String searchType,
+	 * 
+	 * @RequestParam(value = "searchKeyword", required = false) String
+	 * searchKeyword,
+	 * 
+	 * @RequestParam(value = "startDate", required = false) String startDate,
+	 * 
+	 * @RequestParam(value = "endDate", required = false) String endDate,
+	 * 
+	 * @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+	 * 
+	 * @RequestParam(value = "pageListNum", defaultValue = "1") int pageListNum) {
+	 * 
+	 * int pageSize = 10; // 한 페이지당 게시글 수 int pageListSize = 10; // 한 번에 표시할 페이지 수
+	 * 
+	 * // 전체 게시글 수 int totalList = catDogService.memberPaging(); int totalPage =
+	 * (int) Math.ceil((double) totalList / pageSize);
+	 * 
+	 * // 현재 페이지에서 가져올 데이터의 시작 인덱스 계산 int start = (pageNum - 1) * pageSize;
+	 * 
+	 * // 현재 페이지 번호 목록의 시작과 끝 int startPage = (pageListNum - 1) * pageListSize + 1;
+	 * int endPage = Math.min(startPage + pageListSize - 1, totalPage);
+	 * 
+	 * ModelAndView mAV = new ModelAndView(); List<MemberDTO> list =
+	 * catDogService.getTotalMember(start, pageSize); mAV.addObject("memberList",
+	 * list); mAV.addObject("totalPage", totalPage); // 전체 페이지 수
+	 * mAV.addObject("currentPage", pageNum); // 현재 페이지 번호
+	 * mAV.addObject("pageListNum", pageListNum); mAV.addObject("startPage",
+	 * startPage); // 페이지 네비게이션 시작 mAV.addObject("endPage", endPage); // 페이지 네비게이션 끝
+	 * mAV.setViewName("catdog-user-list-admin");
+	 * 
+	 * return mAV; }
+	 */
 
 	// 회원 탈퇴 관리자
 	@PostMapping(value = "catdog/deleteUsers")
@@ -560,62 +633,76 @@ public class CatDogController {
 		return "redirect:/catdog-user-list-admin";
 	}
 
+	public static int start = 1;
+    public static int startPage = 1;
+    public static int endPage = 0;
+	
 	// 회원 리스트 검색 필터
-	@PostMapping("/searchMember")
-	public ModelAndView searchMember(
-	        @RequestParam(value = "searchType", required = false) String searchType,
-	        @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
-	        @RequestParam(value = "startDate", required = false) String startDate,
-	        @RequestParam(value = "endDate", required = false) String endDate,
-	        @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
-	        @RequestParam(value = "pageListNum", defaultValue = "1") int pageListNum) {
-	    
-		// 날짜 검증 및 변환
-	    if (startDate != null && endDate != null && startDate.compareTo(endDate) > 0) {
-	        String temp = startDate;
-	        startDate = endDate;
-	        endDate = temp;
-	    }
-	    if (startDate != null && !startDate.isEmpty()) {
-	        startDate += " 00:00:00";
-	    }
-	    if (endDate != null && !endDate.isEmpty()) {
-	        endDate += " 23:59:59";
-	    }
-	    if (searchKeyword != null && searchKeyword.trim().isEmpty()) {
-	        searchKeyword = null;
-	    }
+    public static final int PAGE_SIZE = 10; // 한 페이지당 게시글 수
+    public static final int PAGE_LIST_SIZE = 10; // 한 번에 표시할 페이지 수
 
-	    // 페이징 계산
-	    int pageSize = 10; // 한 페이지당 게시글 수
-	    int pageListSize = 10; // 한 번에 표시할 페이지 수
-	    int totalList = catDogService.getFilteredMemberCount(searchType, searchKeyword, startDate, endDate);
-	    int totalPage = (int) Math.ceil((double) totalList / pageSize);
-	    int start = (pageNum - 1) * pageSize;
-	    int startPage = (pageListNum - 1) * pageListSize + 1;
-	    int endPage = Math.min(startPage + pageListSize - 1, totalPage);
+    /**
+     * 검색 필터를 이용한 회원 조회
+     */
+    @RequestMapping(value = "/searchMember", method = {RequestMethod.GET, RequestMethod.POST})
+    public ModelAndView searchMember(
+            @RequestParam(value = "searchType", required = false) String searchType,
+            @RequestParam(value = "searchKeyword", required = false) String searchKeyword,
+            @RequestParam(value = "startDate", required = false) String startDate,
+            @RequestParam(value = "endDate", required = false) String endDate,
+            @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+            @RequestParam(value = "pageListNum", defaultValue = "1") int pageListNum) {
 
-	    // 검색 조건에 맞는 회원 리스트 가져오기
-	    List<MemberDTO> members = catDogService.searchMemberWithPaging(searchType, searchKeyword, startDate, endDate, start, pageSize);
+        // 검색 키워드와 검색 타입 처리
+        if (searchKeyword != null && searchKeyword.trim().isEmpty()) {
+            searchKeyword = null;
+        }
+        if (searchType != null && searchType.trim().isEmpty()) {
+            searchType = null;
+        }
 
-	    // ModelAndView로 데이터 전달
-	    ModelAndView mAV = new ModelAndView();
-	    mAV.addObject("memberList", members);
-	    mAV.addObject("totalPage", totalPage);
-	    mAV.addObject("currentPage", pageNum);
-	    mAV.addObject("pageListNum", pageListNum);
-	    mAV.addObject("startPage", startPage);
-	    mAV.addObject("endPage", endPage);
-	    mAV.addObject("searchType", searchType);
-	    mAV.addObject("searchKeyword", searchKeyword);
-	    mAV.addObject("startDate", startDate);
-	    mAV.addObject("endDate", endDate);
-	    mAV.setViewName("catdog-user-list-admin");
-	    return mAV;
-	}	
+        // 날짜 처리
+        if (startDate != null && endDate != null && startDate.compareTo(endDate) > 0) {
+            String temp = startDate;
+            startDate = endDate;
+            endDate = temp;
+        }
+        if (startDate != null && !startDate.isEmpty()) {
+            startDate += " 00:00:00";
+        }
+        if (endDate != null && !endDate.isEmpty()) {
+            endDate += " 23:59:59";
+        }
+
+        // 페이징 계산
+        int totalList = catDogService.getFilteredMemberCount(searchType, searchKeyword, startDate, endDate);
+        int totalPage = (int) Math.ceil((double) totalList / PAGE_SIZE);
+        int start = (pageNum - 1) * PAGE_SIZE;
+        int startPage = (pageListNum - 1) * PAGE_LIST_SIZE + 1;
+        int endPage = Math.min(startPage + PAGE_LIST_SIZE - 1, totalPage);
+
+        // 검색 결과 가져오기
+        List<MemberDTO> members = catDogService.searchMemberWithPaging(searchType, searchKeyword, startDate, endDate, start, PAGE_SIZE);
+
+        // ModelAndView 생성
+        ModelAndView mAV = new ModelAndView();
+        mAV.addObject("memberList", members);
+        mAV.addObject("totalPage", totalPage);
+        mAV.addObject("currentPage", pageNum);
+        mAV.addObject("pageListNum", pageListNum);
+        mAV.addObject("startPage", startPage);
+        mAV.addObject("endPage", endPage);
+        mAV.addObject("searchType", searchType);
+        mAV.addObject("searchKeyword", searchKeyword);
+        mAV.addObject("startDate", startDate);
+        mAV.addObject("endDate", endDate);
+        mAV.setViewName("catdog-user-list-admin");
+
+        return mAV;
+    }
 	
 	// 상품 리스트 검색 필터
-		@PostMapping("/searchProduct")
+    	@RequestMapping(value = "/searchProduct", method = {RequestMethod.GET, RequestMethod.POST})
 		public ModelAndView searchProduct(
 		        @RequestParam(value = "searchType", required = false) String searchType,
 		        @RequestParam(value = "searchKeyword", required = false) String searchKeyword,

@@ -88,22 +88,19 @@ td {
 			<strong>전체 회원 리스트</strong>
 		</h6>
 		<form action="searchMember" method="post">
-			<input type="hidden" name="pageNum" value="${currentPage}">
-    		<input type="hidden" name="pageSize" value="${pageSize}">
-		    <input type="hidden" name="pageListNum" value="${pageListNum}">
-		    <input type="hidden" name="searchType" value="${searchType}">
-		    <input type="hidden" name="searchKeyword" value="${searchKeyword}">
-		    <input type="hidden" name="startDate" value="${startDate}">
-		    <input type="hidden" name="endDate" value="${endDate}">
+			<%-- <input type="hidden" name="pageNum" value="${currentPage}">
+    		<input type="hidden" name="pageSize" value="${pageSize}"> --%>
 			<table class="table table-bordered">
 				<tr>
 					<th>검색어</th>
 					<td><select name="searchType">
-							<option value="email">이메일</option>
-							<option value="socialType">소셜타입</option>
-							<option value="name">이름</option>
-							<option value="status">상태</option>
-					</select> <input type="text" name="searchKeyword" placeholder="검색어 입력">
+							 <option value="email" ${searchType == 'email' ? 'selected' : ''}>이메일</option>
+							 <option value="name" ${searchType == 'name' ? 'selected' : ''}>이름</option>
+    <%-- <option value="socialType" ${searchType == 'socialType' ? 'selected' : ''}>소셜타입</option> --%>
+    
+    <%-- <option value="status" ${searchType == 'status' ? 'selected' : ''}>상태</option> --%>
+					</select>
+					<input type="text" name="searchKeyword" placeholder="검색어 입력">
 					</td>
 				</tr>
 				<tr>
@@ -213,21 +210,22 @@ td {
 			<div></div>
 			<br>
 		</div>
-		<div class="pagination-container">
-            <div class="pagination">
-                <c:if test="${startPage > 1}">
-                    <a href="catdog-user-list-admin?pageNum=${startPage - 1}&pageListNum=${pageListNum - 1}">&lt;</a>
-                </c:if>
-                <c:forEach begin="${startPage}" end="${endPage}" var="page">
-                    <a href="catdog-user-list-admin?pageNum=${page}&pageListNum=${pageListNum}"
-                       class="${currentPage == page ? 'active' : ''}">${page}</a>
-                </c:forEach>
-                <c:if test="${endPage < totalPage}">
-                    <a href="catdog-user-list-admin?pageNum=${endPage + 1}&pageListNum=${pageListNum + 1}">&gt;</a>
-                </c:if>
-            </div>
-        </div>
-	</div>
+		<c:set var="basePath" value="${not empty searchKeyword or not empty searchType or not empty startDate or not empty endDate ? 'searchMember' : 'catdog-user-list-admin'}" />
+
+<div class="pagination-container">
+    <div class="pagination">
+        <c:if test="${startPage > 1}">
+            <a href="${basePath}?pageNum=${startPage - 1}&pageListNum=${pageListNum}&searchType=${searchType}&searchKeyword=${searchKeyword}&startDate=${startDate}&endDate=${endDate}">&lt;</a>
+        </c:if>
+        <c:forEach begin="${startPage}" end="${endPage}" var="page">
+            <a href="${basePath}?pageNum=${page}&pageListNum=${pageListNum}&searchType=${searchType}&searchKeyword=${searchKeyword}&startDate=${startDate}&endDate=${endDate}"
+               class="${currentPage == page ? 'active' : ''}">${page}</a>
+        </c:forEach>
+        <c:if test="${endPage < totalPage}">
+            <a href="${basePath}?pageNum=${endPage + 1}&pageListNum=${pageListNum}&searchType=${searchType}&searchKeyword=${searchKeyword}&startDate=${startDate}&endDate=${endDate}">&gt;</a>
+        </c:if>
+    </div>
+</div>
 	</div>
 	<script type="text/javascript">
 		// 페이지 로드 시 시작 날짜를 오늘로 설정
