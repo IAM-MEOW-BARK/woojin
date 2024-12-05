@@ -129,6 +129,9 @@ public interface CatDogDAO {
     public void addOrderItems(List<OrderItemDTO> orderItems) throws Exception;
 	public List<CartDTO> getCartInfo(String user_id) throws Exception;
 	
+	// 정보 확인
+	public OrderDetailDTO getOrderDetail(String order_code) throws Exception;
+	
 	// 장바구니 상품 정보
     public List<CartDTO> getCartItem(String user_id) throws Exception;
 	

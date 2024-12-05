@@ -486,6 +486,75 @@
 		WHERE
 		user_id = #{user_id} and product_code = #{product_code}
 	</delete>
+	
+	<resultMap id="orderDetailMap" type="kr.co.dong.catdog.OrderDetailDTO">
+	    <!-- 주문 정보 -->
+	    <result property="orderCode" column="orderCode" />
+	    <result property="userId" column="userId" />
+	    <result property="name" column="name" />
+	    <result property="phoneNum" column="phoneNum" />
+	    <result property="orderedAt" column="orderedAt" />
+	
+	    <!-- 배송지 정보 -->
+	    <result property="zipcode" column="zipcode" />
+	    <result property="address" column="address" />
+	    <result property="detailAddress" column="detailAddress" />
+	
+	    <!-- 상품 리스트 -->
+	    <collection property="orderItems" ofType="kr.co.dong.catdog.OrderItemDTO">
+	        <result property="thumbnailImg" column="thumbnail_img" />
+	        <result property="productName" column="product_name" />
+	        <result property="orderQuantity" column="order_quantity" />
+	        <result property="totalPrice" column="total_price" />
+	        <result property="orderStatus" column="order_status" />
+	    </collection>
+	</resultMap>
+
+	<select id="getOrderDetail" parameterType="java.lang.String" resultMap="orderDetailMap">
+	    SELECT
+	        o.order_code AS orderCode,
+	        o.user_id_fk AS userId,
+	        o.ordered_at AS orderedAt,
+	        m.name AS name,
+	        m.phone_num AS phoneNum,
+	        m.zipcode AS zipcode,
+	        m.address AS address,
+	        m.detailaddress AS detailAddress,
+	        p.thumbnail_img AS thumbnailImg,
+	        p.product_name AS productName,
+	        oi.order_quantity AS orderQuantity,
+	        (p.product_price * oi.order_quantity) AS totalPrice,
+	        oi.order_status AS orderStatus
+	    FROM orders o
+	    LEFT JOIN member m ON o.user_id_fk = m.user_id
+	    LEFT JOIN order_item oi ON o.order_code = oi.order_code
+	    LEFT JOIN product p ON oi.product_code = p.product_code
+	    WHERE o.order_code = #{order_code}
+	    ORDER BY oi.product_code ASC;
+	</select>
+	
+	<!-- 총합 -->
+	<select id="getTotalCost" parameterType="java.lang.String"
+		resultType="java.lang.Integer">
+		SELECT
+		sum(p.product_price * oi.order_quantity) as totalCost
+		FROM
+		order_item oi
+		LEFT JOIN product p ON oi.product_code =
+		p.product_code
+		WHERE
+		oi.order_code = #{order_code}
+	</select>
+	
+	<!-- 장바구니 수량 변경 -->
+	<update id="updateCartQuantity" parameterType="CartDTO">
+		UPDATE cart
+		SET
+		cart_quantity = #{cart_quantity}
+		WHERE user_id = #{user_id}
+		AND
+		product_code = #{product_code}
+	</update>
 	 	
  	<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  -->
  	

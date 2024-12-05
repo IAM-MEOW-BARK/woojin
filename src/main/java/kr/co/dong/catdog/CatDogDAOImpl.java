@@ -379,5 +379,10 @@ public class CatDogDAOImpl implements CatDogDAO{
 		return sqlSession.selectList(namespace + ".getMyOrders", user_id);
 	}
 
+ // 수정한 거
+ 	public OrderDetailDTO getOrderDetail(String order_code) throws Exception {
+ 		return sqlSession.selectOne(namespace + ".getOrderDetail", order_code);
+ 	}
+
     
 }

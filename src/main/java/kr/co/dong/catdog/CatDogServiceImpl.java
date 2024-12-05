@@ -302,6 +302,11 @@ public class CatDogServiceImpl implements CatDogService {
 		return catDogDAO.getMyOrders(user_id);
 	}
 	
+	@Override
+	public OrderDetailDTO getOrderDetail(String order_code) throws Exception {
+		return catDogDAO.getOrderDetail(order_code); // DAO 호출
+	}
+	
 	// 카카오 로그인
 	public String getAccessToken(String authorize_code) {
 		String access_Token = "";
@@ -402,6 +407,8 @@ public class CatDogServiceImpl implements CatDogService {
 
         return userInfo;
     }
+
+	
 
 	
 	
