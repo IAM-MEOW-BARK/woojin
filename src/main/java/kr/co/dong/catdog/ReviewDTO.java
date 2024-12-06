@@ -3,8 +3,7 @@ package kr.co.dong.catdog;
 public class ReviewDTO {
 
 	private int review_no;
-	private int product_id;
-	private int product_group_id;
+	private int product_code;
 	private String user_id;
 	private int review_score;
 	private String review_img;
@@ -12,6 +11,7 @@ public class ReviewDTO {
 	private String review_date;
 	private int review_readcnt;
 	private int order_status;
+	private String product_name;
 	
 	public int getReview_no() {
 		return review_no;
@@ -19,17 +19,11 @@ public class ReviewDTO {
 	public void setReview_no(int review_no) {
 		this.review_no = review_no;
 	}
-	public int getProduct_id() {
-		return product_id;
+	public int getProduct_code() {
+		return product_code;
 	}
-	public void setProduct_id(int product_id) {
-		this.product_id = product_id;
-	}
-	public int getProduct_group_id() {
-		return product_group_id;
-	}
-	public void setProduct_group_id(int product_group_id) {
-		this.product_group_id = product_group_id;
+	public void setProduct_code(int product_code) {
+		this.product_code = product_code;
 	}
 	public String getUser_id() {
 		return user_id;
@@ -73,12 +67,20 @@ public class ReviewDTO {
 	public void setOrder_status(int order_status) {
 		this.order_status = order_status;
 	}
-	
+	public String getProduct_name() {
+		return product_name;
+	}
+	public void setProduct_name(String product_name) {
+		this.product_name = product_name;
+	}
 	@Override
 	public String toString() {
-		return "ReviewDTO [review_no=" + review_no + ", product_id=" + product_id + ", product_group_id="
-				+ product_group_id + ", user_id=" + user_id + ", review_score=" + review_score + ", review_img="
-				+ review_img + ", review_content=" + review_content + ", review_date=" + review_date
-				+ ", review_readcnt=" + review_readcnt + ", order_status=" + order_status + "]";
+		return "ReviewDTO [review_no=" + review_no + ", product_code=" + product_code + ", user_id=" + user_id
+				+ ", review_score=" + review_score + ", review_img=" + review_img + ", review_content=" + review_content
+				+ ", review_date=" + review_date + ", review_readcnt=" + review_readcnt + ", order_status="
+				+ order_status + ", product_name=" + product_name + "]";
 	}
+	
+	
+	
 }

@@ -476,181 +476,166 @@ public class CatDogServiceImpl implements CatDogService {
 	@Override
 	public List<NoticeDTO> noticeList(int start, int pageSize) {
 		// TODO Auto-generated method stub
-		return null;
+		return catDogDAO.noticeList(start, pageSize);
 	}
-
 	@Override
 	public int noticeTotalPost() {
 		// TODO Auto-generated method stub
-		return 0;
+		return catDogDAO.noticeTotalPost();
 	}
-
 	@Override
 	public List<ReviewDTO> reviewList(int start, int pageSize) {
 		// TODO Auto-generated method stub
-		return null;
+		return catDogDAO.reviewList(start, pageSize);
 	}
-
 	@Override
 	public int reviewTotalPost() {
 		// TODO Auto-generated method stub
-		return 0;
+		return catDogDAO.reviewTotalPost();
 	}
-
 	@Override
 	public List<QnaDTO> qnaList(int start, int pageSize) {
 		// TODO Auto-generated method stub
-		return null;
+		return catDogDAO.qnaList(start, pageSize);
 	}
-
 	@Override
 	public int qnaTotalPost() {
 		// TODO Auto-generated method stub
-		return 0;
+		return catDogDAO.qnaTotalPost();
 	}
-
 	@Override
 	public List<FaqDTO> faqList(int start, int pageSize) {
 		// TODO Auto-generated method stub
-		return null;
+		return catDogDAO.faqList(start, pageSize);
 	}
-
 	@Override
 	public int faqTotalPost() {
 		// TODO Auto-generated method stub
-		return 0;
+		return catDogDAO.faqTotalPost();
 	}
-
 	@Override
 	public List<FaqDTO> faqListDivision(int start, int pageSize, int faq_division) {
 		// TODO Auto-generated method stub
-		return null;
+		return catDogDAO.faqListDivision(start, pageSize, faq_division);
 	}
-
 	@Override
 	public int faqTotalPostDivision(int faq_division) {
 		// TODO Auto-generated method stub
-		return 0;
+		return catDogDAO.faqTotalPostDivision(faq_division);
 	}
-
+	
 	@Override
 	public NoticeDTO noticeDetail(int notice_no) {
 		// TODO Auto-generated method stub
-		return null;
+		return catDogDAO.noticeDetail(notice_no);
 	}
-
-	@Override
-	public int noticeUpdateReadCnt(int notice_no) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	@Override
 	public ReviewDTO reviewDetail(int review_no) {
 		// TODO Auto-generated method stub
-		return null;
-	}
-
+		return catDogDAO.reviewDetail(review_no);
+	} 
+	
 	@Override
-	public int reviewUpdateReadCnt(int review_no) {
+	public QnaDTO qnaDetail(int qna_no) {
 		// TODO Auto-generated method stub
-		return 0;
+		return catDogDAO.qnaDetail(qna_no);
 	}
-
-	@Override
-	public QnaDTO qnaDetail(int qna_no, String qna_pwd) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public FaqDTO faqDetail(int faq_no) {
 		// TODO Auto-generated method stub
-		return null;
+		return catDogDAO.faqDetail(faq_no);
 	}
-
 	@Override
 	public int noticeRegister(NoticeDTO noticeDTO) {
 		// TODO Auto-generated method stub
-		return 0;
+		return catDogDAO.noticeRegister(noticeDTO);
 	}
-
 	@Override
 	public int noticeUpdate(NoticeDTO noticeDTO) {
 		// TODO Auto-generated method stub
-		return 0;
+		return catDogDAO.noticeUpdate(noticeDTO);
 	}
-
 	@Override
 	public int noticeDelete(int notice_no) {
 		// TODO Auto-generated method stub
-		return 0;
+		return catDogDAO.noticeDelete(notice_no);
 	}
-
 	@Override
 	public int qnaRegister(QnaDTO qnaDTO) {
 		// TODO Auto-generated method stub
-		return 0;
+		return catDogDAO.qnaRegister(qnaDTO);
 	}
-
 	@Override
 	public int qnaUpdate(QnaDTO qnaDTO) {
 		// TODO Auto-generated method stub
-		return 0;
+		return catDogDAO.qnaUpdate(qnaDTO);
 	}
-
 	@Override
 	public int qnaDelete(int qna_no) {
 		// TODO Auto-generated method stub
-		return 0;
+		return catDogDAO.qnaDelete(qna_no);
 	}
-
+	@Override
+	public QnaDTO qnaReplyDetail(int qna_no) {
+		// TODO Auto-generated method stub
+		return catDogDAO.qnaReplyDetail(qna_no);
+	}
 	@Override
 	public int qnaReply(QnaDTO qnaDTO) {
 		// TODO Auto-generated method stub
-		return 0;
+		return catDogDAO.qnaReply(qnaDTO);
 	}
-
 	@Override
 	public int qnaReplyUpdate(QnaDTO qnaDTO) {
 		// TODO Auto-generated method stub
-		return 0;
+		return catDogDAO.qnaReplyUpdate(qnaDTO);
 	}
 
 	@Override
 	public int qnaReplyDelete(int qna_no) {
 		// TODO Auto-generated method stub
-		return 0;
+		return catDogDAO.qnaReplyDelete(qna_no);
 	}
-
+//	@Override
+//	public List<ProductDTO> productList(int start, int pageSize) {
+//		// TODO Auto-generated method stub
+//		return catDogDAO.productList(start, pageSize);
+//	}
 	@Override
 	public List<ProductDTO> productSearch(String keyword) {
 		// TODO Auto-generated method stub
-		return null;
+		return catDogDAO.productSearch(keyword);
 	}
-
 	@Override
 	public int productTotal() {
 		// TODO Auto-generated method stub
-		return 0;
+		return catDogDAO.productTotal();
 	}
-
 	@Override
 	public int faqRegister(FaqDTO faqDTO) {
 		// TODO Auto-generated method stub
-		return 0;
+		return catDogDAO.faqRegister(faqDTO);
 	}
-
+	@Override
+	public int noticeUpdateReadCnt(int notice_no) {
+		// TODO Auto-generated method stub
+		return catDogDAO.noticeUpdateReadCnt(notice_no);
+	}
+	@Override
+	public int reviewUpdateReadCnt(int review_no) {
+		// TODO Auto-generated method stub
+		return catDogDAO.reviewUpdateReadCnt(review_no);
+	}
 	@Override
 	public int faqUpdate(FaqDTO faqDTO) {
 		// TODO Auto-generated method stub
-		return 0;
+		return catDogDAO.faqUpdate(faqDTO);
 	}
 
 	@Override
 	public int faqDelete(int faq_no) {
 		// TODO Auto-generated method stub
-		return 0;
-	}
+		return catDogDAO.faqDelete(faq_no);
+	}	
 	
 }

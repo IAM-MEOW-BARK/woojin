@@ -202,7 +202,23 @@ a.sidebar-link:hover {
 								회원 리스트</a></li>
 						<li class="sidebar-item"><a href="catdog-add-user-admin" class="sidebar-link">회원
 								추가</a></li>
-					</ul></li>
+					</ul>
+				</li>
+				<li class="sidebar-item">
+					<a href="#"
+						class="sidebar-link collapsed has-dropdown"
+						data-bs-toggle="collapse" data-bs-target="#operation"
+						aria-expanded="false" aria-controls="operation"> 
+						<i class="lni lni-popup"></i>
+						<span>운영 페이지</span>
+					</a>
+					<ul id="operation" class="sidebar-dropdown list-unstyled collapse"
+						data-bs-parent="#sidebar">
+						<li class="sidebar-item">
+							<a href="home" class="sidebar-link">메인 페이지</a>
+						</li>
+					</ul>
+				</li>
 			</ul>
 			<div class="sidebar-footer">
 				<a href="catdog-logout" class="sidebar-link"> <i class="lni lni-exit"></i> <span>Logout</span>

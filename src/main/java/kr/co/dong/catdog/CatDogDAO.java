@@ -194,7 +194,7 @@ public interface CatDogDAO {
     public int reviewUpdateReadCnt(int review_no);
     
     // Q&A 상세 조회
-    public QnaDTO qnaDetail(int qna_no, String qna_pwd);
+    public QnaDTO qnaDetail(int qna_no);
     
     // FAQ 상세 조회
     public FaqDTO faqDetail(int faq_no);
@@ -216,6 +216,9 @@ public interface CatDogDAO {
     
     // Q&A 글 삭제
     public int qnaDelete(int qna_no);
+    
+    // Q&A 답변 조회
+    public QnaDTO qnaReplyDetail(int qna_no);
     
     // Q&A 답변 작성
     public int qnaReply(QnaDTO qnaDTO);

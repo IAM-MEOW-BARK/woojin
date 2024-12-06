@@ -416,31 +416,27 @@ public class CatDogDAOImpl implements CatDogDAO{
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(namespace+".productDetail", product_code);
 	}
-
 	@Override
 	public List<ReviewDTO> getReview(int product_code) {
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectList(namespace+".getReview", product_code);
 	}
 
 	@Override
 	public List<QnaDTO> getQna(int product_code) {
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectList(namespace+".getQna", product_code);
 	}
-
 	@Override
 	public int product_reviewTotal(int product_code) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.selectOne(namespace+".product_reviewTotal", product_code);
 	}
-
 	@Override
 	public int product_qnaTotal(int product_code) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.selectOne(namespace+".product_qnaTotal", product_code);
 	}
-
 	@Override
 	public List<ProductDTO> categoryList(int start, int pageSize, int product_category) {
 		// TODO Auto-generated method stub
@@ -457,185 +453,191 @@ public class CatDogDAOImpl implements CatDogDAO{
 		// TODO Auto-generated method stub
 		return sqlSession.selectOne(namespace+".categoryTotalPost", product_category);
 	}
-
 	@Override
 	public List<NoticeDTO> noticeList(int start, int pageSize) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("start", start);
+	    map.put("pageSize", pageSize);
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectList(namespace+".noticeList", map);
 	}
-
 	@Override
 	public int noticeTotalPost() {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.selectOne(namespace+".noticeTotalPost");
 	}
-
 	@Override
 	public List<ReviewDTO> reviewList(int start, int pageSize) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("start", start);
+	    map.put("pageSize", pageSize);
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectList(namespace+".reviewList", map);
 	}
-
 	@Override
 	public int reviewTotalPost() {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.selectOne(namespace+".reviewTotalPost");
 	}
-
 	@Override
 	public List<QnaDTO> qnaList(int start, int pageSize) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("start", start);
+	    map.put("pageSize", pageSize);
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectList(namespace+".qnaList", map);
 	}
-
 	@Override
 	public int qnaTotalPost() {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.selectOne(namespace+".qnaTotalPost");
 	}
-
 	@Override
 	public List<FaqDTO> faqList(int start, int pageSize) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("start", start);
+	    map.put("pageSize", pageSize);
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectList(namespace+".faqList", map);
 	}
-
 	@Override
 	public int faqTotalPost() {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.selectOne(namespace+".faqTotalPost");
 	}
-
 	@Override
 	public List<FaqDTO> faqListDivision(int start, int pageSize, int faq_division) {
+		Map<String, Integer> map = new HashMap<>();
+		map.put("start", start);
+	    map.put("pageSize", pageSize);
+	    map.put("faq_division", faq_division);
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectList(namespace+".faqListDivision", map);
 	}
-
 	@Override
 	public int faqTotalPostDivision(int faq_division) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.selectOne(namespace+".faqTotalPostDivision", faq_division);
 	}
-
 	@Override
 	public NoticeDTO noticeDetail(int notice_no) {
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectOne(namespace+".noticeDetail", notice_no);
 	}
-
-	@Override
-	public int noticeUpdateReadCnt(int notice_no) {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-
 	@Override
 	public ReviewDTO reviewDetail(int review_no) {
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectOne(namespace+".reviewDetail", review_no);
 	}
-
 	@Override
-	public int reviewUpdateReadCnt(int review_no) {
+	public QnaDTO qnaDetail(int qna_no) {
 		// TODO Auto-generated method stub
-		return 0;
+	    Map<String, Object> map = new HashMap<>();
+	    map.put("qna_no", qna_no);
+	    
+	    return sqlSession.selectOne(namespace + ".qnaDetail", map);
 	}
-
-	@Override
-	public QnaDTO qnaDetail(int qna_no, String qna_pwd) {
-		// TODO Auto-generated method stub
-		return null;
-	}
-
 	@Override
 	public FaqDTO faqDetail(int faq_no) {
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectOne(namespace+".faqDetail", faq_no);
 	}
-
 	@Override
 	public int noticeRegister(NoticeDTO noticeDTO) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.insert(namespace + ".noticeRegister", noticeDTO);
 	}
-
 	@Override
 	public int noticeUpdate(NoticeDTO noticeDTO) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.update(namespace+".noticeUpdate", noticeDTO);
 	}
-
 	@Override
 	public int noticeDelete(int notice_no) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.delete(namespace+".noticeDelete", notice_no);
 	}
-
 	@Override
 	public int qnaRegister(QnaDTO qnaDTO) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.insert(namespace+".qnaRegister", qnaDTO);
 	}
-
 	@Override
 	public int qnaUpdate(QnaDTO qnaDTO) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.update(namespace+".qnaUpdate", qnaDTO);
 	}
-
 	@Override
 	public int qnaDelete(int qna_no) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.delete(namespace+".qnaDelete", qna_no);
 	}
-
+	@Override
+	public QnaDTO qnaReplyDetail(int qna_no) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace+".qnaReplyDetail", qna_no);
+	}
 	@Override
 	public int qnaReply(QnaDTO qnaDTO) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.update(namespace+".qnaReply", qnaDTO);
 	}
-
 	@Override
 	public int qnaReplyUpdate(QnaDTO qnaDTO) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.update(namespace+".qnaReplyUpdate", qnaDTO);
 	}
 
 	@Override
 	public int qnaReplyDelete(int qna_no) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.update(namespace+".qnaReplyDelete", qna_no);
 	}
 
+//	@Override
+//	public List<ProductDTO> productList(int start, int pageSize) {
+//		// TODO Auto-generated method stub
+//		Map<String, Object> map = new HashMap<>();
+//		map.put("start", start);
+//	    map.put("pageSize", pageSize);
+//		// TODO Auto-generated method stub
+//		return sqlSession.selectList(namespace+".productSearch", map);
+//	}
 	@Override
 	public List<ProductDTO> productSearch(String keyword) {
 		// TODO Auto-generated method stub
-		return null;
+		return sqlSession.selectList(namespace+".productSearch", keyword);
 	}
-
 	@Override
 	public int productTotal() {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.selectOne(namespace+".productTotal");
 	}
-
 	@Override
 	public int faqRegister(FaqDTO faqDTO) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.insert(namespace+".faqRegister", faqDTO);
 	}
-
 	@Override
 	public int faqUpdate(FaqDTO faqDTO) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.update(namespace+".faqUpdate", faqDTO);
 	}
-
+	
 	@Override
 	public int faqDelete(int faq_no) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.delete(namespace+".faqDelete", faq_no);
+	}
+	@Override
+	public int noticeUpdateReadCnt(int notice_no) {
+		// TODO Auto-generated method stub
+		return sqlSession.update(namespace+".noticeUpdateReadCnt", notice_no);
+	}
+	@Override
+	public int reviewUpdateReadCnt(int review_no) {
+		// TODO Auto-generated method stub
+		return sqlSession.update(namespace+".reviewUpdateReadCnt", review_no);
 	}
 
     
