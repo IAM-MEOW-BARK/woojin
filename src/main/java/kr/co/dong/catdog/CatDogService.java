@@ -91,12 +91,18 @@ public interface CatDogService {
     public void deleteOrderItems(String user_id, List<Integer> product_code);
     public List<Integer> getProductCodeByUserId(String user_id);
     
+	// (나현) 전체 목록 가져오는 메소드
+	public List<ProductDTO> mainlist(Map<String, Object> param);
+    
     // 카트
 	public String addOrder(OrderDTO orderDTO) throws Exception;
 	public void addOrderItems(List<OrderItemDTO> orderItems) throws Exception;
 	public List<CartDTO> getCartInfo(String user_id) throws Exception;
 	public List<CartDTO> getCartItem(String user_id) throws Exception;
 	public OrderDetailDTO getOrderDetail(String order_code) throws Exception;
+	public int getCartCost(String user_id) throws Exception;
+	public int updateCartQuantity(CartDTO cartDTO) throws Exception;
+	public int deleteCart(CartDTO cartDTO) throws Exception;
 	
 	// 장바구니
 	public List<MyDTO> getMyOrders(String user_id) throws Exception;

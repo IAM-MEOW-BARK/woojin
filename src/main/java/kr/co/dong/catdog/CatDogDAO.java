@@ -124,10 +124,21 @@ public interface CatDogDAO {
     // 상품 리스트 페이징
     public int memberPaging();
     
+    
+    // 나현
+    // 메인페이지 제품 리스트 출력
+ 	public List<ProductDTO> mainlist(Map<String, Object> param);
+    
     // 카트
     public String addOrder(OrderDTO orderDTO) throws Exception;
     public void addOrderItems(List<OrderItemDTO> orderItems) throws Exception;
 	public List<CartDTO> getCartInfo(String user_id) throws Exception;
+	// 장바구니 총 가격
+	public int getCartCost(String user_id) throws Exception;
+	//장바구니 수량 변경
+	public int updateCartQuantity(CartDTO cartDTO) throws Exception;
+	// 장바구니 삭제
+	public int deleteCart(CartDTO cartDTO) throws Exception;
 	
 	// 정보 확인
 	public OrderDetailDTO getOrderDetail(String order_code) throws Exception;

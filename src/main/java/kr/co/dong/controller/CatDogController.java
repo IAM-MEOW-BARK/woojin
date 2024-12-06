@@ -54,6 +54,41 @@ public class CatDogController {
 
 	@Inject
 	CatDogService catDogService;
+	
+	// 전체 상품 출력
+	@GetMapping(value = "/home")
+	public ModelAndView list(HttpSession session) {
+		ModelAndView mav = new ModelAndView();
+		// 세션에서 사용자 ID 가져오기
+		Map<String, Object> userMap = (Map<String, Object>) session.getAttribute("user");
+		String user_id = userMap != null ? (String) userMap.get("user_id") : null;
+
+		// 파라미터 맵 구성
+		Map<String, Object> param = new HashMap<String, Object>();
+		param.put("user_id", user_id);
+
+		// 카테고리별 상품 목록 조회
+		param.put("product_category", 1);
+		List<ProductDTO> list01 = catDogService.mainlist(param);
+		param.put("product_category", 2);
+		List<ProductDTO> list02 = catDogService.mainlist(param);
+		param.put("product_category", 3);
+		List<ProductDTO> list03 = catDogService.mainlist(param);
+		param.put("product_category", 4);
+		List<ProductDTO> list04 = catDogService.mainlist(param);
+		param.put("product_category", 5);
+		List<ProductDTO> list05 = catDogService.mainlist(param);
+
+		// 뷰에 데이터 추가
+		mav.addObject("list01", list01);
+		mav.addObject("list02", list02);
+		mav.addObject("list03", list03);
+		mav.addObject("list04", list04);
+		mav.addObject("list05", list05);
+
+		mav.setViewName("home");
+		return mav;
+	}
 
 	@GetMapping(value = "/catdog-term")
 	public String catdogTerm() {
@@ -345,7 +380,7 @@ public class CatDogController {
 		        return "redirect:/catdog-user-list-admin";
 		    } else if (userAuth == 0) {
 		        logger.info("일반 사용자 계정으로 로그인");
-		        return "redirect:/catdog-main";
+		        return "redirect:/home";
 		    } else {
 		        logger.warn("알 수 없는 USER_AUTH 값: " + userAuth);
 		        return "redirect:/catdog-login";
@@ -603,12 +638,7 @@ public class CatDogController {
 	@GetMapping(value = "/catdog-find-pw")
 	public String catdogFindPw() {
 		return "catdog-find-pw";
-	}
-
-	@GetMapping(value = "/catdog-main")
-	public String catDogMain() {
-		return "catdog-main";
-	}
+	}	
 	
 	// 일반 유저 회원가입
 	@GetMapping(value="/catdog-signup")
@@ -833,7 +863,7 @@ public class CatDogController {
 	
 	// 장바구니
 	@GetMapping("/cart")
-	public String cart(@RequestParam("user_id") String user_id, HttpSession session, Model model) throws Exception {
+	public String cart(HttpSession session, Model model) throws Exception {
 		Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
 		if (user == null) {
 			return "redirect:/catdog-login";
@@ -841,17 +871,20 @@ public class CatDogController {
 		String userId = (String) user.get("user_id");
 		model.addAttribute("user_name", user.get("name"));
 		model.addAttribute("user_id", userId);
+
 		List<CartDTO> cartInfo = catDogService.getCartInfo(userId);
 		model.addAttribute("cartInfo", cartInfo);
 		System.out.println("cartInfo = " + cartInfo);
 		session.setAttribute("cartInfo", cartInfo); // post할 세션
-
+		
+		model.addAttribute("cartCost", catDogService.getCartCost(userId));
+		
 		return "cart";
 	}
-	
+
 	@PostMapping("/cart")
-	public String processOrder(HttpSession session, HttpServletRequest request, RedirectAttributes rttr,
-			Model model) throws Exception {
+	public String processOrder(HttpSession session, HttpServletRequest request, RedirectAttributes rttr, Model model)
+			throws Exception {
 		Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
 		if (user == null) {
 			return "redirect:/catdog-login";
@@ -859,48 +892,68 @@ public class CatDogController {
 		String userId = (String) user.get("user_id");
 		model.addAttribute("user_name", user.get("name"));
 		model.addAttribute("user_id", userId);
-		
+
 		OrderDTO orderDTO = new OrderDTO();
-		
+
 		orderDTO.setUser_id_fk(userId);
-		orderDTO.setPayment_status(0);		
+		orderDTO.setPayment_status(0);
 		String orderCode = catDogService.addOrder(orderDTO);
 		orderDTO.setOrder_code(orderCode);
-		
+
 		List<CartDTO> cartItems = catDogService.getCartInfo(userId);
-		
+
 		List<OrderItemDTO> orderItems = new ArrayList<>();
 		for (CartDTO cartItem : cartItems) {
-		OrderItemDTO orderItem = new OrderItemDTO();
-		orderItem.setOrder_code(orderCode);
-		orderItem.setProduct_code(cartItem.getProduct_code());
-        orderItem.setProduct_name(cartItem.getProduct_name());
-        orderItem.setProduct_price(cartItem.getProduct_price());
-        orderItem.setCart_quantity(cartItem.getCart_quantity());
-        orderItem.setOrder_quantity(cartItem.getCart_quantity());
-        orderItem.setTotal_price(cartItem.getCart_quantity() * cartItem.getProduct_price());
-        orderItems.add(orderItem);
-    }
+			OrderItemDTO orderItem = new OrderItemDTO();
+			orderItem.setOrder_code(orderCode);
+			orderItem.setProduct_code(cartItem.getProduct_code());
+			orderItem.setProduct_name(cartItem.getProduct_name());
+			orderItem.setThumbnail_img(cartItem.getThumbnail_img());
+			orderItem.setProduct_price(cartItem.getProduct_price());
+			orderItem.setCart_quantity(cartItem.getCart_quantity());
+			orderItem.setOrder_quantity(cartItem.getCart_quantity());
+			orderItem.setTotal_price(cartItem.getCart_quantity() * cartItem.getProduct_price());
+			orderItems.add(orderItem);
+		}
 		catDogService.addOrderItems(orderItems);
-		
-	    model.addAttribute("orderDTO", orderDTO);
-	    model.addAttribute("orderItems", orderItems);
-	    
-	    System.out.println("~~~~~~~~ orderDTO ~~~~~~~ = " + orderDTO);
-	    System.out.println("~~~~~~~~ orderItems ~~~~~~~ = " + orderItems);
-	    
-	    OrderDetailDTO orderInfo = catDogService.getOrderDetail(orderCode);
-	    System.out.println("~~~~~~~~ orderInfo ~~~~~~~ = " + orderInfo);
-	    model.addAttribute("orderInfo", orderInfo);
-	    
-	    int totalCost = catDogService.getTotalCost(orderCode);
-	    model.addAttribute("totalCost", totalCost);
-	    
-	    System.out.println("  💛💛💛💛💛💛💛💛💛💛 orderDTO: " + orderDTO);
-	    System.out.println("  💛💛💛💛💛💛💛💛💛💛 OrderItems: " + orderItems);
-	    System.out.println("  💛💛💛💛💛💛💛💛💛💛 totalCost: " + totalCost);
-	    
-	    return "/catdog-payment";
+
+		model.addAttribute("orderDTO", orderDTO);
+		model.addAttribute("orderItems", orderItems);
+
+		System.out.println("~~~~~~~~ orderDTO ~~~~~~~ = " + orderDTO);
+		System.out.println("~~~~~~~~ orderItems ~~~~~~~ = " + orderItems);
+
+		OrderDetailDTO orderInfo = catDogService.getOrderDetail(orderCode);
+		System.out.println("~~~~~~~~ orderInfo ~~~~~~~ = " + orderInfo);
+		model.addAttribute("orderInfo", orderInfo);
+
+		int totalCost = catDogService.getTotalCost(orderCode);
+		model.addAttribute("totalCost", totalCost);
+
+		System.out.println("  💛💛💛💛💛💛💛💛💛💛 orderDTO: " + orderDTO);
+		System.out.println("  💛💛💛💛💛💛💛💛💛💛 OrderItems: " + orderItems);
+		System.out.println("  💛💛💛💛💛💛💛💛💛💛 totalCost: " + totalCost);
+
+		return "/catdog-payment";
+	}
+	
+	@PostMapping("/cart/update")
+	public String updateCartQuantity(CartDTO cartDTO) throws Exception {
+
+		System.out.println("업데이트 아직인겨 = " + cartDTO);
+		System.out.println("업데이트 아직이여 = " + cartDTO.getCart_quantity());
+		catDogService.updateCartQuantity(cartDTO);
+		System.out.println("업데이트 눌럿슈 = " + cartDTO);
+		System.out.println("업데이트 햇슈 = " + cartDTO.getCart_quantity());
+		return "redirect:/cart";
+	}
+	
+	@PostMapping("/cart/delete")
+	@ResponseBody
+	public String deleteCart(CartDTO cartDTO) throws Exception {
+		System.out.println("뭐 가져온겨???????? " + cartDTO);
+		int result = catDogService.deleteCart(cartDTO);
+		return result > 0 ? "success" : "failure";
 	}
 	
 	// 마이페이지

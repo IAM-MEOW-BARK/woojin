@@ -374,12 +374,36 @@ public class CatDogDAOImpl implements CatDogDAO{
     	return sqlSession.selectList(namespace + ".getCartItem", user_id);
     }
     
+    @Override
+	public int getCartCost(String user_id) throws Exception {
+		return sqlSession.selectOne(namespace + ".getCartCost", user_id);
+	}
+    
+    @Override
+	public int updateCartQuantity(CartDTO cartDTO) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.update(namespace + ".updateCartQuantity", cartDTO);
+	}
+    
+    // 나현 수정
+ 	@Override
+ 	public List<ProductDTO> mainlist(Map<String, Object> param) {
+ 		// TODO Auto-generated method stub
+ 		return sqlSession.selectList(namespace + ".mainlist", param);
+ 	}
+    
+    @Override
+	public int deleteCart(CartDTO cartDTO) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.delete(namespace + ".deleteCart", cartDTO);
+	}
+    
     // 마이페이지
     public List<MyDTO> getMyOrders(String user_id) throws Exception {
 		return sqlSession.selectList(namespace + ".getMyOrders", user_id);
 	}
 
- // 수정한 거
+    // 수정한 거
  	public OrderDetailDTO getOrderDetail(String order_code) throws Exception {
  		return sqlSession.selectOne(namespace + ".getOrderDetail", order_code);
  	}

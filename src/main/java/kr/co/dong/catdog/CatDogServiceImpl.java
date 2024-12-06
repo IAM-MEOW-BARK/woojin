@@ -298,6 +298,21 @@ public class CatDogServiceImpl implements CatDogService {
 		return catDogDAO.getCartItem(user_id);
 	}
 	
+	@Override
+	public int getCartCost(String user_id) throws Exception {
+		return catDogDAO.getCartCost(user_id);
+	}
+	
+	@Override
+	public int updateCartQuantity(CartDTO cartDTO) throws Exception {
+		return catDogDAO.updateCartQuantity(cartDTO);
+	}
+	
+	@Override
+	public int deleteCart(CartDTO cartDTO) throws Exception {
+		return catDogDAO.deleteCart(cartDTO);
+	}
+	
 	public List<MyDTO> getMyOrders(String user_id) throws Exception {
 		return catDogDAO.getMyOrders(user_id);
 	}
@@ -305,6 +320,12 @@ public class CatDogServiceImpl implements CatDogService {
 	@Override
 	public OrderDetailDTO getOrderDetail(String order_code) throws Exception {
 		return catDogDAO.getOrderDetail(order_code); // DAO 호출
+	}
+	
+	// (나현 추가) 카테고리 별 보기
+	@Override
+	public List<ProductDTO> mainlist(Map<String, Object> param) {
+		return catDogDAO.mainlist(param);
 	}
 	
 	// 카카오 로그인

@@ -555,6 +555,42 @@
 		AND
 		product_code = #{product_code}
 	</update>
+	
+	<select id="getCartCost" parameterType="java.lang.String" resultType="java.lang.Integer">
+		SELECT
+		sum(p.product_price * c.cart_quantity) as cartCost
+		FROM
+		cart c LEFT JOIN product p
+		ON c.product_code = p.product_code
+		WHERE
+		c.user_id = #{user_id}
+	</select>
+	
+	<!-- 카테고리 리스트 -->
+	<select id="mainlist" parameterType="java.util.Map"
+		resultType="ProductDTO">
+		SELECT
+		p.*,
+		(SELECT wish_no
+		FROM wish w
+		WHERE w.user_id =
+		#{user_id} AND w.product_code = p.product_code) AS
+		wish_no
+		FROM
+		product p
+		WHERE
+		p.product_category = #{product_category}
+		ORDER BY
+		p.product_regdate DESC
+	</select>
+
+	<!-- 리스트에서 제품 선택 -->
+	<select id="product_detail" parameterType="java.lang.Integer"
+		resultType="BoardDTO">
+		select *
+		from product
+		where product_code = #{product_code}
+	</select>
 	 	
  	<!-- @@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@  -->
  	

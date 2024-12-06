@@ -96,7 +96,7 @@
 											id="cart_quantity" value="${item.cart_quantity}" readonly>
 										<button class="btn btn-outline-secondary plus_btn">+</button>
 										<a class="update_quantity_btn"
-											data-product_code="${item.product_code}">변경</a>
+											data-product_code="${item.product_code}"><button class="btn">변경</button></a>
 									</div>
 								</td>
 								<td class="price" data-price="${item.product_price}"><fmt:formatNumber
@@ -119,12 +119,10 @@
 						name="product_code" class="update_product_code">
 				</form>
 				<div class="table-container d-flex justify-content-end">
-					<button type="button" class="btn delete-selected-btn">선택
-						삭제</button>
 					<table>
 						<tr>
-							<td style="text-align: right; padding-right: 20px">총 금액: <span
-								id="finalPriceTag">0</span>
+							<td style="text-align: right; padding-right: 20px">총 금액:
+							<fmt:formatNumber value="${cartCost}" type="number" groupingUsed="true"/>원
 							</td>
 							<td>
 							<form method="post" action="/cart">

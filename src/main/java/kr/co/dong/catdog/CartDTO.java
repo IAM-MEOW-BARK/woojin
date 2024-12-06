@@ -75,8 +75,8 @@ public class CartDTO {
 		return totalPrice;
 	}
 
-	public void setTotalPrice(int totalPrice) {
-		this.totalPrice = totalPrice;
+	public void initTotalPrice() {
+		this.totalPrice = this.cart_quantity * this.product_price;
 	}
 
 	@Override
