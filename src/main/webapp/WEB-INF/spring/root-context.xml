@@ -31,6 +31,10 @@
 	         </bean> 
 	     </property> 
 	 </bean>
+	 
+	<bean class="org.springframework.context.support.PropertySourcesPlaceholderConfigurer">
+	    <property name="location" value="classpath:application.properties" />
+	</bean>
 	
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />

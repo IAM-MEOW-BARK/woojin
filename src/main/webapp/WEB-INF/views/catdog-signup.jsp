@@ -266,7 +266,7 @@
     				<img alt="카카오" src="${pageContext.request.contextPath}/resources/bootstrap/images/btn_kakao.svg" >
     			</a>
    			</div>
-   			<div>
+   			<%-- <div>
     			<a href="#">
     				<img alt="네이버" src="${pageContext.request.contextPath}/resources/bootstrap/images/btn_naver.svg">
     			</a>
@@ -275,7 +275,7 @@
     			<a href="#">
     				<img alt="구글" src="${pageContext.request.contextPath}/resources/bootstrap/images/btn_google.svg">
     			</a>
-   			</div>
+   			</div> --%>
     	</div>
     </div>
     </div>

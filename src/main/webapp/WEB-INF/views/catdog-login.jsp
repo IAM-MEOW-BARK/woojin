@@ -99,13 +99,13 @@
       </div>
       <form method="post">
 	      <div>
-	        <input type="email" name="user_id"  class="email-input" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;아이디 또는 이메일을 입력해주세요">
+	        <input type="email" name="user_id" id="user_id"  class="email-input" placeholder="&nbsp;&nbsp;&nbsp;&nbsp;아이디 또는 이메일을 입력해주세요">
 	      </div>
 	      <div style="margin-top: 10px;">
 	         <input type="password" name="password" class="password-input"  placeholder="&nbsp;&nbsp;&nbsp;&nbsp;비밀번호를 입력해주세요">
 	      </div>
 	      <div class="login-button" style="margin-top: 20px;">
-	        <button type="submit">로그인</button>
+	        <button type="submit" onclick="validateEmail()">로그인</button>
 	        </div>
 	      <div class="signup-button" style="margin-top: 20px;">
 	        <button type="button" onclick="location.href=`catdog-signup`">회원가입</button>
@@ -123,7 +123,7 @@
     				<img alt="카카오" src="${pageContext.request.contextPath}/resources/bootstrap/images/btn_kakao.svg" >
     			</a>
    			</div>
-   			<div>
+   			<%-- <div>
     			<a href="#">
     				<img alt="네이버" src="${pageContext.request.contextPath}/resources/bootstrap/images/btn_naver.svg">
     			</a>
@@ -132,8 +132,27 @@
     			<a href="#">
     				<img alt="구글" src="${pageContext.request.contextPath}/resources/bootstrap/images/btn_google.svg">
     			</a>
-   			</div>
+   			</div> --%>
     	</div>
     </div>
   </body>
+  <script type="text/javascript">
+	  function emailCheck(email_address){     
+			email_regex = /^[a-zA-Z0-9._-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$/i;
+			if(!email_regex.test(email_address)){ 
+				return false; 
+			}else{
+				return true;
+			}
+		}
+	  
+	  function validateEmail() {
+			var emailInput = document.getElementById('user_id');	
+			var email = emailInput.value;
+	
+			if (!emailCheck(email)) {
+				alert("유효하지 않은 이메일 주소 입니다.");
+			}
+		} 
+</script>
 </html>
