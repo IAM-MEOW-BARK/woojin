@@ -1,13 +1,14 @@
 package kr.co.dong.controller;
 
 
-import java.io.BufferedReader;
 import java.io.File;
-import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -20,8 +21,6 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -35,9 +34,6 @@ import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
-import com.fasterxml.jackson.databind.JsonNode;
-import com.fasterxml.jackson.databind.ObjectMapper;
-
 import kr.co.dong.catdog.CartDTO;
 import kr.co.dong.catdog.CatDogService;
 import kr.co.dong.catdog.MemberDTO;
@@ -47,6 +43,8 @@ import kr.co.dong.catdog.OrderDetailDTO;
 import kr.co.dong.catdog.OrderItemDTO;
 import kr.co.dong.catdog.PaymentDTO;
 import kr.co.dong.catdog.ProductDTO;
+import kr.co.dong.catdog.QnaDTO;
+import kr.co.dong.catdog.ReviewDTO;
 
 @Controller
 public class CatDogController {
@@ -974,5 +972,93 @@ public class CatDogController {
 
 		return "mypage";
 	}
+	
+	// 지혜
+	// 상품 상세페이지
+			@RequestMapping(value="/productDetail", method = RequestMethod.GET)
+			public String productDetail(@RequestParam("product_code") int product_code, Model model) {
+				
+				// 배송 예정일
+				Calendar calendar = Calendar.getInstance();	
+				int hour = calendar.get(Calendar.HOUR_OF_DAY);
+				
+				if (hour < 15) {
+					calendar.add(Calendar.DATE, 1);
+				} else {
+					calendar.add(Calendar.DATE, 2);
+				}
+				
+				Date delivery = calendar.getTime();
+				SimpleDateFormat dateFormat = new SimpleDateFormat("MM월 dd일(E)"); // 날짜와 요일 형식
+
+				String deliveryDate = dateFormat.format(delivery);
+				   
+				
+				
+				// 1. 상품 상세 정보
+			    ProductDTO productDTO = catDogService.productDetail(product_code);
+
+			    // 2. 리뷰 리스트 (최신 5개)
+			    List<ReviewDTO> getReview = catDogService.getReview(product_code);
+			    // 3. Q&A 리스트 (최신 5개)
+			    List<QnaDTO> getQna = catDogService.getQna(product_code);
+			    // 4. 상품 코드에 해당하는 게시글 개수 가져오기
+			    int product_reviewTotal = catDogService.product_reviewTotal(product_code);
+			    int product_qnaTotal = catDogService.product_qnaTotal(product_code);
+			   
+			    model.addAttribute("productDetail", productDTO);
+			    model.addAttribute("getReview", getReview);
+			    model.addAttribute("getQna", getQna);
+			    model.addAttribute("product_reviewTotal", product_reviewTotal);
+			    model.addAttribute("product_qnaTotal", product_qnaTotal);
+			    model.addAttribute("deliveryDate", deliveryDate);
+				return "/productDetail";
+			}
+			
+		// 카테고리 리스트
+		
+		@RequestMapping(value = "/categoryList", method = RequestMethod.GET)
+		public String categoryList(
+		        
+		        @RequestParam(value = "pageNum", defaultValue = "1") int pageNum,
+		        @RequestParam(value = "pageListNum", defaultValue = "1") int pageListNum,
+		        @RequestParam(value = "product_category") int product_category,
+		        Model model) {
+
+			
+		    int pageSize = 12;
+		    int pageListSize = 10;
+
+		    int totalPost = catDogService.categoryTotalPost(product_category);
+		    int totalPage = (int) Math.ceil((double) totalPost / pageSize);
+		    int start = (pageNum - 1) * pageSize;
+		    int startPage = (pageListNum - 1) * pageListSize + 1;
+		    int endPage = Math.min(startPage + pageListSize - 1, totalPage);
+
+		   
+		    
+		    
+		    System.out.println("totalPost: " + totalPost);
+		    System.out.println("totalPage: " + totalPage);
+		    System.out.println("start: " + start);
+		    System.out.println("pageSize: " + pageSize);
+		    
+		    
+		    
+		    List<ProductDTO> categoryList = catDogService.categoryList(start, pageSize, product_category);
+
+		    
+		    System.out.println("categoryList in Controller: " + categoryList);
+		    
+		    model.addAttribute("totalPage", totalPage);
+		    model.addAttribute("currentPage", pageNum);
+		    model.addAttribute("pageListNum", pageListNum);
+		    model.addAttribute("startPage", startPage);
+		    model.addAttribute("endPage", endPage);
+		    model.addAttribute("productCategory", product_category);
+		    model.addAttribute("categoryList", categoryList);
+
+		    return "categoryList";
+			}
 
 }

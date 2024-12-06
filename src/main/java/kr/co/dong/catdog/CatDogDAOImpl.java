@@ -407,6 +407,236 @@ public class CatDogDAOImpl implements CatDogDAO{
  	public OrderDetailDTO getOrderDetail(String order_code) throws Exception {
  		return sqlSession.selectOne(namespace + ".getOrderDetail", order_code);
  	}
+ 	
+ 	
+ 	
+ 	// 지혜
+ 	@Override
+	public ProductDTO productDetail(int product_code) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace+".productDetail", product_code);
+	}
+
+	@Override
+	public List<ReviewDTO> getReview(int product_code) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public List<QnaDTO> getQna(int product_code) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int product_reviewTotal(int product_code) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int product_qnaTotal(int product_code) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<ProductDTO> categoryList(int start, int pageSize, int product_category) {
+		// TODO Auto-generated method stub
+		Map<String, Integer> map = new HashMap<>();
+		map.put("start", start);
+		map.put("pageSize", pageSize);
+		
+		map.put("product_category", product_category);
+		
+		return sqlSession.selectList(namespace+".categoryList", map);
+	}
+	@Override
+	public int categoryTotalPost(int product_category) {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace+".categoryTotalPost", product_category);
+	}
+
+	@Override
+	public List<NoticeDTO> noticeList(int start, int pageSize) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int noticeTotalPost() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<ReviewDTO> reviewList(int start, int pageSize) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int reviewTotalPost() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<QnaDTO> qnaList(int start, int pageSize) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int qnaTotalPost() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<FaqDTO> faqList(int start, int pageSize) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int faqTotalPost() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<FaqDTO> faqListDivision(int start, int pageSize, int faq_division) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int faqTotalPostDivision(int faq_division) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public NoticeDTO noticeDetail(int notice_no) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int noticeUpdateReadCnt(int notice_no) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public ReviewDTO reviewDetail(int review_no) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int reviewUpdateReadCnt(int review_no) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public QnaDTO qnaDetail(int qna_no, String qna_pwd) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public FaqDTO faqDetail(int faq_no) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int noticeRegister(NoticeDTO noticeDTO) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int noticeUpdate(NoticeDTO noticeDTO) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int noticeDelete(int notice_no) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int qnaRegister(QnaDTO qnaDTO) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int qnaUpdate(QnaDTO qnaDTO) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int qnaDelete(int qna_no) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int qnaReply(QnaDTO qnaDTO) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int qnaReplyUpdate(QnaDTO qnaDTO) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int qnaReplyDelete(int qna_no) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public List<ProductDTO> productSearch(String keyword) {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public int productTotal() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int faqRegister(FaqDTO faqDTO) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int faqUpdate(FaqDTO faqDTO) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public int faqDelete(int faq_no) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 
     
 }

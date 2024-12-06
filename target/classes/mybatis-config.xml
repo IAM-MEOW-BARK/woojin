@@ -11,6 +11,11 @@
  		<typeAlias alias="OrderItemDTO" type="kr.co.dong.catdog.OrderItemDTO"/>
  		<typeAlias alias="MyDTO" type="kr.co.dong.catdog.MyDTO"/>
  		<typeAlias alias="CartDTO" type="kr.co.dong.catdog.CartDTO"/>
+ 		<typeAlias alias="NoticeDTO" type="kr.co.dong.catdog.NoticeDTO"/>
+ 		<typeAlias alias="ReviewDTO" type="kr.co.dong.catdog.ReviewDTO"/>
+ 		<typeAlias alias="QnaDTO" type="kr.co.dong.catdog.QnaDTO"/>
+ 		<typeAlias alias="FaqDTO" type="kr.co.dong.catdog.FaqDTO"/>
+ 		<typeAlias alias="OrdersDTO" type="kr.co.dong.catdog.OrdersDTO"/>
  		
  		<typeAlias alias="BoardDTO" type="kr.co.dong.board.BoardDTO"/>
  		<typeAlias alias="BoardReply" type="kr.co.dong.board.BoardReply"/>
