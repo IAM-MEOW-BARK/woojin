@@ -825,42 +825,53 @@ public class CatDogController {
 	    return "catdog-payment"; // 뷰 이름 반환
 	}
 	
-	// 결제
-	@PostMapping("/processPayment")
-	public String processPayment(
-	        @RequestParam("name") String name,
-	        @RequestParam("phone_num") String phone_num,
-	        @RequestParam("zipcode") String zipcode,
-	        @RequestParam("address") String address,
-	        @RequestParam("detailaddress") String detailaddress,
-	        HttpSession session,
-	        Model model) {
-	    Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
+	   // 결제
+	   @PostMapping("/processPayment")
+	   public String processPayment(
+	           @RequestParam("name") String name,
+	           @RequestParam("phone_num") String phone_num,
+	           @RequestParam("zipcode") String zipcode,
+	           @RequestParam("address") String address,
+	           @RequestParam("detailaddress") String detailaddress,
+	           HttpSession session,
+	           Model model) {
+	       Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
+	       
+	       Object userIdObj = user.get("user_id");
+	       System.out.println("user_id 값: " + userIdObj);
+	       System.out.println("user_id 타입: " + (userIdObj != null ? userIdObj.getClass().getName() : "null"));
 
-	    String user_id = (String) user.get("user_id");
-	    if (user_id == null || user_id.isEmpty()) {
-	        return "redirect:/catdog-login";
-	    }
+	       String user_id = (String) user.get("user_id");
+	       if (user_id == null || user_id.isEmpty()) {
+	    	   System.out.println("에러1");
+	           return "redirect:/catdog-login";	           
+	       }
 
-	    // product_code를 데이터베이스에서 조회
-	    List<Integer> product_code = catDogService.getProductCodeByUserId(user_id);
-	    if (product_code == null) {
-	        model.addAttribute("errorMessage", "Product code를 찾을 수 없습니다.");
-	        return "catdog-payment";
-	    }
+	       // product_code를 데이터베이스에서 조회
+	       List<Integer> product_code = catDogService.getProductCodeByUserId(user_id);
+	       if (product_code == null) {
+	           model.addAttribute("errorMessage", "Product code를 찾을 수 없습니다.");
+	           System.out.println("에러2");
+	           return "catdog-payment";
+	       }
 
-	    try {
-	        catDogService.updateAddress(user_id, name, phone_num, zipcode, address, detailaddress);
-	        catDogService.updatePaymentStatus(user_id);
-	        catDogService.deleteOrderItems(user_id, product_code); // product_code 전달
+	       try {
+	           catDogService.updateAddress(user_id, name, phone_num, zipcode, address, detailaddress);
+	           catDogService.updatePaymentStatus(user_id);
+	           catDogService.deleteOrderItems(user_id, product_code); // product_code 전달
 
-	        return "redirect:/";
-	    } catch (Exception e) {
-	        e.printStackTrace();
-	        model.addAttribute("errorMessage", "결제 처리 중 오류가 발생했습니다.");
-	        return "catdog-payment";
-	    }
-	}
+	           return "redirect:/";
+	       } catch (Exception e) {
+	           e.printStackTrace();
+	           model.addAttribute("errorMessage", "결제 처리 중 오류가 발생했습니다.");
+	           System.out.println("errorMessage" +  "결제 처리 중 오류가 발생했습니다.");
+	           System.out.println("에러3");
+	           return "catdog-payment";
+	       }
+	   }
+
+
+
 	
 	// 장바구니
 	@GetMapping("/cart")
@@ -874,11 +885,15 @@ public class CatDogController {
 		model.addAttribute("user_id", userId);
 
 		List<CartDTO> cartInfo = catDogService.getCartInfo(userId);
+		if(cartInfo.isEmpty()) {
+			model.addAttribute("isCartEmpty", true);
+		} else {
+		model.addAttribute("isCartEmpty", false);
 		model.addAttribute("cartInfo", cartInfo);
 		System.out.println("cartInfo = " + cartInfo);
 		session.setAttribute("cartInfo", cartInfo); // post할 세션
-		
 		model.addAttribute("cartCost", catDogService.getCartCost(userId));
+		}
 		
 		return "cart";
 	}

@@ -33,14 +33,23 @@ public class HomeController {
 	@Inject
 	CatDogService catDogService;  
 
-	@RequestMapping(value = "/", method = RequestMethod.GET) // 프로젝트 처음 시작할 때 "/" 하나 있는 애 부터 실행이 된다.
+	@RequestMapping(value = "/", method = RequestMethod.GET)
 	public ModelAndView list(HttpSession session) {
 	    ModelAndView mav = new ModelAndView();
-	    String user_id = (String) session.getAttribute("user"); // 로그인된 사용자 ID 가져오기
+
+	    // 세션에서 사용자 정보 가져오기
+	    Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
+	    String user_id = null;
+
+	    if (user != null && user.get("user_id") != null) {
+	        user_id = (String) user.get("user_id");
+	    }
 
 	    // 파라미터 맵 구성
-	    Map<String, Object> param = new HashMap<String, Object>();
-	    param.put("user_id", user_id);
+	    Map<String, Object> param = new HashMap<>();
+	    if (user_id != null) {
+	        param.put("user_id", user_id);
+	    }
 
 	    // 카테고리별 상품 목록 조회
 	    param.put("product_category", 1);

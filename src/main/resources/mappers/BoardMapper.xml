@@ -271,7 +271,7 @@
  	</select>
  	
  	<!-- 결제 페이지 회원 정보 -->
- 	<select id="getMember" resultType="PaymentDTO">
+ 	<select id="getMember" resultType="PaymentDTO" parameterType="java.lang.String">
  		select user_id, name, phone_num, zipcode, address, detailaddress from member
  		where user_id = #{user_id}
  	</select>
@@ -523,6 +523,7 @@
 	        p.thumbnail_img AS thumbnailImg,
 	        p.product_name AS productName,
 	        oi.order_quantity AS orderQuantity,
+	        p.product_price as productPrice,
 	        (p.product_price * oi.order_quantity) AS totalPrice,
 	        oi.order_status AS orderStatus
 	    FROM orders o
@@ -558,7 +559,7 @@
 	
 	<select id="getCartCost" parameterType="java.lang.String" resultType="java.lang.Integer">
 		SELECT
-		sum(p.product_price * c.cart_quantity) as cartCost
+		coalesce(sum(p.product_price * c.cart_quantity), 0) as cartCost
 		FROM
 		cart c LEFT JOIN product p
 		ON c.product_code = p.product_code
