@@ -221,10 +221,12 @@
 							            <!-- 장바구니, 찜하기 -->
 							            <div class="button-area d-flex justify-content-center align-items-center gap-3">
 								            <form action="addCart" method="POST">
-								          		<input type="hidden" name="user_id" value="${user_id}" />
 											    <!-- <input type="hidden" name="product_code" value="${product.product_code}" />  -->
- 											    <input type="hidden" name="cart_quantity" id="cartQuantity_${product.product_code}" value="1" />
-								    
+ 											    <input type="hidden" name="user_id" value="${user_id}" />
+											    <input type="hidden" name="product_name" value="${product.product_name}" />
+											    <input type="hidden" name="product_code" value="${product.product_code}" />
+											    <input type="hidden" name="product_price" value="${product.product_price}" />
+											    <input type="hidden" name="cart_quantity" id="cartQuantity_${product.product_code}" value="1" />					    
 								               <!-- 장바구니 버튼 -->
 								          		<button type="submit" class="cart-button">
 								          			<svg width="18" height="18">

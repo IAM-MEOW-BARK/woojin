@@ -593,7 +593,28 @@
 		where product_code = #{product_code}
 	</select>
 	
+	<!-- 회원 정보 업데이트 -->
+
+	<update id="updateProfile" parameterType="MemberDTO">
+		UPDATE member
+		SET
+		password = #{password},
+		phone_num = #{phone_num},
+		zipcode = #{zipcode},
+		address = #{address},
+		detailaddress = #{detailaddress}
+		WHERE user_id =
+		#{user_id}
+	</update>
+	
 	<!-- 지혜 -->
+	<!-- 장바구니 추가  -->
+	<insert id="addCart" parameterType="cartDTO">
+		  INSERT INTO cart (user_id, product_code, cart_quantity)
+    VALUES (#{user_id}, #{product_code}, #{cart_quantity})
+    ON DUPLICATE KEY UPDATE
+    cart_quantity = cart_quantity + #{cart_quantity}
+	</insert>
 	<!-- 상품 상세 정보 -->
 	<select id="productDetail" parameterType="java.lang.Integer" resultType="productDTO">
 		select *
