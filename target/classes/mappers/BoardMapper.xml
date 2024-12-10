@@ -769,19 +769,12 @@
 		where review_no = #{review_no}
 	</update>
 	
-	<!-- Q&A 상세 글 조회 
+	<!-- Q&A 상세 글 조회-->
 	<select id="qnaDetail" parameterType="java.lang.Integer" resultType="QnaDTO">
-		select q.*, p.product_name
-		from qna q left join product p on q.product_code_fk = p.product_code
-		where q.qna_no = #{qna_no}
-	</select>
-	-->
-	<select id="qnaDetail" parameterType="map" resultType="QnaDTO">
-    select q.*, p.product_name
-    from qna q
-    left join product p on q.product_code_fk = p.product_code
-    where q.qna_no = #{qna_no}
-    
+	    select q.*, p.product_name
+	    from qna q
+	    left join product p on q.product_code_fk = p.product_code
+	    where q.qna_no = #{qna_no}
 	</select>
 	
 	<!-- FAQ 상세 조회 -->
@@ -849,6 +842,14 @@
 		set qna_reply = null
 		where qna_no = #{qna_no}
 	</update>
+	
+	<!-- qna 답변 볼수 있는 SQL -->
+	<select id="qnaReplyDetail" parameterType="java.lang.Integer" resultType="QnaDTO">
+		select q.*, p.product_name
+	    from qna q
+	    left join product p on q.product_code_fk = p.product_code
+	    where q.qna_no = #{qna_no}
+	</select>
 	
 	<!-- 상품검색 -->
 	<select id="productSearch" resultType="ProductDTO">

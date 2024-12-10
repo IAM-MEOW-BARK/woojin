@@ -156,7 +156,6 @@ public interface CatDogDAO {
     
     
     // 지혜
-    
 	// 상품 상세정보
     public ProductDTO productDetail(int product_code);
     public List<ReviewDTO> getReview(int product_code);
@@ -247,6 +246,4 @@ public interface CatDogDAO {
     
     // FAQ 글 삭제
     public int faqDelete(int faq_no);
-    
-	
 }

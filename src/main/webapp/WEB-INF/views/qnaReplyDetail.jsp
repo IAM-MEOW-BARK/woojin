@@ -90,26 +90,26 @@
             <thead>
                 <tr>
                     <th>상품명</th>
-                    <td>${qnaDetail.product_name}</td>
+                    <td>${qnaReplyDetail.product_name}</td>
                 </tr>
             </thead>
             <tbody>
              	<tr>
                     <th>작성자</th>
-                    <td>${qnaDetail.user_id}</td>
+                    <td>${qnaReplyDetail.user_id}</td>
                 </tr>
                 <tr>
                     <th>작성일</th>
-                    <td>${qnaDetail.qna_date}</td>
+                    <td>${qnaReplyDetail.qna_date}</td>
                 </tr>
                 <tr class="content-cell" style="height: 300px;" >
                     <th>내용</th>
-	                    <td>${qnaDetail.qna_content}</td>
+	                    <td>${qnaReplyDetail.qna_content}</td>
                 </tr>
                 
                 <tr  class="reply-cell" style="height: 200px;">
                 	<th>답변</th>
-                	<td>${qnaDetail.qna_reply }</td>
+                	<td>${qnaReplyDetail.qna_reply }</td>
                 </tr>
             </tbody>
         </table>
@@ -122,8 +122,8 @@
 	       		<c:when test="${user_auth == 1}">
 	       			<!-- 답변이 있는 경우에만 답변 수정/삭제 버튼 표시 -->
 	           		<c:if test="${!empty qnaDetail.qna_reply}">
-		       			<a href="qnaReplyUpdate?qna_no=${qnaDetail.qna_no}" class="qnaUpdate">답변수정</a>
-		            	<a href="qnaReplyDelete?qna_no=${qnaDetail.qna_no}" class="qnaDelete" onclick="return confirm('답변을 삭제하시겠습니까?');">답변삭제</a>
+		       			<a href="qnaReplyUpdate?qna_no=${qnaReplyDetail.qna_no}" class="qnaUpdate">답변수정</a>
+		            	<a href="qnaReplyDelete?qna_no=${qnaReplyDetail.qna_no}" class="qnaDelete" onclick="return confirm('답변을 삭제하시겠습니까?');">답변삭제</a>
 		       		</c:if>
 	       		</c:when>
        		</c:choose>

@@ -155,8 +155,7 @@
         </table>
 
         <!-- 전체보기 버튼 -->
-        <div class="button-container">
-        	<a href="backToList?notice_no=${noticeDetail.notice_no}">backToList</a>
+        <div class="button-container">        	
             <a href="noticeList?pageNum=${pageNum}&pageListNum=${pageListNum}" class="noticeList">목록</a>
             
              <!-- user_auth가 1일 때, 수정/삭제 버튼 -->

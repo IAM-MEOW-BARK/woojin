@@ -465,25 +465,23 @@ public class CatDogServiceImpl implements CatDogService {
 	@Override
 	public List<ReviewDTO> getReview(int product_code) {
 		// TODO Auto-generated method stub
-		return null;
+		return catDogDAO.getReview(product_code);
 	}
 
 	@Override
 	public List<QnaDTO> getQna(int product_code) {
 		// TODO Auto-generated method stub
-		return null;
+		return catDogDAO.getQna(product_code);
 	}
-
 	@Override
 	public int product_reviewTotal(int product_code) {
 		// TODO Auto-generated method stub
-		return 0;
+		return catDogDAO.product_reviewTotal(product_code);
 	}
-
 	@Override
 	public int product_qnaTotal(int product_code) {
 		// TODO Auto-generated method stub
-		return 0;
+		return catDogDAO.product_qnaTotal(product_code);
 	}
 
 	@Override
