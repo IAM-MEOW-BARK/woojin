@@ -496,15 +496,19 @@
 		</div>
 	</section>
 
-	<!-- 푸터일 것 같음 -->
-
-	
-		
+	<!-- 푸터일 것 같음 -->		
 	<%@ include file="include/footer.jsp"%>
 	<script src="${pageContext.request.contextPath}/resources/bootstrap/js/jquery-1.11.0.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/swiper@9/swiper-bundle.min.js"></script>
 	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ENjdO4Dr2bkBIFxQpeoTz1HIcje39Wm4jDKdf19U8gI4ddQ3GYNS7NTKfAdVQSZe" crossorigin="anonymous"></script>
 	<script src="${pageContext.request.contextPath}/resources/bootstrap/js/plugins.js"></script>
 	<script src="${pageContext.request.contextPath}/resources/bootstrap/js/script.js"></script>
+	<script type="text/javascript">
+	 window.onload = function() {
+         <% if (request.getAttribute("paymentSuccess") != null) { %>
+             alert("결제가 완료되었습니다.");
+         <% } %>
+     };
+	</script>
 </body>
 </html>

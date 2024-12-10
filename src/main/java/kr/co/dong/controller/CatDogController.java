@@ -836,7 +836,9 @@ public class CatDogController {
 	           @RequestParam("address") String address,
 	           @RequestParam("detailaddress") String detailaddress,
 	           HttpSession session,
-	           Model model) {
+	           Model model,
+	           RedirectAttributes redirectAttributes
+	           ) {
 	       Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
 	       
 	       Object userIdObj = user.get("user_id");
@@ -845,7 +847,6 @@ public class CatDogController {
 
 	       String user_id = (String) user.get("user_id");
 	       if (user_id == null || user_id.isEmpty()) {
-	    	   System.out.println("에러1");
 	           return "redirect:/catdog-login";	           
 	       }
 
@@ -853,7 +854,6 @@ public class CatDogController {
 	       List<Integer> product_code = catDogService.getProductCodeByUserId(user_id);
 	       if (product_code == null) {
 	           model.addAttribute("errorMessage", "Product code를 찾을 수 없습니다.");
-	           System.out.println("에러2");
 	           return "catdog-payment";
 	       }
 
@@ -861,19 +861,16 @@ public class CatDogController {
 	           catDogService.updateAddress(user_id, name, phone_num, zipcode, address, detailaddress);
 	           catDogService.updatePaymentStatus(user_id);
 	           catDogService.deleteOrderItems(user_id, product_code); // product_code 전달
-
+	           
+	           redirectAttributes.addFlashAttribute("paymentSuccess", true);
 	           return "redirect:/";
 	       } catch (Exception e) {
 	           e.printStackTrace();
 	           model.addAttribute("errorMessage", "결제 처리 중 오류가 발생했습니다.");
 	           System.out.println("errorMessage" +  "결제 처리 중 오류가 발생했습니다.");
-	           System.out.println("에러3");
 	           return "catdog-payment";
 	       }
 	   }
-
-
-
 	
 	// 장바구니
 	@GetMapping("/cart")
