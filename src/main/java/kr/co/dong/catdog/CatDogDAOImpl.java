@@ -82,7 +82,10 @@ public class CatDogDAOImpl implements CatDogDAO{
 	@Override
 	public int addCart(CartDTO cartDTO) throws Exception {
 		// TODO Auto-generated method stub
-		return 0;
+//		Map<String, Object> map = new HashMap<String, Object>();
+//		map.put("user_id", cartDTO.getUser_id());
+//		map.put("product_code", cartDTO.getProduct_code());
+		return sqlSession.insert(namespace+".addCart", cartDTO);
 	}
 
 	@Override
@@ -100,7 +103,7 @@ public class CatDogDAOImpl implements CatDogDAO{
 	@Override
 	public int updateProfile(MemberDTO memberDTO) {
 		// TODO Auto-generated method stub
-		return 0;
+		return sqlSession.update(namespace + ".updateProfile", memberDTO);
 	}
 
 	@Override
@@ -242,9 +245,9 @@ public class CatDogDAOImpl implements CatDogDAO{
 	}
 
 	@Override
-	public PaymentDTO getMember(String user_id) {
+	public MemberDTO getMember(String user_id) {
 		// TODO Auto-generated method stub
-		 PaymentDTO member = sqlSession.selectOne(namespace + ".getMember", user_id);
+		MemberDTO member = sqlSession.selectOne(namespace + ".getMember", user_id);
 	     System.out.println("DAO: 회원 정보: " + member);
 	     return member;
 	}
@@ -407,6 +410,18 @@ public class CatDogDAOImpl implements CatDogDAO{
  	public OrderDetailDTO getOrderDetail(String order_code) throws Exception {
  		return sqlSession.selectOne(namespace + ".getOrderDetail", order_code);
  	}
+ 	
+ 	@Override
+	public int isReview(ReviewDTO reviewDTO) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.selectOne(namespace + ".isReview", reviewDTO);
+	}
+
+	@Override
+	public int regReview(ReviewDTO reviewDTO) throws Exception {
+		// TODO Auto-generated method stub
+		return sqlSession.insert(namespace + ".regReview", reviewDTO);
+	}
  	
  	
  	

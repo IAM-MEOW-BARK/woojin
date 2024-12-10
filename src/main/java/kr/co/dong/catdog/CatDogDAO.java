@@ -90,7 +90,7 @@ public interface CatDogDAO {
     public List <MemberDTO> getTotalMember(int start, int pageSize);
     
     // 단일 회원 정보
-    public PaymentDTO getMember(String user_id);
+    public MemberDTO getMember(String user_id);
     
     // 결제 오더 정보
     public List<OrderItemDTO> getOrderInfo(String order_code);    
@@ -149,10 +149,15 @@ public interface CatDogDAO {
 	// 마이페이지
     public List<MyDTO> getMyOrders(String user_id) throws Exception;
     
+    public int isReview(ReviewDTO reviewDTO) throws Exception;
+	
+	public int regReview(ReviewDTO reviewDTO) throws Exception;
+    
     
     
     // 지혜
- // 상품 상세정보
+    
+	// 상품 상세정보
     public ProductDTO productDetail(int product_code);
     public List<ReviewDTO> getReview(int product_code);
     public List<QnaDTO> getQna(int product_code);

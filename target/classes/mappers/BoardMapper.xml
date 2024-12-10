@@ -564,7 +564,7 @@
 		cart c LEFT JOIN product p
 		ON c.product_code = p.product_code
 		WHERE
-		c.user_id = #{user_id}
+		c.user_id = #{usegr_id}
 	</select>
 	
 	<!-- 카테고리 리스트 -->

@@ -361,13 +361,15 @@ public class CatDogController {
 
 		    if (user == null) {
 		        logger.info("로그인 실패: 유효하지 않은 사용자");
-		        return "redirect:/catdog-login"; // prefix suffix 이용해서 이동
+		        model.addAttribute("loginError", "아이디 또는 비밀번호가 일치하지 않습니다.");
+		        return "forward:/WEB-INF/views/catdog-login.jsp"; // forward로 JSP에 메시지 전달
 		    }
 
 		    Integer userStatus = (Integer) user.get("user_status"); 
 
 		    if (userStatus == 1) {
 		        logger.info("로그인 실패: 비활성화된 사용자");
+		        model.addAttribute("msg", "아이디 또는 비밀번호가 유효하지 않습니다.");
 		        return "redirect:/catdog-login";
 		    }
 
@@ -803,7 +805,7 @@ public class CatDogController {
 	    }
 		
 		// 회원 정보
-		PaymentDTO pdto = catDogService.getMember((String) user.get("user_id"));
+		MemberDTO pdto = catDogService.getMember((String) user.get("user_id"));
 		model.addAttribute("paymentMember", pdto);
 		
 		System.out.println("Session user: " + session.getAttribute("user"));
@@ -896,6 +898,31 @@ public class CatDogController {
 		}
 		
 		return "cart";
+	}
+	
+	@PostMapping(value = "/addCart")
+	public String addToCart(@ModelAttribute CartDTO cartDTO, HttpSession session, RedirectAttributes redirectAttributes) {
+	    // 로그인 확인
+	    Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
+	    
+	    // 로그인 여부 확인
+	    if (user == null || user.get("user_id") == null) {
+	        redirectAttributes.addFlashAttribute("error", "로그인이 필요합니다.");
+	        return "redirect:/catdog-login";
+	    }
+	    // 세션에서 사용자 ID 가져오기
+	    String userId = (String) user.get("user_id");
+	    cartDTO.setUser_id(userId); // CartDTO에 사용자 ID 설정
+
+	    try {
+	        // 장바구니 추가
+	        catDogService.addCart(cartDTO);
+	        redirectAttributes.addFlashAttribute("message", "장바구니에 추가되었습니다.");
+	    } catch (Exception e) {
+	        e.printStackTrace();
+	        redirectAttributes.addFlashAttribute("error", "장바구니 추가 중 오류가 발생했습니다.");
+	    }
+	    return "redirect:/cart";
 	}
 
 	@PostMapping("/cart")

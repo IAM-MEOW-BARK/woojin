@@ -135,6 +135,12 @@
    			</div> --%>
     	</div>
     </div>
+    <!-- 로그인 실패 시 알림 -->
+    <c:if test="${not empty loginError}">
+        <script type="text/javascript">
+            alert("${loginError}");
+        </script>
+    </c:if>
   </body>
   <script type="text/javascript">
 	  function emailCheck(email_address){     

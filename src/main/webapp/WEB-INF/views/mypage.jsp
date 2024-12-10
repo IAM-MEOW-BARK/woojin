@@ -97,6 +97,11 @@
 
 </head>
 <body>
+ 	<c:if test="${not empty successMessage}">
+        <script>
+            alert("${successMessage}");
+        </script>
+    </c:if>
 	<%@ include file="include/header.jsp"%>
 	<%@ include file="include/mypageheader.jsp"%>
 	<!-- 마이페이지 -->

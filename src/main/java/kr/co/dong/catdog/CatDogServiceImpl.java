@@ -201,9 +201,9 @@ public class CatDogServiceImpl implements CatDogService {
    }
 
 	@Override
-	public PaymentDTO getMember(String user_id) {
+	public MemberDTO getMember(String user_id) {
 		// TODO Auto-generated method stub
-		PaymentDTO member = catDogDAO.getMember(user_id);
+		MemberDTO member = catDogDAO.getMember(user_id);
 		System.out.println("Service: 회원 정보: " + member);
 		return member;
 		
@@ -271,9 +271,10 @@ public class CatDogServiceImpl implements CatDogService {
 		// 랜덤 코드 생성
 		String orderCode = generateOrderCode();
 		orderDTO.setOrder_code(orderCode);
+		catDogDAO.addOrder(orderDTO);
 
 		// 데이터베이스 삽입
-		return catDogDAO.addOrder(orderDTO);
+		return orderCode;
 	}
 
 	private String generateOrderCode() {
@@ -326,6 +327,23 @@ public class CatDogServiceImpl implements CatDogService {
 	@Override
 	public List<ProductDTO> mainlist(Map<String, Object> param) {
 		return catDogDAO.mainlist(param);
+	}
+	
+	@Override
+	public int isReview(ReviewDTO reviewDTO) throws Exception {
+		// TODO Auto-generated method stub
+		return catDogDAO.isReview(reviewDTO);
+	}
+
+	@Override
+	public int regReview(ReviewDTO reviewDTO) throws Exception {
+		// TODO Auto-generated method stub
+		return catDogDAO.regReview(reviewDTO);
+	}
+
+	@Override
+	public int updateProfile(MemberDTO memberDTO) throws Exception {
+		return catDogDAO.updateProfile(memberDTO);
 	}
 	
 	// 카카오 로그인
@@ -431,7 +449,13 @@ public class CatDogServiceImpl implements CatDogService {
 
 	
 
-	// 지혜
+	// 지혜	
+	@Override
+	public int addCart(CartDTO cartDTO) throws Exception {
+		// TODO Auto-generated method stub
+		return catDogDAO.addCart(cartDTO);
+	}
+	
 	@Override
 	public ProductDTO productDetail(int product_code) {
 		// TODO Auto-generated method stub

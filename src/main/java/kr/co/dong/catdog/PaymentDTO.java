@@ -4,7 +4,7 @@ public class PaymentDTO {
 	// 회원
 	private String user_id;
 	private String name;
-	private int phone_num;
+	private String phone_num;
 	private String  zipcode;
 	private String address;
 	private String detailaddress;
@@ -28,10 +28,10 @@ public class PaymentDTO {
 	public void setName(String name) {
 		this.name = name;
 	}
-	public int getPhone_num() {
+	public String getPhone_num() {
 		return phone_num;
 	}
-	public void setPhone_num(int phone_num) {
+	public void setPhone_num(String phone_num) {
 		this.phone_num = phone_num;
 	}
 	public String getZipcode() {

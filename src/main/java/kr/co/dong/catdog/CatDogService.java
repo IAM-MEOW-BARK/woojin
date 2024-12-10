@@ -79,7 +79,7 @@ public interface CatDogService {
     public int memberPaging();
     
     // 결제 페이지 단일 회원
-    public PaymentDTO getMember(String user_id);
+    public MemberDTO getMember(String user_id);
     
     // 결제 오더 정보
     public List<OrderItemDTO> getOrderInfo(String order_code);
@@ -106,14 +106,22 @@ public interface CatDogService {
 	
 	// 장바구니
 	public List<MyDTO> getMyOrders(String user_id) throws Exception;
+	
+	public int isReview(ReviewDTO reviewDTO) throws Exception;
+
+	public int regReview(ReviewDTO reviewDTO) throws Exception;	
+	
+	public int updateProfile(MemberDTO memberDTO) throws Exception;
 
 	// 카카오 로그인
 	public String getAccessToken(String code);
 	public HashMap<String, Object> getUserInfo (String access_Token);
 	
 	
-	
 	// 지혜
+    // 장바구니 추가
+    public int addCart(CartDTO cartDTO) throws Exception;
+	
 	// 상품 상세정보
     public ProductDTO productDetail(int product_code);
     public List<ReviewDTO> getReview(int product_code);
