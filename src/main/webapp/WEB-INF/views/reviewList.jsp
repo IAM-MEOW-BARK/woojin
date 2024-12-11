@@ -84,6 +84,8 @@
     </style>
 </head>
 <body>
+	<%@ include file="include/head.jsp"%>
+	<%@ include file="include/header.jsp"%>
 	<%@ include file="include/board_nav.jsp"%>
     <div class="container">
         <!-- 리뷰글 리스트 테이블 -->
@@ -93,8 +95,8 @@
                     <th style="width:50px;">NO</th>
                     <th style="width:60px;">별점</th>
                     <th style="width:100px;">사진</th>
-                    <th style="width:300px; text-align: left;">제목/상품</th>
-                    <th style="width:50px;">작성자</th>
+                    <th style="width:200px; text-align: left;">제목/상품</th>
+                    <th style="width:100px;">작성자</th>
                     <th style="width:100px;">등록일</th>
                     <th style="width:50px;">조회수</th>
                 </tr>
@@ -117,7 +119,7 @@
                                     </c:forEach>
                                 </div>
 							</td>
-							<td><img src="${pageContext.request.contextPath}/resources/upload/${review.review_img}" alt="Review Image" class="tab-image" /></td>
+							<td><%-- <img src="${pageContext.request.contextPath}/resources/upload/${review.review_img}" alt="Review Image" class="tab-image" /> --%></td>
 							<td style="text-align: left;"><a href="reviewDetail?review_no=${review.review_no}"> ${review.product_name}</a></td>
 							<td>${review.user_id}</td>
 							<td>${review.review_date}</td>

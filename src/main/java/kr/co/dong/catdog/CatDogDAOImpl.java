@@ -402,8 +402,8 @@ public class CatDogDAOImpl implements CatDogDAO{
 	}
     
     // 마이페이지
-    public List<MyDTO> getMyOrders(String user_id) throws Exception {
-		return sqlSession.selectList(namespace + ".getMyOrders", user_id);
+    public List<MyDTO> getMyOrders(Map<String, Object> params) throws Exception {
+		return sqlSession.selectList(namespace + ".getMyOrders", params);
 	}
 
     // 수정한 거
@@ -412,15 +412,21 @@ public class CatDogDAOImpl implements CatDogDAO{
  	}
  	
  	@Override
-	public int isReview(ReviewDTO reviewDTO) throws Exception {
-		// TODO Auto-generated method stub
-		return sqlSession.selectOne(namespace + ".isReview", reviewDTO);
+    public int isReview(int productCode, String userId) throws Exception {
+        Map<String, Object> params = new HashMap<>();
+        params.put("product_code", productCode);
+        params.put("user_id", userId);
+        return sqlSession.selectOne(namespace + ".isReview", params);
 	}
 
 	@Override
 	public int regReview(ReviewDTO reviewDTO) throws Exception {
 		// TODO Auto-generated method stub
 		return sqlSession.insert(namespace + ".regReview", reviewDTO);
+	}
+	
+	public List<OrderItemDetailDTO> getOrderItemDetail(String order_code) throws Exception {
+		return sqlSession.selectList(namespace + ".getOrderItemDetail", order_code);
 	}
  	
  	

@@ -20,6 +20,7 @@ import javax.servlet.http.HttpSession;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -43,7 +44,7 @@ import kr.co.dong.catdog.NoticeDTO;
 import kr.co.dong.catdog.OrderDTO;
 import kr.co.dong.catdog.OrderDetailDTO;
 import kr.co.dong.catdog.OrderItemDTO;
-import kr.co.dong.catdog.PaymentDTO;
+import kr.co.dong.catdog.OrderItemDetailDTO;
 import kr.co.dong.catdog.ProductDTO;
 import kr.co.dong.catdog.QnaDTO;
 import kr.co.dong.catdog.ReviewDTO;
@@ -998,13 +999,150 @@ public class CatDogController {
 		model.addAttribute("user_name", user.get("name"));
 		model.addAttribute("user_id", user.get("user_id"));
 
+		List<MyDTO> recentOrders  = catDogService.getRecentOrders((String) user.get("user_id"));
+		model.addAttribute("recentOrders", recentOrders );
+
+		System.out.println(recentOrders );
+
+		return "mypage";
+	}
+	
+	@GetMapping("/totalOrder")
+	public String totalOrder(HttpSession session, Model model) throws Exception {
+		Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
+		if (user == null) {
+			return "redirect:/catdog-login";
+		}
+		model.addAttribute("user_name", user.get("name"));
+		model.addAttribute("user_id", user.get("user_id"));
+
 		List<MyDTO> myOrders = catDogService.getMyOrders((String) user.get("user_id"));
 		model.addAttribute("myOrders", myOrders);
 
 		System.out.println(myOrders);
-
-		return "mypage";
+		return "totalOrder";
 	}
+	
+	@GetMapping("/checkPW")
+	public String checkPW(Model model, HttpSession session) throws Exception {
+		Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
+		if (user == null) {
+			return "redirect:/catdog-login";
+		}
+		model.addAttribute("user_id", user.get("user_id"));
+		return "checkPW";
+	}
+
+	@PostMapping("/checkPW")
+	public String chekcPW(@RequestParam Map<String, Object> map, HttpServletRequest request, HttpSession session,
+			Model model) throws Exception {
+		request.setCharacterEncoding("UTF-8");
+
+		System.out.println(map);
+
+		Map user = catDogService.login(map);
+
+		if (user == null) {
+			logger.info("비밀번호가 틀립니다.");
+			model.addAttribute("errorMessage", "비밀번호가 틀립니다.");
+			model.addAttribute("user_id", map.get("user_id"));
+			return "/checkPW";
+		}
+		logger.info("회원 조회 뿅");
+
+		session.setAttribute("name", user.get("name"));
+		session.setAttribute("user_id", user.get("user_id"));
+		session.setAttribute("phone_num", user.get("phone_num"));
+		session.setAttribute("zipcode", user.get("zipcode"));
+		session.setAttribute("address", user.get("address"));
+		session.setAttribute("detailaddress", user.get("detailaddress"));
+		session.setAttribute("password", map.get("password"));
+
+		System.out.println("정보 간다~" + user);
+
+		return "redirect:/updateProfile";
+	}
+
+	@GetMapping("/updateProfile")
+	public String updateProfile(HttpSession session, Model model) {
+		// 세션에서 사용자 정보를 가져와 모델에 추가
+		model.addAttribute("name", session.getAttribute("name"));
+		model.addAttribute("user_id", session.getAttribute("user_id"));
+		model.addAttribute("phone_num", session.getAttribute("phone_num"));
+		model.addAttribute("zipcode", session.getAttribute("zipcode"));
+		model.addAttribute("address", session.getAttribute("address"));
+		model.addAttribute("detailaddress", session.getAttribute("detailaddress"));
+
+		return "updateProfile"; // updateProfile.jsp 렌더링
+	}
+
+	@PostMapping("/updateProfile")
+	public String updateProfile(@ModelAttribute MemberDTO memberDTO, HttpSession session, HttpServletRequest request,
+			Model model, RedirectAttributes redirectAttributes) throws Exception {
+
+		request.setCharacterEncoding("UTF-8");
+
+		// 세션에서 현재 비밀번호 가져오기
+		String currentPW = (String) session.getAttribute("password");
+
+		System.out.println("지금 비번이 머꼬???????" + currentPW);
+
+		// 새 비밀번호가 비어있는지 확인
+		if (memberDTO.getPassword() == null || memberDTO.getPassword().isEmpty()) {
+			// 새 비밀번호가 null 이거나 empty하다면
+			System.out.println(memberDTO.getPassword());
+			memberDTO.setPassword(currentPW);
+		}
+
+		model.addAttribute(memberDTO);
+		System.out.println("===== 프로필 업데이트 할겨 ===== ");
+		System.out.println(memberDTO);
+		catDogService.updateProfile(memberDTO);
+		System.out.println("===== 프로필 업데이트 된겨 ===== ");
+
+		// 플래시 메시지 추가
+		redirectAttributes.addFlashAttribute("successMessage", "회원 정보가 성공적으로 수정되었습니다.");
+
+		return "redirect:/mypage";
+	}
+	
+	@GetMapping("/detailOrder")
+	   public String detailOrder(@RequestParam("order_code") String order_code, Model model, HttpSession session) throws Exception {
+	      System.out.println("전달 받은 order_code = " + order_code);
+
+	      // 주문 상세 정보 가져오기
+	      OrderDetailDTO orderDetail = catDogService.getOrderDetail(order_code); // orderDetail에 order_code 전달
+	      System.out.println(orderDetail);
+	      model.addAttribute("orderDetail", orderDetail); // jsp 사용할 데이터
+
+	       // 사용자 정보 가져오기
+	       Map<String, Object> user = (Map<String, Object>) session.getAttribute("user");
+	       String userId = (String) user.get("user_id");
+	      
+	       // 주문 아이템 상세 정보 가져오기
+	      List<OrderItemDetailDTO> orderItemDetail = catDogService.getOrderItemDetail(order_code);
+	      System.out.println(orderItemDetail);
+	      model.addAttribute("orderItemDetail", orderItemDetail);
+
+	      // 각 상품에 대해 리뷰 여부 확인
+	       for (OrderItemDetailDTO item : orderItemDetail) {
+	       int isReview = catDogService.isReview(item.getProductCode(), userId);
+	       item.setReview(isReview > 0); // 리뷰 존재 여부 설정
+	       }
+	      
+	      // 총 비용 계산
+	      int totalCost = catDogService.getTotalCost(order_code);
+	      model.addAttribute("totalCost", totalCost);
+
+	      return "detailOrder"; // 상세 페이지
+	   }
+	
+	   @GetMapping("/getProductInfo")
+	   @ResponseBody
+	   public ProductDTO getProductInfo(@RequestParam int product_code) throws Exception {
+	      return catDogService.getProductByCode(product_code);
+	   }
+
 
 	// 지혜
 	// 상품 상세페이지
@@ -1158,6 +1296,19 @@ public class CatDogController {
 
 		return "/reviewDetail";
 	}
+	
+	// 리뷰 작성
+	@PostMapping("/regReview")
+	   public ResponseEntity<String> regReview(@RequestBody ReviewDTO reviewDTO) throws Exception {
+	       if (reviewDTO.getProduct_code() == 0 || 
+	           reviewDTO.getReview_score() == 0 || 
+	           reviewDTO.getReview_content() == null) {
+	           return ResponseEntity.badRequest().body("필수 파라미터가 누락되었습니다.");
+	       }
+
+	       catDogService.regReview(reviewDTO);
+	       return ResponseEntity.ok("리뷰 등록 성공!");
+	   }
 
 	// Q&A 리스트
 	@RequestMapping(value = "qnaList", method = RequestMethod.GET)

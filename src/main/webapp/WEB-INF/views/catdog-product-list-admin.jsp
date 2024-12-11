@@ -96,12 +96,12 @@ td {
 					</select> <input type="text" name="searchKeyword" placeholder="검색어 입력">
 					</td>
 				</tr>
-				<tr>
+				<!-- <tr>
 					<th>상품 가격</th>
 					<td><input type="text" name="priceMin" placeholder="상품가격 입력">
 						<span>원 이상 &nbsp;</span> <input type="text" name="priceMax"
 						placeholder="상품가격 입력"> <span>원 이하</span></td>
-				</tr>
+				</tr> -->
 				<tr>
 					<th>기간</th>
 					<td>

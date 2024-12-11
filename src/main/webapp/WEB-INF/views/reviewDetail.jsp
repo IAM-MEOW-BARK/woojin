@@ -123,9 +123,9 @@
 				    <td colspan="2">
 				        <div class="review_content">
 				            <!-- 이미지 -->
-				            <img src="${pageContext.request.contextPath}/resources/upload/${reviewDetail.review_img}" 
+				            <%-- <img src="${pageContext.request.contextPath}/resources/upload/${reviewDetail.review_img}" 
 				                 alt="Review Image" 
-				                 style="max-width: 500px; max-height: 500px; object-fit: cover; border: 1px solid #ccc; border-radius: 5px; margin-left: 40px;">
+				                 style="max-width: 500px; max-height: 500px; object-fit: cover; border: 1px solid #ccc; border-radius: 5px; margin-left: 40px;"> --%>
 				            <!-- 내용 -->
 				            <p style="flex: 1; margin-right: 40px;">${reviewDetail.review_content}</p>
 				        </div>

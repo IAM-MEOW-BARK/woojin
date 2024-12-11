@@ -110,7 +110,7 @@
             <!-- 상품 상세정보 시작 -->
                <div class="container px-4 px-lg-5 mt-5 ">
                    <div class="detail-header">상품정보</div>
-                      <div id="detail-img-text-box">
+                      <div id="detail-img-text-box" style="width:800px;">
                           <img src="${pageContext.request.contextPath}/resources/upload/${productDetail.product_img}" alt="product-img" class="card-img-top" />
                         </div>
                  <div id="detail-info-box">

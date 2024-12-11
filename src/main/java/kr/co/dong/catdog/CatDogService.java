@@ -93,6 +93,9 @@ public interface CatDogService {
     
 	// (나현) 전체 목록 가져오는 메소드
 	public List<ProductDTO> mainlist(Map<String, Object> param);
+	
+	// 최근 주문 내역 5건
+	public List<MyDTO> getRecentOrders(String user_id) throws Exception;
     
     // 카트
 	public String addOrder(OrderDTO orderDTO) throws Exception;
@@ -107,7 +110,7 @@ public interface CatDogService {
 	// 장바구니
 	public List<MyDTO> getMyOrders(String user_id) throws Exception;
 	
-	public int isReview(ReviewDTO reviewDTO) throws Exception;
+	public int isReview(int productCode, String userId) throws Exception;
 
 	public int regReview(ReviewDTO reviewDTO) throws Exception;	
 	
@@ -116,6 +119,8 @@ public interface CatDogService {
 	// 카카오 로그인
 	public String getAccessToken(String code);
 	public HashMap<String, Object> getUserInfo (String access_Token);
+	
+	public List<OrderItemDetailDTO> getOrderItemDetail(String order_code) throws Exception;
 	
 	
 	// 지혜

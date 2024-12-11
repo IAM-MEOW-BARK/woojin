@@ -5,7 +5,8 @@
   <mapper namespace="kr.co.dong.boardMapper">
   	<!-- 로그인 -->
  	<select id="login" parameterType="java.util.Map" resultType="java.util.Map">
- 		select user_id,name,user_auth, user_status from member
+ 		select user_id, name, user_auth, user_status, phone_num, zipcode,
+		address, detailaddress from member
  		where user_id=#{user_id} and password=#{password}
  	</select>
  	
@@ -213,13 +214,32 @@
 	</update>
 	
 	<!-- 상품 삭제 -->
-	<delete id="deleteProduct" parameterType="java.util.List">
+	<!-- <delete id="deleteProduct" parameterType="java.util.List">
 		DELETE FROM product
 	    WHERE product_code IN
 	    <foreach item="product_code" collection="list" open="(" separator="," close=")">
 	        #{product_code}
 	    </foreach>;
+	</delete> -->
+	
+	<!-- order_item에서 관련 데이터 삭제 -->
+	<delete id="deleteOrderItemsByProductCodes" parameterType="java.util.List">
+	    DELETE FROM order_item
+	    WHERE PRODUCT_CODE IN
+	    <foreach item="product_code" collection="list" open="(" separator="," close=")">
+	        #{product_code}
+	    </foreach>
 	</delete>
+	
+	<!-- product에서 데이터 삭제 -->
+	<delete id="deleteProduct" parameterType="java.util.List">
+	    DELETE FROM product
+	    WHERE product_code IN
+	    <foreach item="product_code" collection="list" open="(" separator="," close=")">
+	        #{product_code}
+	    </foreach>
+	</delete>
+	
 	
 	<!-- 상품 결제 (카트 정보) -->
 	<!-- <select id="productPayment" parameterType="java.lang.String" resultType="PaymentDTO">
@@ -421,17 +441,20 @@
 	</insert>
 	
 	<!-- 마이페이지 주문 내역 -->
-	<select id="getMyOrders" parameterType="java.lang.String"
+	<select id="getMyOrders" parameterType="java.util.Map"
 		resultType="MyDTO">
 		SELECT
 		o.ordered_at AS orderedAt,
 		o.order_code AS orderCode,
-		(SELECT p.product_name
+		(SELECT
+		p.product_name
 		FROM order_item oi
 		JOIN product p ON
-		oi.product_code = p.product_code
+		oi.product_code =
+		p.product_code
 		WHERE oi.order_code = o.order_code
-		ORDER BY oi.product_code ASC
+		ORDER BY
+		oi.product_code ASC
 		LIMIT 1) AS firstProductName,
 		(SELECT
 		SUM(p.product_price *
@@ -449,8 +472,12 @@
 
 		WHERE
 		o.user_id_fk = #{user_id}
+		and o.payment_status = 1
 		ORDER BY
 		o.ordered_at DESC
+		<if test="limit != null">
+			LIMIT #{limit}
+		</if>
 	</select>
 
 	<resultMap id="orderResultMap" type="OrderDTO">
@@ -568,21 +595,18 @@
 	</select>
 	
 	<!-- 카테고리 리스트 -->
-	<select id="mainlist" parameterType="java.util.Map"
+	<select id="mainlist" parameterType="java.lang.Integer"
 		resultType="ProductDTO">
 		SELECT
-		p.*,
-		(SELECT wish_no
-		FROM wish w
-		WHERE w.user_id =
-		#{user_id} AND w.product_code = p.product_code) AS
-		wish_no
+		*
 		FROM
-		product p
+		product
 		WHERE
-		p.product_category = #{product_category}
+		product_category =
+		#{product_category}
 		ORDER BY
-		p.product_regdate DESC
+		product_regdate DESC
+		LIMIT 10
 	</select>
 
 	<!-- 리스트에서 제품 선택 -->
@@ -629,6 +653,45 @@
 	    where product_code = #{product_code}
 	    order by review_no desc
 	    limit 5
+	</select>
+	
+	<!-- 상품 주문 리스트 -->
+	<select id="getOrderItemDetail" parameterType="java.lang.String"
+		resultType="OrderItemDetailDTO">
+		SELECT
+		p.product_code as productCode,
+		p.product_name as
+		productName,
+		p.thumbnail_img as thumbnailImg,
+		oi.order_quantity as
+		orderQuantity,
+		p.product_price as productPrice,
+		(p.product_price *
+		oi.order_quantity) as totalPrice,
+		oi.order_status as orderStatus
+		FROM
+		order_item oi
+		LEFT JOIN product p ON
+		oi.product_code = p.product_code
+		WHERE
+		oi.order_code = #{order_code}
+	</select>
+	
+	<!-- 리뷰 작성 -->
+   <insert id="regReview" parameterType="ReviewDTO">
+      INSERT INTO review
+      (product_code, user_id, review_score, review_content,
+      review_date, REVIEW_READCNT, review_img)
+      VALUES (#{product_code}, #{user_id}, #{review_score},
+      #{review_content}, now(), 0, #{review_img})
+   </insert>
+   
+   <!-- 리뷰 여부 확인 -->
+   <select id="isReview" parameterType="java.util.Map" 
+		resultType="java.lang.Integer">
+		SELECT count(*)
+		FROM review
+		WHERE product_code = #{product_code} and user_id = #{user_id}
 	</select>
 	
 	<!-- 상품 상세 리뷰 개수 -->
@@ -757,7 +820,7 @@
 	
 	<!-- 리뷰 상세 글 조회 -->
 	<select id="reviewDetail" parameterType="java.lang.Integer" resultType="ReviewDTO">
-		select r.*, p.product_name
+		select r.*, p.product_name, p.thumbnail_img
 		from review r left join product p on r.product_code = p.product_code
 		where review_no = #{review_no}
 	</select>

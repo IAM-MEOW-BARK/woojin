@@ -264,7 +264,25 @@ public class CatDogServiceImpl implements CatDogService {
 	public int getFilteredProductCount(String searchType, String searchKeyword, String startDate, String endDate) {
 		// TODO Auto-generated method stub
 		return catDogDAO.getFilteredProductCount(searchType, searchKeyword, startDate, endDate);
-	}	
+	}
+	
+	// 전체 주문 조회
+		@Override
+		public List<MyDTO> getMyOrders(String user_id) throws Exception {
+			Map<String, Object> params = new HashMap<>();
+			params.put("user_id", user_id);
+			params.put("limit", null); // LIMIT 조건 없이 전체 조회
+			return catDogDAO.getMyOrders(params);
+		}
+
+		// 최근 5건 조회
+		@Override
+		public List<MyDTO> getRecentOrders(String user_id) throws Exception {
+			Map<String, Object> params = new HashMap<>();
+			params.put("user_id", user_id);
+			params.put("limit", 5); // 최근 5건만 조회
+			return catDogDAO.getMyOrders(params);
+		}
 	
 	@Override
 	public String addOrder(OrderDTO orderDTO) throws Exception {
@@ -314,10 +332,6 @@ public class CatDogServiceImpl implements CatDogService {
 		return catDogDAO.deleteCart(cartDTO);
 	}
 	
-	public List<MyDTO> getMyOrders(String user_id) throws Exception {
-		return catDogDAO.getMyOrders(user_id);
-	}
-	
 	@Override
 	public OrderDetailDTO getOrderDetail(String order_code) throws Exception {
 		return catDogDAO.getOrderDetail(order_code); // DAO 호출
@@ -330,9 +344,13 @@ public class CatDogServiceImpl implements CatDogService {
 	}
 	
 	@Override
-	public int isReview(ReviewDTO reviewDTO) throws Exception {
-		// TODO Auto-generated method stub
-		return catDogDAO.isReview(reviewDTO);
+	public List<OrderItemDetailDTO> getOrderItemDetail(String order_code) throws Exception {
+		return catDogDAO.getOrderItemDetail(order_code);
+	}
+	
+	@Override
+	public int isReview(int productCode, String userId) throws Exception {
+		return catDogDAO.isReview(productCode, userId);
 	}
 
 	@Override

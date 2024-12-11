@@ -16,6 +16,7 @@
  		<typeAlias alias="QnaDTO" type="kr.co.dong.catdog.QnaDTO"/>
  		<typeAlias alias="FaqDTO" type="kr.co.dong.catdog.FaqDTO"/>
  		<typeAlias alias="OrdersDTO" type="kr.co.dong.catdog.OrdersDTO"/>
+ 		<typeAlias alias="OrderItemDetailDTO" type="kr.co.dong.catdog.OrderItemDetailDTO"/>
  		
  		<typeAlias alias="BoardDTO" type="kr.co.dong.board.BoardDTO"/>
  		<typeAlias alias="BoardReply" type="kr.co.dong.board.BoardReply"/>

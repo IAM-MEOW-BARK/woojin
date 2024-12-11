@@ -6,7 +6,7 @@ public class ReviewDTO {
 	private int product_code;
 	private String user_id;
 	private int review_score;
-	private String review_img;
+	private String review_img;	
 	private String review_content;
 	private String review_date;
 	private int review_readcnt;

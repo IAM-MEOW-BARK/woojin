@@ -147,13 +147,15 @@ public interface CatDogDAO {
     public List<CartDTO> getCartItem(String user_id) throws Exception;
 	
 	// 마이페이지
-    public List<MyDTO> getMyOrders(String user_id) throws Exception;
+    //전체 주문 내역
+ 	public List<MyDTO> getMyOrders(Map<String, Object> params) throws Exception;
     
-    public int isReview(ReviewDTO reviewDTO) throws Exception;
+    
+ 	public int isReview(int productCode, String userId) throws Exception;
 	
 	public int regReview(ReviewDTO reviewDTO) throws Exception;
-    
-    
+	
+	public List<OrderItemDetailDTO> getOrderItemDetail(String order_code) throws Exception;    
     
     // 지혜
 	// 상품 상세정보

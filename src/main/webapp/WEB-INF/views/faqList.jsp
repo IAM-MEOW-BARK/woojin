@@ -224,6 +224,8 @@
     </style>
 </head>
 <body>
+	<%@ include file="include/head.jsp"%>
+	<%@ include file="include/header.jsp"%>
     <%@ include file="include/board_nav.jsp"%>
 
     <!-- 네비게이션 메뉴 -->
@@ -366,6 +368,12 @@
                 return false;
             }
         }
+        
+        window.onload = function() {
+            <% if (request.getAttribute("paymentSuccess") != null) { %>
+                alert("결제가 완료되었습니다.");
+            <% } %>
+        };
     </script>
 </body>
 </html>

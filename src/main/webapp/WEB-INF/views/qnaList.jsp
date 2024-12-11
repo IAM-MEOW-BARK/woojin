@@ -178,6 +178,8 @@
     </style>
 </head>
 <body>
+	<%@ include file="include/head.jsp"%>
+	<%@ include file="include/header.jsp"%>
 	<%@ include file="include/board_nav.jsp"%>
     <div class="container">
         <!-- 공지 리스트 테이블 -->

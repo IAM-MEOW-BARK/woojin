@@ -1,5 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+
 <%@ page session="true"%>
 <!DOCTYPE html>
 <html>
@@ -97,11 +99,13 @@
 
 </head>
 <body>
- 	<c:if test="${not empty successMessage}">
+
+    <c:if test="${not empty successMessage}">
         <script>
             alert("${successMessage}");
         </script>
     </c:if>
+
 	<%@ include file="include/header.jsp"%>
 	<%@ include file="include/mypageheader.jsp"%>
 	<!-- 마이페이지 -->
@@ -125,14 +129,16 @@
 							</tr>
 						</thead>
 						<tbody>
-							<c:forEach var="order" items="${myOrders}">
+							<c:forEach var="order" items="${recentOrders}">
 								<tr>
 									<td>${order.orderedAt}</td>
 									<td>
 										<a href="detailOrder?order_code=${order.orderCode}">${order.orderCode}</a>
 									</td>
 									<td>${order.firstProductName}</td>
-									<td>${order.totalPrice}</td>
+									<td>
+									<fmt:formatNumber value="${order.totalPrice}" pattern="#,###원" />
+									</td>
 								</tr>
 							</c:forEach>
 						</tbody>
@@ -141,7 +147,7 @@
 				</div>
 
 				<!-- 최근 찜 내역 -->
-				<div class="table-container">
+<%-- 				<div class="table-container">
 					<h4>최근 찜 내역</h4>
 					<table class="table table-bordered text-center">
 						<thead class="table-light">
@@ -172,7 +178,7 @@
 					</table>
 					<button class="btn btn-outline-secondary" onclick="deleteWish">선택 상품 삭제</button>
 					<button class="btn btn-outline-secondary" onclick="location.href='totalWish'">전체 찜 내역</button>
-				</div>
+				</div> --%>
 			</div>
 		</div>
 	</div>
@@ -183,15 +189,12 @@ function selectAll(selectAll) {
     checkboxes.forEach((checkbox) => {
         checkbox.checked = selectAll.checked;
     });
-}
+};
 
 function openCartPop () {
 	  const options = 'width=600, height=600, top=300, left=600, scrollbars=yes, location= no, toolbars= no, status= no, resizable=no'
 	  window.open('cartPop','_blank',options)
-	}
-
-}
-
+	};
 </script>
 
 </body>
