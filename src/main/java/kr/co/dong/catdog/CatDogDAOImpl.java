@@ -244,13 +244,10 @@ public class CatDogDAOImpl implements CatDogDAO{
 		return sqlSession.selectOne(namespace + ".productPaymentMember" , user_id);
 	}
 
-	@Override
-	public MemberDTO getMember(String user_id) {
-		// TODO Auto-generated method stub
-		MemberDTO member = sqlSession.selectOne(namespace + ".getMember", user_id);
-	     System.out.println("DAO: 회원 정보: " + member);
-	     return member;
-	}
+	   @Override
+	   public MemberDTO getMember(String user_id) {
+	      return sqlSession.selectOne(namespace + ".getMember", user_id);
+	   }
 
 	@Override
 	public List<OrderItemDTO> getOrderInfo(String order_code) {

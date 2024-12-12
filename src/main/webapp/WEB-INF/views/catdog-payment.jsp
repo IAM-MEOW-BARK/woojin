@@ -26,6 +26,9 @@
 		
 		input:focus {outline: none;}
     </style>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>                
      <!-- 좌측 -->
@@ -154,7 +157,7 @@
 						    <input type="hidden"  id="deliveryContact" name="phone_num" value="${orderInfo.phoneNum}">
 						    <input type="hidden"  id="zipcode" name="zipcode" value="${orderInfo.zipcode}">
 						    <input type="hidden"  id="deliveryAddress" name="address" value="${orderInfo.address}">
-						    <input type="hidden"  id="deliveryAddress" name="detailaddress" value="${orderInfo.detailAddress}">
+						    <input type="hidden"  id="deliveryAddress" name="detailAddress" value="${orderInfo.detailAddress}">
 						
 						    <button type="submit" class="btn w-100 font-bold text-white" style="background-color: #ff6600;">결제하기</button>
 						</form>

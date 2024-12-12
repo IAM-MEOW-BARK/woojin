@@ -30,7 +30,7 @@
 	</select>
 	
 	<!-- 소셜 아이디 로그인 -->
- 	<select id="socail-login" parameterType="java.util.Map" resultType="java.util.Map">
+ 	<select id="socail-login" parameterType="MemberDTO" resultType="MemberDTO">
  		select user_id from member
  		where user_id=#{user_id}
  	</select>
@@ -291,7 +291,7 @@
  	</select>
  	
  	<!-- 결제 페이지 회원 정보 -->
- 	<select id="getMember" resultType="PaymentDTO" parameterType="java.lang.String">
+ 	<select id="getMember" resultType="MemberDTO" parameterType="java.lang.String">
  		select user_id, name, phone_num, zipcode, address, detailaddress from member
  		where user_id = #{user_id}
  	</select>
@@ -606,7 +606,7 @@
 		#{product_category}
 		ORDER BY
 		product_regdate DESC
-		LIMIT 10
+		LIMIT 20
 	</select>
 
 	<!-- 리스트에서 제품 선택 -->

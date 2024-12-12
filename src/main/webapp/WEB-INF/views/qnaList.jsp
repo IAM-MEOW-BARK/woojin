@@ -128,7 +128,7 @@
             margin: 15% auto;
             padding: 20px;
             border: 1px solid #ccc;
-            width: 30%;
+           
             border-radius: 5px;
             text-align: center;
         }
@@ -335,8 +335,8 @@
     
     <!-- 비밀번호 입력 모달 -->
     <div id="passwordModal" class="modal">
-    <div class="modal-content">
-        <span class="close" onclick="closePasswordModal()">&times;</span>
+    <div class="modal-content" style=" width: 30%;">
+        <span class="close" style="text-align:right;" onclick="closePasswordModal()">&times;</span>
         <h2>비밀번호를 입력하세요</h2>
         <form id="passwordForm" action="qnaDetail" method="POST">
             <input type="hidden" name="qna_no" id="qnaId">

@@ -7,7 +7,7 @@
 <html lang="ko">
 <head>
 <title>내가 바로 🐱냥냥멍멍🐶</title>
-
+<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/style.css">
 <style type="text/css">
 .swiper {
 	width: 100%;
@@ -19,8 +19,21 @@
 	justify-content: center;
 	align-items: center;
 }
+
+.product-item .button-area {
+  display: none;
+  position: absolute;
+  text-align: center;
+  background: #fff;
+  width: 100%;
+  left: 0;
+  bottom: -55px;
+  z-index: 1;
+  box-shadow: 0px 20px 44px rgba(0, 0, 0, 0.08);
+  /* transition: box-shadow 0.3s ease-out; */
+}
 </style>
-<link rel="stylesheet" href="${pageContext.request.contextPath}/resources/bootstrap/css/style.css">
+
 <%@ include file="include/head.jsp"%>
 
 <!-- Swiper.js CSS -->
@@ -108,11 +121,11 @@
 
 					<!-- Main 캐러셀 조작 버튼 -->
 					<div class="d-flex align-items-center">
-						<a href="#" class="btn btn-primary me-2">전체 보기</a>
+						<a href="#" class="btn me-2" style="background: #ff6600; border:none; color: white;">전체 보기</a>
 						<div class="swiper-buttons">
-							<button class="swiper-prev btn btn-primary"
+							<button class="swiper-prev btn" style="background: #ff6600; border:none; color: white;"
 								data-target="carousel1">&lt;</button>
-							<button class="swiper-next btn btn-primary"
+							<button class="swiper-next btn btn-primary" style="background: #ff6600; border:none; color: white;"
 								data-target="carousel1">&gt;</button>
 						</div>
 					</div>
@@ -152,7 +165,7 @@
 												<input type="hidden" name="product_code" value="${product01.product_code}" />
 												<input type="hidden" name="product_price" value="${product01.product_price}" />
 												<input type="hidden" name="cart_quantity" id="cartQuantity_${product01.product_code}" value="1" />
-												<button type="submit" class="btn btn-primary rounded-1 p-2 fs-7 btn-cart">
+												<button type="submit" class="btn rounded-1 p-2 fs-7 btn-cart" style="background: #ff6600; color: white;">
 												<svg width="18" height="18">
 												<use xlink:href="#cart"></use></svg> 장바구니</button>		
 												</form>											
@@ -182,11 +195,11 @@
 
 					<!-- Main 캐러셀 조작 버튼 -->
 					<div class="d-flex align-items-center">
-						<a href="#" class="btn btn-primary me-2">전체 보기</a>
+						<a href="#" class="btn me-2" style="background: #ff6600; border:none; color: white;">전체 보기</a>
 						<div class="swiper-buttons">
-							<button class="swiper-prev btn btn-primary"
+							<button class="swiper-prev btn" style="background: #ff6600; border:none; color: white;"
 								data-target="carousel2">&lt;</button>
-							<button class="swiper-next btn btn-primary"
+							<button class="swiper-next btn btn-primary" style="background: #ff6600; border:none; color: white;"
 								data-target="carousel2">&gt;</button>
 						</div>
 					</div>
@@ -226,7 +239,7 @@
 												<input type="hidden" name="product_code" value="${product02.product_code}" />
 												<input type="hidden" name="product_price" value="${product02.product_price}" />
 												<input type="hidden" name="cart_quantity" id="cartQuantity_${product02.product_code}" value="1" />
-												<button type="submit" class="btn btn-primary rounded-1 p-2 fs-7 btn-cart">
+												<button type="submit" class="btn rounded-1 p-2 fs-7 btn-cart" style="background: #ff6600; color: white;">
 												<svg width="18" height="18">
 												<use xlink:href="#cart"></use></svg> 장바구니</button>		
 												</form>											
@@ -256,11 +269,11 @@
 
 					<!-- Main 캐러셀 조작 버튼 -->
 					<div class="d-flex align-items-center">
-						<a href="#" class="btn btn-primary me-2">전체 보기</a>
+						<a href="#" class="btn me-2" style="background: #ff6600; border:none; color: white;">전체 보기</a>
 						<div class="swiper-buttons">
-							<button class="swiper-prev btn btn-primary"
+							<button class="swiper-prev btn" style="background: #ff6600; border:none; color: white;"
 								data-target="carousel3">&lt;</button>
-							<button class="swiper-next btn btn-primary"
+							<button class="swiper-next btn btn-primary" style="background: #ff6600; border:none; color: white;"
 								data-target="carousel3">&gt;</button>
 						</div>
 					</div>
@@ -300,7 +313,7 @@
 												<input type="hidden" name="product_code" value="${product03.product_code}" />
 												<input type="hidden" name="product_price" value="${product03.product_price}" />
 												<input type="hidden" name="cart_quantity" id="cartQuantity_${product03.product_code}" value="1" />
-												<button type="submit" class="btn btn-primary rounded-1 p-2 fs-7 btn-cart">
+												<button type="submit" class="btn rounded-1 p-2 fs-7 btn-cart" style="background: #ff6600; color: white;">
 												<svg width="18" height="18">
 												<use xlink:href="#cart"></use></svg> 장바구니</button>		
 												</form>											
@@ -330,11 +343,11 @@
 
 					<!-- Main 캐러셀 조작 버튼 -->
 					<div class="d-flex align-items-center">
-						<a href="#" class="btn btn-primary me-2">전체 보기</a>
+						<a href="#" class="btn me-2" style="background: #ff6600; border:none; color: white;">전체 보기</a>
 						<div class="swiper-buttons">
-							<button class="swiper-prev btn btn-primary"
+							<button class="swiper-prev btn" style="background: #ff6600; border:none; color: white;"
 								data-target="carousel4">&lt;</button>
-							<button class="swiper-next btn btn-primary"
+							<button class="swiper-next btn btn-primary" style="background: #ff6600; border:none; color: white;"
 								data-target="carousel4">&gt;</button>
 						</div>
 					</div>
@@ -374,7 +387,7 @@
 												<input type="hidden" name="product_code" value="${product04.product_code}" />
 												<input type="hidden" name="product_price" value="${product04.product_price}" />
 												<input type="hidden" name="cart_quantity" id="cartQuantity_${product04.product_code}" value="1" />
-												<button type="submit" class="btn btn-primary rounded-1 p-2 fs-7 btn-cart">
+												<button type="submit" class="btn rounded-1 p-2 fs-7 btn-cart" style="background: #ff6600; color: white;">
 												<svg width="18" height="18">
 												<use xlink:href="#cart"></use></svg> 장바구니</button>		
 												</form>											
@@ -404,11 +417,11 @@
 
 					<!-- Main 캐러셀 조작 버튼 -->
 					<div class="d-flex align-items-center">
-						<a href="#" class="btn btn-primary me-2">전체 보기</a>
+						<a href="#" class="btn me-2" style="background: #ff6600; border:none; color: white;">전체 보기</a>
 						<div class="swiper-buttons">
-							<button class="swiper-prev btn btn-primary"
+							<button class="swiper-prev btn" style="background: #ff6600; border:none; color: white;"
 								data-target="carousel5">&lt;</button>
-							<button class="swiper-next btn btn-primary"
+							<button class="swiper-next btn btn-primary" style="background: #ff6600; border:none; color: white;"
 								data-target="carousel5">&gt;</button>
 						</div>
 					</div>
@@ -448,7 +461,7 @@
 												<input type="hidden" name="product_code" value="${product05.product_code}" />
 												<input type="hidden" name="product_price" value="${product05.product_price}" />
 												<input type="hidden" name="cart_quantity" id="cartQuantity_${product05.product_code}" value="1" />
-												<button type="submit" class="btn btn-primary rounded-1 p-2 fs-7 btn-cart">
+												<button type="submit" class="btn rounded-1 p-2 fs-7 btn-cart" style="background: #ff6600; color: white;">
 												<svg width="18" height="18">
 												<use xlink:href="#cart"></use></svg> 장바구니</button>		
 												</form>											

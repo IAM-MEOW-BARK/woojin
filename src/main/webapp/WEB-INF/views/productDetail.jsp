@@ -34,12 +34,6 @@
                      -->
                       <h3 class="productName">${productDetail.product_name}</h3>
                      <!--  찜하기 버튼 -->
-                          
-                          
-                          
-                          
-                          
-                         
                            <!-- 상품 가격 -->
                            <div class="products-box-detail-price border-line">
                         <span class="products-box-detail-postInfo-title">가격</span>
@@ -131,7 +125,7 @@
                                  <div class="review-item">
                                      <!-- 리뷰 이미지 -->
                                      <div class="review-image">
-                                         <img src="${pageContext.request.contextPath}/resources/upload/${review.review_img}" alt="Review Image">
+                                         <%-- <img src="${pageContext.request.contextPath}/resources/upload/${review.review_img}" alt="Review Image"> --%>
                                      </div>
                                      <!-- 리뷰 텍스트 -->
                                      <div class="review-text">

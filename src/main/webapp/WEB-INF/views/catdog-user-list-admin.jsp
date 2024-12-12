@@ -164,10 +164,10 @@ td {
 								 	<td>
 							            <c:choose>
 							                <c:when test="${member.social_id == 1}">
-							                    네이버
+							                    카카오
 							                </c:when>
 							                <c:when test="${member.social_id == 2}">
-							                    카카오
+							                    네이버
 							                </c:when>
 							                <c:when test="${member.social_id == 3}">
 							                    구글
